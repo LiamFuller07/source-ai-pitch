@@ -2,105 +2,142 @@
 
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
+import { usePresentationStep } from "./PresentationController";
+import { Slide } from "./Slide";
 
 const steps = [
-  { icon: "📋", label: "End Client Identifies Need", time: "2–4 wks" },
-  { icon: "📞", label: "Scoping & Proposal Writing", time: "3–6 wks" },
-  { icon: "🏗", label: "Architecture & Solution Design", time: "4–8 wks" },
-  { icon: "🌍", label: "Outsource & Onboard Teams", time: "2–6 wks" },
-  { icon: "⚙️", label: "Implementation & Go-Live", time: "8–16 wks" },
-];
-
-const painPoints = [
-  { icon: "🔄", text: "BRD goes through 3–5 revision cycles" },
-  { icon: "🔒", text: "Architecture review requires senior sign-off" },
-  { icon: "📈", text: "Scope creep discovered mid-implementation" },
-  { icon: "⏳", text: "Outsourced team needs ramp-up time" },
-  { icon: "🐛", text: "Data mapping errors found during testing" },
-  { icon: "🔀", text: "Client changes requirements after BRD sign-off" },
-  { icon: "🚫", text: "Go-live delayed by failed validation" },
-  { icon: "💸", text: "Knowledge lost between project phases" },
+  {
+    label: "End Client",
+    emoji: "🏢",
+    detail: "Identifies need, issues RFP, evaluates vendors",
+    time: "2–4 wks",
+  },
+  {
+    label: "Sales & Scoping",
+    emoji: "💼",
+    detail: "Discovery calls, needs analysis, proposal writing, SOW negotiation",
+    time: "3–6 wks",
+  },
+  {
+    label: "Solutions Architecture",
+    emoji: "🏗️",
+    detail: "Schema analysis, gap assessment, AS-IS → TO-BE mapping, BRD creation",
+    time: "4–8 wks",
+  },
+  {
+    label: "Resource & Team Build",
+    emoji: "👥",
+    detail: "Find offshore/onshore devs, onboard, ramp up on client systems",
+    time: "2–6 wks",
+  },
+  {
+    label: "Implementation & Config",
+    emoji: "⚙️",
+    detail: "Data migration, custom development, integrations, UAT, bug fixing",
+    time: "6–12 wks",
+  },
+  {
+    label: "Go-Live & Handover",
+    emoji: "🚀",
+    detail: "Cutover planning, validation, training, hypercare, documentation",
+    time: "2–4 wks",
+  },
 ];
 
 export function ProblemToday() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
+  const { setMaxSteps, resetSteps, isStepVisible } = usePresentationStep();
+
+  useEffect(() => {
+    if (inView) {
+      setMaxSteps(steps.length);
+      resetSteps();
+    }
+  }, [inView, setMaxSteps, resetSteps]);
 
   return (
-    <section ref={ref} className="h-screen flex flex-col justify-center px-6 bg-white">
-      <div className="max-w-6xl mx-auto w-full">
+    <Slide ref={ref} bg="bg-white" className="flex flex-col justify-center px-[120px]">
+      <div className="w-full">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="mb-10"
+          className="mb-12"
         >
-          <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-black/40 mb-3">
+          <p className="text-[18px] font-mono uppercase tracking-[0.2em] text-black/40 mb-3">
             The Problem
           </p>
-          <h2 className="text-4xl md:text-5xl font-semibold tracking-[-0.03em]">
+          <h2 className="text-[56px] font-semibold tracking-[-0.03em] mb-5">
             How Migrations Work Today
           </h2>
+          <p className="text-[24px] text-black/50 max-w-[900px] leading-relaxed">
+            Every ERP migration follows the same painful playbook — months of
+            scoping, offshoring, rework, and budget overruns before a single
+            system goes live.
+          </p>
         </motion.div>
 
-        {/* Horizontal step bars */}
-        <div className="space-y-2 mb-8">
+        <div className="relative space-y-[-1px]">
           {steps.map((step, i) => (
-            <motion.div
+            <div
               key={step.label}
-              initial={{ opacity: 0, x: -30 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.4, delay: 0.15 + i * 0.08 }}
-              className="flex items-center border-2 border-black/12 hover:border-black/25 transition-colors"
+              className="relative flex items-center"
+              style={{ paddingLeft: `${i * 6}%` }}
             >
-              <div className="flex items-center gap-4 px-5 py-4 flex-1">
-                <span className="text-xl">{step.icon}</span>
-                <span className="text-[15px] font-semibold tracking-[-0.01em] text-black/80">
-                  {step.label}
-                </span>
-              </div>
-              <div className="px-5 py-4 border-l-2 border-black/8 min-w-[120px] text-right">
-                <span className="text-[16px] font-bold text-black">{step.time}</span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+              {i > 0 && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: isStepVisible(i + 1) ? 1 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute -top-2 bg-black/10"
+                  style={{
+                    left: `calc(${i * 6}% + 32px)`,
+                    width: "1px",
+                    height: "8px",
+                  }}
+                />
+              )}
 
-        {/* Total cost + time - larger paragraph */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.6 }}
-          className="text-center mb-8 py-5 border-y-2 border-black/10"
-        >
-          <p className="text-3xl font-bold tracking-[-0.02em]">
-            6–12+ months end-to-end.{" "}
-            <span className="text-red-500">$150K–$350K+</span>
-          </p>
-          <p className="text-[15px] text-black/40 mt-2">
-            And that&apos;s the optimistic version. Most ERP migrations blow past timelines and budgets.
-          </p>
-        </motion.div>
-
-        {/* Pain points */}
-        <div className="grid grid-cols-4 gap-2">
-          {painPoints.map((point, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.3, delay: 0.7 + i * 0.04 }}
-              className="flex items-start gap-2.5 py-3 px-3.5 border border-red-200 bg-red-50/50"
-            >
-              <span className="text-[14px] shrink-0">{point.icon}</span>
-              <span className="text-[11px] text-black/60 leading-snug font-medium">
-                {point.text}
-              </span>
-            </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: -10, y: 8 }}
+                animate={
+                  isStepVisible(i + 1)
+                    ? { opacity: 1, x: 0, y: 0 }
+                    : { opacity: 0, x: -10, y: 8 }
+                }
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="flex-1 max-w-[800px]"
+              >
+                <div className="border border-black/10 bg-white flex items-center">
+                  <div className="w-14 shrink-0 flex items-center justify-center border-r border-black/8 self-stretch bg-black/[0.02]">
+                    <span className="text-[14px] font-mono font-bold text-black/20">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3 px-4 py-3.5 flex-1 min-w-0">
+                    <span className="text-[24px] shrink-0">{step.emoji}</span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[20px] font-semibold tracking-[-0.01em] text-black leading-tight">
+                        {step.label}
+                      </p>
+                      <p className="text-[15px] text-black/35 leading-snug">
+                        {step.detail}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="pr-4 shrink-0">
+                    <p className="text-[16px] font-mono font-bold text-black/40">
+                      {step.time}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
           ))}
         </div>
       </div>
-    </section>
+    </Slide>
   );
 }
