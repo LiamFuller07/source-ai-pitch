@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
-import { Play } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { Slide } from "./Slide";
 
 export function DemoVideo() {
@@ -34,36 +34,25 @@ export function DemoVideo() {
           </p>
         </motion.div>
 
-        {/* Video placeholder / embed area */}
+        {/* Book a call CTA */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={inView ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="w-full max-w-[1200px] aspect-video bg-white/[0.03] border border-white/10 flex items-center justify-center cursor-pointer group relative overflow-hidden"
+          className="flex flex-col items-center gap-8 z-10"
         >
-          {/* Play button */}
-          <div className="flex flex-col items-center gap-6 z-10">
-            <div className="w-24 h-24 rounded-full border-2 border-white/20 flex items-center justify-center group-hover:border-white/50 group-hover:bg-white/5 transition-all duration-300">
-              <Play
-                size={40}
-                className="text-white/40 group-hover:text-white/80 transition-colors ml-1"
-                fill="currentColor"
-              />
-            </div>
-            <p className="text-[14px] font-mono uppercase tracking-[0.15em] text-white/25 group-hover:text-white/50 transition-colors">
-              Play Demo
-            </p>
+          <div className="w-28 h-28 rounded-full border-2 border-white/15 flex items-center justify-center">
+            <Calendar
+              size={48}
+              className="text-white/30"
+            />
           </div>
-
-          {/* Subtle grid background */}
-          <div
-            className="absolute inset-0 opacity-[0.03]"
-            style={{
-              backgroundImage:
-                "linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)",
-              backgroundSize: "60px 60px",
-            }}
-          />
+          <p className="text-[32px] font-semibold text-white/70 tracking-[-0.02em]">
+            Book a call with us to see a live demo.
+          </p>
+          <p className="text-[16px] font-mono uppercase tracking-[0.12em] text-white/25">
+            We&apos;ll walk you through a real migration end-to-end
+          </p>
         </motion.div>
       </div>
     </Slide>
