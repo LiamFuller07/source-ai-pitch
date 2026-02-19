@@ -64,6 +64,26 @@ export function PresentationProvider({ children }: { children: React.ReactNode }
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [nextStep, prevStep]);
 
+  // Click anywhere to advance (ignore clicks on buttons, links, inputs)
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target.closest("button") ||
+        target.closest("a") ||
+        target.closest("input") ||
+        target.closest("textarea") ||
+        target.closest("nav")
+      ) {
+        return;
+      }
+      nextStep();
+    };
+
+    window.addEventListener("click", handleClick);
+    return () => window.removeEventListener("click", handleClick);
+  }, [nextStep]);
+
   return (
     <PresentationContext.Provider
       value={{
