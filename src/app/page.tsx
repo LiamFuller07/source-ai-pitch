@@ -9,6 +9,7 @@ import { DemoVideo } from "@/components/DemoVideo";
 import { WhiteLabel } from "@/components/WhiteLabel";
 import { WhyPartner } from "@/components/WhyPartner";
 import { Pricing } from "@/components/Pricing";
+import { Partners } from "@/components/Partners";
 import { Team } from "@/components/Team";
 import { Cta } from "@/components/Cta";
 import { Nav } from "@/components/Nav";
@@ -27,6 +28,7 @@ export default function Home() {
         {/* <WhiteLabel /> */}
         <WhyPartner />
         <Pricing />
+        <Partners />
         <Team />
         <Cta />
       </main>

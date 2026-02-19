@@ -1,7 +1,7 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { createContext, useContext, useState, useCallback, useEffect, useRef } from "react";
+import { ChevronRight } from "lucide-react";
 
 interface PresentationContextType {
   currentStep: number;
@@ -83,13 +83,48 @@ export function PresentationProvider({ children }: { children: React.ReactNode }
 }
 
 function PresentationControls() {
-  const { currentStep, maxSteps } = usePresentationStep();
+  const { currentStep, maxSteps, nextStep } = usePresentationStep();
+  const [showNudge, setShowNudge] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const hasMoreSteps = maxSteps > 0 && currentStep < maxSteps;
+
+  // Show nudge after 4s of inactivity when there are more steps
+  useEffect(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setShowNudge(false);
+
+    if (hasMoreSteps) {
+      timerRef.current = setTimeout(() => setShowNudge(true), 4000);
+    }
+
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, [currentStep, hasMoreSteps]);
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
-      <div className="text-[11px] font-mono text-black/30">
-        {currentStep} / {maxSteps}
+    <>
+      {/* Subtle nudge arrow */}
+      {showNudge && hasMoreSteps && (
+        <button
+          onClick={nextStep}
+          className="fixed bottom-8 right-1/2 translate-x-1/2 z-50 flex items-center gap-2 text-black/15 hover:text-black/40 transition-all duration-500 animate-pulse cursor-pointer"
+          aria-label="Next step"
+        >
+          <span className="text-[11px] font-mono uppercase tracking-[0.1em]">
+            Click or press arrow
+          </span>
+          <ChevronRight size={16} />
+        </button>
+      )}
+
+      {/* Step counter */}
+      <div className="fixed bottom-4 right-4 z-50">
+        <div className="text-[11px] font-mono text-black/30">
+          {currentStep} / {maxSteps}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
