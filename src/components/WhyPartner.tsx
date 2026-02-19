@@ -8,36 +8,36 @@ import { Slide } from "./Slide";
 
 const reasons = [
   {
-    title: "Make More Money",
-    stat: "3-5x",
-    statLabel: "revenue per consultant",
+    title: "50%+ Margins",
+    stat: "50%+",
+    statLabel: "project margins",
     description:
-      "Each consultant handles 3-5x more migrations with AI execution",
+      "AI execution eliminates offshore teams and reduces delivery cost dramatically",
   },
   {
     title: "Happier Customers",
-    stat: "14 days",
-    statLabel: "not months",
+    stat: "14-21",
+    statLabel: "day migrations",
     description:
-      "Faster delivery with validated artifacts instead of promises",
+      "Days not months for migrations — faster delivery with validated artifacts",
   },
   {
-    title: "Improve Margins",
-    stat: "80%",
-    statLabel: "cost reduction",
-    description: "Replace expensive offshore hours with AI execution",
-  },
-  {
-    title: "Fixed-Price Projects",
+    title: "Fixed-Price Deals",
     stat: "Fixed",
     statLabel: "price delivery",
-    description: "Predictable AI costs enable fixed-price engagements",
+    description: "Source enables you to win fixed-price deals with predictable AI execution costs",
+  },
+  {
+    title: "Scale Without Hiring",
+    stat: "0",
+    statLabel: "new hires needed",
+    description: "Grow your migration practice without recruiting offshore teams",
   },
   {
     title: "Win More Deals",
-    stat: "50%",
-    statLabel: "lower client price",
-    description: "Undercut competitors while protecting your margins",
+    stat: "WIN",
+    statLabel: "on price every time",
+    description: "Quote $8K–$15K while competitors quote $30K–$40K — and still keep 50%+ margins",
   },
   {
     title: "White Label Delivery",

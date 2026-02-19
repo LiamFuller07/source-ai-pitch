@@ -83,27 +83,13 @@ export function PresentationProvider({ children }: { children: React.ReactNode }
 }
 
 function PresentationControls() {
-  const { currentStep, maxSteps, nextStep, prevStep } = usePresentationStep();
+  const { currentStep, maxSteps } = usePresentationStep();
 
   return (
-    <div className="fixed bottom-8 right-8 flex items-center gap-3 z-50">
-      <button
-        onClick={prevStep}
-        disabled={currentStep === 0}
-        className="w-12 h-12 bg-black text-white flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black/80 transition-colors"
-      >
-        <ChevronLeft size={24} />
-      </button>
-      <div className="text-[11px] font-mono text-black/40">
+    <div className="fixed bottom-4 right-4 z-50">
+      <div className="text-[11px] font-mono text-black/30">
         {currentStep} / {maxSteps}
       </div>
-      <button
-        onClick={nextStep}
-        disabled={currentStep === maxSteps}
-        className="w-12 h-12 bg-black text-white flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black/80 transition-colors"
-      >
-        <ChevronRight size={24} />
-      </button>
     </div>
   );
 }

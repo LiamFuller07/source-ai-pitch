@@ -8,22 +8,22 @@ import { Slide } from "./Slide";
 
 const coreTeam = [
   {
+    name: "Liam Fuller",
+    role: "CEO",
+    detail: "AI infrastructure & agent systems.",
+    image: "/team/liam.jpg",
+  },
+  {
     name: "Yoan Gabison",
     role: "CTO",
     detail: "Full-stack AI architect. NetSuite & ERP systems.",
     image: "/team/yoan.jpg",
   },
   {
-    name: "Shane Fuller",
-    role: "Head Chaos Coordinator",
-    detail: "Operations & strategic coordination.",
+    name: "Sahen Fuller",
+    role: "Founding Engineer",
+    detail: "Ex-Cybersecurity IT Director.",
     image: null,
-  },
-  {
-    name: "Liam Fuller",
-    role: "AI Engineer",
-    detail: "AI infrastructure & agent systems.",
-    image: "/team/liam.jpg",
   },
   {
     name: "Brian Kelleher",
@@ -32,7 +32,7 @@ const coreTeam = [
     image: "/team/brian.jpg",
   },
   {
-    name: "Jiri Puc",
+    name: "Jiri Pucs",
     role: "AI Engineer",
     detail: "Backend systems & integrations.",
     image: "/team/jiri.jpg",
@@ -56,7 +56,7 @@ const consultants = [
     name: "Matthew Rodgers",
     role: "Consultant",
     detail: "ERP consulting & migration delivery.",
-    image: null,
+    image: "/team/matthew.jpg",
   },
 ];
 
