@@ -10,31 +10,31 @@ const coreTeam = [
   {
     name: "Liam Fuller",
     role: "CEO",
-    detail: "AI infrastructure & agent systems.",
+    detail: "Built Source's autonomous migration engine. AI infrastructure & multi-agent systems.",
     image: "/team/liam.jpg",
   },
   {
     name: "Yoan Gabison",
     role: "CTO",
-    detail: "Full-stack AI architect. NetSuite & ERP systems.",
+    detail: "10+ years in NetSuite & ERP. Full-stack AI architect who designed Source's core platform.",
     image: "/team/yoan.jpg",
   },
   {
     name: "Sahen Fuller",
     role: "Founding Engineer",
-    detail: "Ex-Cybersecurity IT Director.",
+    detail: "Former Cybersecurity IT Director. Enterprise security, infrastructure & compliance.",
     image: null,
   },
   {
     name: "Brian Kelleher",
     role: "AI Engineer",
-    detail: "ML pipelines & data migration.",
+    detail: "ML pipelines & data migration. Builds the models that power Source's automation.",
     image: "/team/brian.jpg",
   },
   {
     name: "Jiri Pucs",
     role: "AI Engineer",
-    detail: "Backend systems & integrations.",
+    detail: "Backend systems, API architecture & integration pipelines.",
     image: "/team/jiri.jpg",
   },
 ];
@@ -112,9 +112,12 @@ export function Team() {
           <p className="text-[18px] font-mono uppercase tracking-[0.2em] text-black/30 mb-4">
             The Team
           </p>
-          <h2 className="text-[72px] font-semibold tracking-[-0.03em] text-black mb-4">
+          <h2 className="text-[72px] font-semibold tracking-[-0.03em] text-black mb-2">
             Built by AI engineers.
           </h2>
+          <p className="text-[22px] text-black/40 max-w-[800px] leading-relaxed">
+            A team with deep ERP domain expertise and production AI systems experience.
+          </p>
           <motion.div
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
@@ -136,25 +139,53 @@ export function Team() {
           >
             Core Team
           </motion.p>
-          <div className="grid grid-cols-5 gap-5">
-            {coreTeam.map((member, i) => (
+          {/* Leadership row */}
+          <div className="grid grid-cols-2 gap-5 mb-5 max-w-[800px]">
+            {coreTeam.slice(0, 2).map((member, i) => (
               <motion.div
                 key={member.name}
                 initial={{ opacity: 0, y: 15 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.4, delay: 0.3 + i * 0.08 }}
-                className="border border-black/10 p-6 flex flex-col items-center text-center"
+                className="border-2 border-black/15 p-7 flex items-center gap-5"
               >
                 <Avatar name={member.name} image={member.image} />
-                <p className="text-[20px] font-semibold text-black mt-4 mb-1">
-                  {member.name}
-                </p>
-                <p className="text-[14px] font-mono uppercase tracking-[0.1em] text-black/40 mb-2">
-                  {member.role}
-                </p>
-                <p className="text-[16px] text-black/35 leading-snug">
-                  {member.detail}
-                </p>
+                <div>
+                  <p className="text-[22px] font-semibold text-black mb-0.5">
+                    {member.name}
+                  </p>
+                  <p className="text-[13px] font-mono uppercase tracking-[0.1em] text-black/40 mb-2">
+                    {member.role}
+                  </p>
+                  <p className="text-[15px] text-black/40 leading-snug">
+                    {member.detail}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          {/* Engineers row */}
+          <div className="grid grid-cols-3 gap-5">
+            {coreTeam.slice(2).map((member, i) => (
+              <motion.div
+                key={member.name}
+                initial={{ opacity: 0, y: 15 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.4, delay: 0.46 + i * 0.08 }}
+                className="border border-black/10 p-6 flex items-center gap-4"
+              >
+                <Avatar name={member.name} image={member.image} />
+                <div>
+                  <p className="text-[18px] font-semibold text-black mb-0.5">
+                    {member.name}
+                  </p>
+                  <p className="text-[12px] font-mono uppercase tracking-[0.1em] text-black/40 mb-1.5">
+                    {member.role}
+                  </p>
+                  <p className="text-[14px] text-black/35 leading-snug">
+                    {member.detail}
+                  </p>
+                </div>
               </motion.div>
             ))}
           </div>
