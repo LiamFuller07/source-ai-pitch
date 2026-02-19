@@ -67,8 +67,8 @@ export function Pricing() {
             Simple Revenue Share
           </h2>
           <p className="text-[20px] text-black/45 max-w-[900px] leading-relaxed">
-            First migration free. After that, pricing is negotiated as a revenue
-            share. No subscriptions, no per-seat fees.
+            Source takes 40% of the project fee — built into the price your
+            client pays. You keep 60% with zero delivery cost.
           </p>
         </motion.div>
 
@@ -124,7 +124,7 @@ export function Pricing() {
           ))}
         </motion.div>
 
-        {/* Design Partner CTA */}
+        {/* Revenue split breakdown */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -134,28 +134,30 @@ export function Pricing() {
           <div className="flex items-center gap-10">
             <div>
               <p className="text-[48px] font-bold tracking-[-0.04em] leading-none">
-                $0
+                40%
               </p>
               <p className="text-[12px] font-mono uppercase tracking-[0.1em] text-white/30 mt-2">
-                First migration
+                Source AI fee
+              </p>
+            </div>
+            <div className="w-[1px] h-16 bg-white/10" />
+            <div>
+              <p className="text-[48px] font-bold tracking-[-0.04em] leading-none">
+                60%
+              </p>
+              <p className="text-[12px] font-mono uppercase tracking-[0.1em] text-white/30 mt-2">
+                You keep
               </p>
             </div>
             <div className="w-[1px] h-16 bg-white/10" />
             <div>
               <p className="text-[24px] font-semibold tracking-[-0.02em] mb-2">
-                We&apos;re looking for design partners.
+                Built into the price.
               </p>
-              <p className="text-[16px] text-white/45 leading-relaxed max-w-[600px]">
-                Your first migration is completely free — see the full output
-                before any commitment. After that, pricing is negotiated as a
-                revenue share.
-              </p>
-            </div>
-          </div>
-          <div className="shrink-0 ml-10">
-            <div className="border border-white/20 px-6 py-4">
-              <p className="text-[14px] font-mono uppercase tracking-[0.12em] text-white/60">
-                Design Partner
+              <p className="text-[16px] text-white/45 leading-relaxed max-w-[500px]">
+                Source&apos;s 40% is included in the project fee your client
+                pays. You keep 60% with zero delivery overhead — no offshore
+                teams, no hiring, no ramp-up.
               </p>
             </div>
           </div>
