@@ -5,6 +5,7 @@ import { ProblemToday } from "@/components/ProblemToday";
 import { Solution } from "@/components/Solution";
 import { AiReplacesChain } from "@/components/AiReplacesChain";
 import { WhoDoesWhat } from "@/components/WhoDoesWhat";
+import { DemoVideo } from "@/components/DemoVideo";
 import { WhiteLabel } from "@/components/WhiteLabel";
 import { WhyPartner } from "@/components/WhyPartner";
 import { Pricing } from "@/components/Pricing";
@@ -18,11 +19,11 @@ export default function Home() {
     <PresentationProvider>
       <Nav />
       <main>
-        <Hero />
         <ProblemToday />
         <Solution />
         <AiReplacesChain />
         <WhoDoesWhat />
+        <DemoVideo />
         {/* <WhiteLabel /> */}
         <WhyPartner />
         <Pricing />
