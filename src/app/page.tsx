@@ -4,6 +4,7 @@ import { Hero } from "@/components/Hero";
 import { ProblemToday } from "@/components/ProblemToday";
 import { Solution } from "@/components/Solution";
 import { AiReplacesChain } from "@/components/AiReplacesChain";
+import { SupportedSystems } from "@/components/SupportedSystems";
 import { WhoDoesWhat } from "@/components/WhoDoesWhat";
 import { DemoVideo } from "@/components/DemoVideo";
 import { WhiteLabel } from "@/components/WhiteLabel";
@@ -22,6 +23,7 @@ export default function Home() {
       <main>
         <ProblemToday />
         <Solution />
+        <SupportedSystems />
         <AiReplacesChain />
         <WhoDoesWhat />
         <DemoVideo />
