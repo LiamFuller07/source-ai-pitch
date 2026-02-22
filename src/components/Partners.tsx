@@ -40,7 +40,7 @@ export function Partners() {
   return (
     <Slide
       ref={ref}
-      bg="bg-black"
+      bg="bg-white"
       className="flex flex-col justify-center px-[120px]"
     >
       <div className="w-full">
@@ -50,13 +50,13 @@ export function Partners() {
           transition={{ duration: 0.6 }}
           className="mb-12"
         >
-          <p className="text-[18px] font-mono uppercase tracking-[0.2em] text-white/30 mb-4">
+          <p className="text-[18px] font-mono uppercase tracking-[0.2em] text-black/30 mb-4">
             Our Partners
           </p>
-          <h2 className="text-[72px] font-semibold tracking-[-0.03em] text-white mb-4">
+          <h2 className="text-[72px] font-semibold tracking-[-0.03em] text-black mb-4">
             Trusted by leading consultancies.
           </h2>
-          <p className="text-[22px] text-white/40 max-w-[900px] leading-relaxed">
+          <p className="text-[22px] text-black/40 max-w-[900px] leading-relaxed">
             Source AI partners with top-tier NetSuite Alliance Partners to
             deliver faster, more profitable migrations.
           </p>
@@ -69,23 +69,23 @@ export function Partners() {
               initial={{ opacity: 0, y: 25 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.2 + i * 0.15 }}
-              className="border border-white/10 bg-white/[0.03] p-10"
+              className="border border-black/10 p-10"
             >
               <div className="flex items-start justify-between mb-6">
                 <div>
-                  <h3 className="text-[36px] font-bold text-white tracking-[-0.02em]">
+                  <h3 className="text-[36px] font-bold text-black tracking-[-0.02em]">
                     {partner.name}
                   </h3>
-                  <p className="text-[14px] font-mono uppercase tracking-[0.1em] text-white/30 mt-1">
+                  <p className="text-[14px] font-mono uppercase tracking-[0.1em] text-black/30 mt-1">
                     {partner.tagline}
                   </p>
                 </div>
-                <p className="text-[12px] font-mono text-white/20 mt-2">
+                <p className="text-[12px] font-mono text-black/20 mt-2">
                   {partner.url}
                 </p>
               </div>
 
-              <p className="text-[17px] text-white/45 leading-relaxed mb-8">
+              <p className="text-[17px] text-black/45 leading-relaxed mb-8">
                 {partner.description}
               </p>
 
@@ -98,8 +98,8 @@ export function Partners() {
                     transition={{ duration: 0.3, delay: 0.4 + i * 0.15 + j * 0.08 }}
                     className="flex items-center gap-3"
                   >
-                    <h.icon size={18} className="text-white/25 shrink-0" />
-                    <p className="text-[15px] text-white/55">{h.text}</p>
+                    <h.icon size={18} className="text-black/25 shrink-0" />
+                    <p className="text-[15px] text-black/50">{h.text}</p>
                   </motion.div>
                 ))}
               </div>
