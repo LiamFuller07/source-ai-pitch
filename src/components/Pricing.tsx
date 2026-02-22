@@ -17,7 +17,7 @@ const comparisonRows = [
   {
     label: "Timeline",
     traditional: "6–12+ months",
-    source: "< 14 days",
+    source: "< 21 days",
   },
   {
     label: "Typical Cost to Client",

@@ -30,7 +30,7 @@ export function DemoVideo() {
             See Source AI in Action
           </h2>
           <p className="text-[22px] text-white/40 max-w-[700px] mx-auto leading-relaxed">
-            From QuickBooks scan to NetSuite migration — in under 14 days.
+            From QuickBooks scan to NetSuite migration — in under 21 days.
           </p>
         </motion.div>
 

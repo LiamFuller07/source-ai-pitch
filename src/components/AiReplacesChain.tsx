@@ -243,7 +243,7 @@ export function AiReplacesChain() {
                   Source AI Engine
                 </p>
                 <span className="text-[13px] font-mono uppercase tracking-[0.1em] text-black bg-white px-4 py-2 font-bold">
-                  &lt; 14 Days
+                  &lt; 21 Days
                 </span>
               </div>
               <div className="grid grid-cols-2 gap-x-8 gap-y-3.5">
@@ -355,7 +355,7 @@ export function AiReplacesChain() {
                 transition={{ duration: 0.3, delay: 0.8 }}
                 className="text-[18px] font-mono text-black font-bold w-[150px] shrink-0"
               >
-                &lt; 14 days
+                &lt; 21 days
               </motion.p>
             </div>
           </motion.div>
