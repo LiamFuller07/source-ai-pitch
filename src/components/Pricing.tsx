@@ -132,30 +132,27 @@ export function Pricing() {
           ))}
         </motion.div>
 
-        {/* Supported migration paths */}
+        {/* Supported migration paths — minimal inline */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.2 }}
-          className="mb-6 grid grid-cols-4 gap-3"
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.22 }}
+          className="mb-6 flex items-center gap-4"
         >
-          {migrations.map((m, i) => (
-            <motion.div
-              key={`${m.from}-${m.to}`}
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              transition={{ delay: 0.3 + i * 0.06 }}
-              className="bg-white border border-black/10 px-5 py-4 flex items-center gap-3"
-            >
-              <span className="text-[14px] font-semibold text-black whitespace-nowrap">
-                {m.from}
+          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 shrink-0">
+            Supported migrations
+          </p>
+          <div className="h-[1px] w-4 bg-black/10" />
+          <div className="flex items-center gap-5">
+            {migrations.map((m, i) => (
+              <span
+                key={`${m.from}-${m.to}`}
+                className="text-[12px] font-mono text-black/35"
+              >
+                {m.from} → {m.to}
               </span>
-              <ArrowRight size={14} className="text-black/20 shrink-0" />
-              <span className="text-[14px] font-semibold text-black whitespace-nowrap">
-                {m.to}
-              </span>
-            </motion.div>
-          ))}
+            ))}
+          </div>
         </motion.div>
 
         {/* Revenue split breakdown */}
