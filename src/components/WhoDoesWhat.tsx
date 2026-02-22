@@ -3,11 +3,96 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useEffect } from "react";
-import { Bot, User, Building2, ArrowDown, Check } from "lucide-react";
+import { Bot, User, Building2, Check, ArrowDown, FileText, Search, Brain, MessageSquare, ClipboardCheck, Rocket } from "lucide-react";
 import { Slide } from "./Slide";
 import { usePresentationStep } from "./PresentationController";
 
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 6;
+
+/* Flow diagram steps — recreated from original eraser.io diagram */
+const flowSteps = [
+  {
+    owner: "consultant",
+    label: "Client Call Transcript & Notes",
+    detail: "Consultant provides context",
+    icon: FileText,
+  },
+  {
+    owner: "source",
+    label: "Access QuickBooks",
+    detail: "Connect to source system",
+    icon: Search,
+  },
+  {
+    owner: "source",
+    label: "Initial System Scan",
+    detail: "Schema, data, config analysis",
+    icon: Search,
+  },
+  {
+    owner: "source",
+    label: "Infer Workflows & Pain Points",
+    detail: "AI business logic inference",
+    icon: Brain,
+  },
+  {
+    owner: "source",
+    label: "Dynamic AI Questionnaire",
+    detail: "Generated from scan results",
+    icon: MessageSquare,
+  },
+  {
+    owner: "source",
+    label: "AI Draft BRD",
+    detail: "AS-IS → TO-BE mapping",
+    icon: FileText,
+  },
+  {
+    owner: "consultant",
+    label: "Consultant Review",
+    detail: "Reviews & refines outputs",
+    icon: ClipboardCheck,
+  },
+  {
+    owner: "customer",
+    label: "Customer Sign-Off",
+    detail: "Approves requirements",
+    icon: Check,
+  },
+  {
+    owner: "source",
+    label: "Full Scale AI Migration",
+    detail: "Implementation, config & go-live",
+    icon: Rocket,
+  },
+];
+
+const ownerStyles = {
+  source: {
+    bg: "bg-black",
+    text: "text-white",
+    detail: "text-white/50",
+    icon: "text-white/40",
+    tag: "SOURCE AI",
+    tagColor: "text-white/30 bg-white/10",
+  },
+  consultant: {
+    bg: "bg-white border border-black/15",
+    text: "text-black",
+    detail: "text-black/40",
+    icon: "text-black/30",
+    tag: "CONSULTANT",
+    tagColor: "text-black/30 bg-black/[0.04]",
+  },
+  customer: {
+    bg: "bg-white border border-black/15",
+    text: "text-black",
+    detail: "text-black/40",
+    icon: "text-black/30",
+    tag: "CUSTOMER",
+    tagColor: "text-black/30 bg-black/[0.04]",
+  },
+};
 
 const sourceItems = [
   "System scanning & schema analysis",
@@ -51,165 +136,190 @@ export function WhoDoesWhat() {
   return (
     <Slide
       ref={ref}
-      bg="bg-white"
-      className="flex flex-col justify-center px-[100px]"
+      bg="bg-[#f8f8f8]"
+      className="flex items-stretch px-[60px] py-[40px]"
     >
-      <div className="w-full">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isStepVisible(1) ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="mb-12"
-        >
-          <p className="text-[18px] font-mono uppercase tracking-[0.2em] text-black/30 mb-3">
-            Responsibility Matrix
-          </p>
-          <h2 className="text-[60px] font-semibold tracking-[-0.03em] text-black mb-4">
-            Who Does What
-          </h2>
-          <p className="text-[22px] text-black/45 leading-relaxed max-w-[900px]">
-            <span className="font-semibold text-black">Source AI</span> does the
-            technical execution end-to-end.{" "}
-            <span className="font-semibold text-black">The consultant</span> keeps
-            the client relationship, domain expertise, and commercial ownership.
-          </p>
-        </motion.div>
-
-        {/* Three columns */}
-        <div className="grid grid-cols-[1.4fr_1fr_1fr] gap-5">
-          {/* Source AI — primary column */}
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            animate={isStepVisible(2) ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="bg-black text-white p-8 relative overflow-hidden"
+      <div className="w-full h-full grid grid-cols-[400px_1fr] gap-10">
+        {/* LEFT: Flow Diagram */}
+        <div className="flex flex-col">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={isStepVisible(1) ? { opacity: 1 } : {}}
+            transition={{ duration: 0.3 }}
+            className="text-[11px] font-mono uppercase tracking-[0.15em] text-black/25 mb-4"
           >
-            <div className="flex items-center gap-3 mb-2">
-              <Bot size={22} className="text-white/60" />
-              <p className="text-[24px] font-bold tracking-[-0.01em]">
-                Source AI
-              </p>
-            </div>
-            <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-white/30 mb-6">
-              Handled Autonomously
-            </p>
-            <div className="space-y-3.5">
-              {sourceItems.map((item, j) => (
+            Workflow
+          </motion.p>
+
+          <div className="flex-1 flex flex-col gap-0">
+            {flowSteps.map((step, i) => {
+              const style = ownerStyles[step.owner as keyof typeof ownerStyles];
+              return (
                 <motion.div
-                  key={j}
-                  initial={{ opacity: 0, x: -10 }}
+                  key={i}
+                  initial={{ opacity: 0, x: -15 }}
                   animate={isStepVisible(2) ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.3, delay: j * 0.05 }}
-                  className="flex items-center gap-3"
+                  transition={{ duration: 0.35, delay: i * 0.06 }}
                 >
-                  <Check size={14} className="text-white/30 shrink-0" />
-                  <span className="text-[15px] text-white/70">{item}</span>
+                  <div className={`${style.bg} px-4 py-2.5 flex items-center gap-3`}>
+                    <step.icon size={15} className={`${style.icon} shrink-0`} />
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-[13px] font-semibold ${style.text} leading-tight`}>
+                        {step.label}
+                      </p>
+                    </div>
+                    <span className={`text-[8px] font-mono uppercase tracking-[0.1em] px-2 py-0.5 shrink-0 ${style.tagColor}`}>
+                      {style.tag}
+                    </span>
+                  </div>
+                  {i < flowSteps.length - 1 && (
+                    <div className="flex justify-center py-0.5">
+                      <ArrowDown size={12} className="text-black/15" />
+                    </div>
+                  )}
                 </motion.div>
-              ))}
-            </div>
+              );
+            })}
+          </div>
+        </div>
 
-            {/* Item count badge */}
-            <div className="absolute top-8 right-8">
-              <span className="text-[48px] font-bold text-white/[0.06] leading-none">
-                {sourceItems.length}
-              </span>
-            </div>
+        {/* RIGHT: Header + Responsibility Matrix */}
+        <div className="flex flex-col justify-center min-w-0">
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isStepVisible(1) ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5 }}
+            className="mb-8"
+          >
+            <p className="text-[16px] font-mono uppercase tracking-[0.2em] text-black/30 mb-3">
+              Responsibility Matrix
+            </p>
+            <h2 className="text-[56px] font-semibold tracking-[-0.03em] text-black mb-4">
+              Who Does What
+            </h2>
+            <p className="text-[20px] text-black/45 leading-relaxed">
+              <span className="font-semibold text-black">Source AI</span> does the
+              technical execution end-to-end.{" "}
+              <span className="font-semibold text-black">The consultant</span> keeps
+              the client relationship and commercial ownership.
+            </p>
           </motion.div>
 
-          {/* Consultant */}
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            animate={isStepVisible(3) ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="border-2 border-black/12 p-8"
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <User size={22} className="text-black/40" />
-              <p className="text-[24px] font-bold tracking-[-0.01em] text-black">
-                Consultant
+          {/* Three columns */}
+          <div className="grid grid-cols-3 gap-[1px]">
+            {/* Source AI */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isStepVisible(3) ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5 }}
+              className="bg-black text-white p-6"
+            >
+              <div className="flex items-center gap-2.5 mb-1.5">
+                <Bot size={18} className="text-white/50" />
+                <p className="text-[20px] font-bold tracking-[-0.01em]">Source AI</p>
+              </div>
+              <p className="text-[10px] font-mono uppercase tracking-[0.12em] text-white/25 mb-5">
+                Handled Autonomously
               </p>
-            </div>
-            <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-6">
-              Review & Confirm
-            </p>
-            <div className="space-y-4">
-              {consultantItems.map((item, j) => (
-                <motion.div
-                  key={j}
-                  initial={{ opacity: 0 }}
-                  animate={isStepVisible(3) ? { opacity: 1 } : {}}
-                  transition={{ duration: 0.3, delay: j * 0.06 }}
-                  className="flex items-center gap-3"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-black/15 shrink-0" />
-                  <span className="text-[15px] text-black/50">{item}</span>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+              <div className="space-y-2.5">
+                {sourceItems.map((item, j) => (
+                  <motion.div
+                    key={j}
+                    initial={{ opacity: 0 }}
+                    animate={isStepVisible(3) ? { opacity: 1 } : {}}
+                    transition={{ duration: 0.25, delay: j * 0.04 }}
+                    className="flex items-center gap-2.5"
+                  >
+                    <Check size={12} className="text-white/25 shrink-0" />
+                    <span className="text-[13px] text-white/65">{item}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
 
-          {/* End User */}
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            animate={isStepVisible(4) ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="border border-black/8 p-8"
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <Building2 size={22} className="text-black/40" />
-              <p className="text-[24px] font-bold tracking-[-0.01em] text-black">
-                End User
+            {/* Consultant */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isStepVisible(4) ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5 }}
+              className="bg-white border-t-2 border-t-black/15 p-6"
+            >
+              <div className="flex items-center gap-2.5 mb-1.5">
+                <User size={18} className="text-black/35" />
+                <p className="text-[20px] font-bold tracking-[-0.01em] text-black">Consultant</p>
+              </div>
+              <p className="text-[10px] font-mono uppercase tracking-[0.12em] text-black/25 mb-5">
+                Review & Confirm
               </p>
+              <div className="space-y-3">
+                {consultantItems.map((item, j) => (
+                  <motion.div
+                    key={j}
+                    initial={{ opacity: 0 }}
+                    animate={isStepVisible(4) ? { opacity: 1 } : {}}
+                    transition={{ duration: 0.25, delay: j * 0.05 }}
+                    className="flex items-center gap-2.5"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-black/15 shrink-0" />
+                    <span className="text-[13px] text-black/50">{item}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* End User */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isStepVisible(5) ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5 }}
+              className="bg-white border-t border-t-black/8 p-6"
+            >
+              <div className="flex items-center gap-2.5 mb-1.5">
+                <Building2 size={18} className="text-black/35" />
+                <p className="text-[20px] font-bold tracking-[-0.01em] text-black">End User</p>
+              </div>
+              <p className="text-[10px] font-mono uppercase tracking-[0.12em] text-black/25 mb-5">
+                Answer & Approve
+              </p>
+              <div className="space-y-3">
+                {endUserItems.map((item, j) => (
+                  <motion.div
+                    key={j}
+                    initial={{ opacity: 0 }}
+                    animate={isStepVisible(5) ? { opacity: 1 } : {}}
+                    transition={{ duration: 0.25, delay: j * 0.05 }}
+                    className="flex items-center gap-2.5"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-black/10 shrink-0" />
+                    <span className="text-[13px] text-black/50">{item}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Summary bar */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={isStepVisible(6) ? { opacity: 1 } : {}}
+            transition={{ duration: 0.4, delay: 0.2 }}
+            className="mt-4 flex items-center gap-5"
+          >
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-black" />
+              <span className="text-[11px] font-mono text-black/35">9 automated</span>
             </div>
-            <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-6">
-              Answer & Approve
-            </p>
-            <div className="space-y-4">
-              {endUserItems.map((item, j) => (
-                <motion.div
-                  key={j}
-                  initial={{ opacity: 0 }}
-                  animate={isStepVisible(4) ? { opacity: 1 } : {}}
-                  transition={{ duration: 0.3, delay: j * 0.06 }}
-                  className="flex items-center gap-3"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-black/10 shrink-0" />
-                  <span className="text-[15px] text-black/50">{item}</span>
-                </motion.div>
-              ))}
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 border-2 border-black/15" />
+              <span className="text-[11px] font-mono text-black/35">5 review</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 border border-black/8" />
+              <span className="text-[11px] font-mono text-black/35">4 approve</span>
             </div>
           </motion.div>
         </div>
-
-        {/* Flow summary bar */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={isStepVisible(4) ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-6 flex items-center justify-center gap-6 py-4"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-4 h-4 bg-black" />
-            <span className="text-[13px] font-mono text-black/40">
-              9 tasks automated
-            </span>
-          </div>
-          <span className="text-black/15">|</span>
-          <div className="flex items-center gap-3">
-            <div className="w-4 h-4 border-2 border-black/15" />
-            <span className="text-[13px] font-mono text-black/40">
-              5 tasks review only
-            </span>
-          </div>
-          <span className="text-black/15">|</span>
-          <div className="flex items-center gap-3">
-            <div className="w-4 h-4 border border-black/8" />
-            <span className="text-[13px] font-mono text-black/40">
-              4 tasks approve only
-            </span>
-          </div>
-        </motion.div>
       </div>
     </Slide>
   );

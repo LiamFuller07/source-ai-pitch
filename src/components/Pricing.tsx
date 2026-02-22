@@ -132,25 +132,27 @@ export function Pricing() {
           ))}
         </motion.div>
 
-        {/* Supported migration paths — minimal inline */}
+        {/* Supported migration paths */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 0.22 }}
-          className="mb-6 flex items-center gap-4"
+          className="mb-6 flex items-center gap-6"
         >
-          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 shrink-0">
-            Supported migrations
+          <p className="text-[12px] font-mono uppercase tracking-[0.12em] text-black/35 shrink-0">
+            &lt; 21 Day Migrations
           </p>
-          <div className="h-[1px] w-4 bg-black/10" />
-          <div className="flex items-center gap-5">
+          <div className="h-[1px] w-6 bg-black/15" />
+          <div className="flex items-center gap-2">
             {migrations.map((m, i) => (
-              <span
-                key={`${m.from}-${m.to}`}
-                className="text-[12px] font-mono text-black/35"
-              >
-                {m.from} → {m.to}
-              </span>
+              <div key={`${m.from}-${m.to}`} className="flex items-center gap-2">
+                <span className="text-[13px] font-mono text-black/50 bg-black/[0.04] px-3 py-1">
+                  {m.from} → {m.to}
+                </span>
+                {i < migrations.length - 1 && (
+                  <div className="w-[1px] h-4 bg-black/10" />
+                )}
+              </div>
             ))}
           </div>
         </motion.div>
