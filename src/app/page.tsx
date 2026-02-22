@@ -23,9 +23,9 @@ export default function Home() {
       <main>
         <ProblemToday />
         <Solution />
+        <DemoVideo />
         <AiReplacesChain />
         <WhoDoesWhat />
-        <DemoVideo />
         {/* <WhiteLabel /> */}
         <WhyPartner />
         <Pricing />
