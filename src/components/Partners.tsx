@@ -8,16 +8,16 @@ import { Slide } from "./Slide";
 
 const partners = [
   {
-    name: "AppWrap",
-    tagline: "NetSuite Hi-Tech Partner of the Year",
+    name: "Wild Tech",
+    tagline: "NetSuite Solution Provider",
     description:
-      "Award-winning NetSuite Alliance Partner specializing in implementations, complex integrations, and optimization. One of the only NetSuite Partners with SOC I Type I certification.",
+      "Specialist NetSuite consulting and implementation partner delivering cloud ERP solutions for growing businesses. Focused on streamlining operations and driving digital transformation.",
     highlights: [
-      { icon: Award, text: "NetSuite Hi-Tech Partner of the Year" },
-      { icon: ShieldCheck, text: "SOC I Type I certified" },
-      { icon: Users, text: "ERP consultants, CPAs & business transformation specialists" },
+      { icon: Award, text: "NetSuite Solution Provider Partner" },
+      { icon: ShieldCheck, text: "End-to-end ERP implementation" },
+      { icon: Users, text: "Cloud ERP & business transformation specialists" },
     ],
-    url: "appwrap.com",
+    url: "wildtech.com.au",
   },
   {
     name: "Bring IT",
