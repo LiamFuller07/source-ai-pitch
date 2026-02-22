@@ -3,7 +3,15 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
+import { ArrowRight } from "lucide-react";
 import { Slide } from "./Slide";
+
+const migrations = [
+  { from: "QuickBooks", to: "NetSuite" },
+  { from: "Xero", to: "NetSuite" },
+  { from: "QuickBooks", to: "Dynamics 365" },
+  { from: "Xero", to: "Dynamics 365" },
+];
 
 const comparisonRows = [
   {
@@ -120,6 +128,32 @@ export function Pricing() {
                   {row.source}
                 </p>
               </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Supported migration paths */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.2 }}
+          className="mb-6 grid grid-cols-4 gap-3"
+        >
+          {migrations.map((m, i) => (
+            <motion.div
+              key={`${m.from}-${m.to}`}
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              transition={{ delay: 0.3 + i * 0.06 }}
+              className="bg-white border border-black/10 px-5 py-4 flex items-center gap-3"
+            >
+              <span className="text-[14px] font-semibold text-black whitespace-nowrap">
+                {m.from}
+              </span>
+              <ArrowRight size={14} className="text-black/20 shrink-0" />
+              <span className="text-[14px] font-semibold text-black whitespace-nowrap">
+                {m.to}
+              </span>
             </motion.div>
           ))}
         </motion.div>

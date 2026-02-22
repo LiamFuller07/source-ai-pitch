@@ -23,7 +23,6 @@ export default function Home() {
       <main>
         <ProblemToday />
         <Solution />
-        <SupportedSystems />
         <AiReplacesChain />
         <WhoDoesWhat />
         <DemoVideo />
