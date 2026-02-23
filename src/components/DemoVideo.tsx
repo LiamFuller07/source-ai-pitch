@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Play } from "lucide-react";
+import { Play, ExternalLink } from "lucide-react";
 import { Slide } from "./Slide";
 
 export function DemoVideo() {
@@ -76,9 +76,21 @@ export function DemoVideo() {
             </div>
           </div>
 
-          <p className="text-[13px] font-mono text-white/25 text-center mt-4">
-            QuickBooks scan → business logic inference → NetSuite migration — under 21 days
-          </p>
+          <div className="flex items-center justify-center gap-6 mt-6">
+            <p className="text-[13px] font-mono text-white/25">
+              QuickBooks scan → business logic inference → NetSuite migration — under 21 days
+            </p>
+            <a
+              href="http://35.233.101.128:3002/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="flex items-center gap-2 bg-white text-black px-5 py-2.5 text-[11px] font-mono uppercase tracking-[0.08em] font-medium hover:bg-white/90 transition-colors shrink-0"
+            >
+              <ExternalLink size={13} />
+              Try Live Demo
+            </a>
+          </div>
         </motion.div>
       </div>
     </Slide>

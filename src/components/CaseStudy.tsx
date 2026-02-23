@@ -4,22 +4,22 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 import {
-  Mountain,
+  Hexagon,
   Clock,
   DollarSign,
   TrendingDown,
   ShieldCheck,
   Quote,
-  ShoppingCart,
+  Globe,
   Users,
-  Database,
-  ArrowRight,
+  Award,
+  MapPin,
 } from "lucide-react";
 import { Slide } from "./Slide";
 
 const heroMetrics = [
   { value: "18", unit: "days", label: "Migration Time", icon: Clock },
-  { value: "$12K", unit: "", label: "Total Cost", icon: DollarSign },
+  { value: "€11K", unit: "", label: "Total Cost", icon: DollarSign },
   { value: "67%", unit: "", label: "Cost Savings", icon: TrendingDown },
   { value: "0", unit: "", label: "Data Loss", icon: ShieldCheck },
 ];
@@ -43,12 +43,11 @@ const beforeAfter = [
   { label: "Intl. Support", before: "Not possible", after: "Multi-currency ready" },
 ];
 
-const companyStats = [
-  { icon: ShoppingCart, label: "Retail / E-commerce / Wholesale" },
-  { icon: Users, label: "~120 employees" },
-  { icon: DollarSign, label: "$28M ARR" },
-  { icon: Database, label: "QuickBooks Enterprise" },
-  { icon: ArrowRight, label: "→ NetSuite" },
+const firmStats = [
+  { icon: Award, label: "NetSuite Solution Provider" },
+  { icon: Globe, label: "DACH & Nordics" },
+  { icon: Users, label: "35 consultants" },
+  { icon: MapPin, label: "Munich, Germany" },
 ];
 
 const T = {
@@ -74,7 +73,7 @@ export function CaseStudy() {
       bg="bg-[#f8f8f8]"
       className="flex px-0 py-0"
     >
-      {/* LEFT: Meridian Brand Card — the end client */}
+      {/* LEFT: Partner Firm Brand Card */}
       <motion.div
         initial={{ opacity: 0, x: -20 }}
         animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -83,30 +82,33 @@ export function CaseStudy() {
       >
         {/* Decorative background */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/40 via-black to-stone-900/30" />
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-950/50 via-black to-slate-900/30" />
           <svg
-            className="absolute inset-0 w-full h-full opacity-[0.05]"
+            className="absolute inset-0 w-full h-full opacity-[0.04]"
             viewBox="0 0 480 1080"
             fill="none"
           >
-            {Array.from({ length: 10 }).map((_, i) => (
-              <ellipse
+            {/* Geometric pattern — angular consulting feel */}
+            {Array.from({ length: 8 }).map((_, i) => (
+              <rect
                 key={i}
-                cx={240 + (i % 3) * 15}
-                cy={540}
-                rx={60 + i * 30}
-                ry={50 + i * 25}
+                x={80 + i * 20}
+                y={400 - i * 15}
+                width={320 - i * 40}
+                height={320 - i * 40}
                 stroke="white"
                 strokeWidth="1"
+                transform={`rotate(${i * 5} 240 540)`}
+                fill="none"
               />
             ))}
           </svg>
           <div
-            className="absolute inset-0 opacity-[0.03]"
+            className="absolute inset-0 opacity-[0.02]"
             style={{
               backgroundImage:
                 "linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)",
-              backgroundSize: "50px 50px",
+              backgroundSize: "60px 60px",
             }}
           />
         </div>
@@ -115,37 +117,37 @@ export function CaseStudy() {
         <div className="relative z-10 flex flex-col h-full p-12">
           {/* Top label */}
           <p className="text-[10px] font-mono uppercase tracking-[0.15em] text-white/20 mb-auto">
-            End Client
+            Source AI Partner
           </p>
 
-          {/* Center: Brand identity */}
+          {/* Center: Firm identity */}
           <div className="flex flex-col items-center text-center my-auto">
             <div className="w-20 h-20 border-2 border-white/15 flex items-center justify-center mb-6">
-              <Mountain size={40} className="text-white/50" />
+              <Hexagon size={38} className="text-white/50" />
             </div>
             <h3 className="text-[44px] font-bold text-white tracking-[-0.03em] mb-1">
-              Meridian
+              Altius
             </h3>
             <p className="text-[22px] font-light text-white/40 tracking-[0.15em] uppercase mb-8">
-              Outdoors
+              Group
             </p>
 
-            {/* Industry tags */}
+            {/* Capability tags */}
             <div className="flex flex-wrap justify-center gap-2 mb-10">
               <span className="text-[9px] font-mono uppercase tracking-[0.1em] text-white/25 px-2.5 py-1 border border-white/10">
-                Retail
+                NetSuite
               </span>
               <span className="text-[9px] font-mono uppercase tracking-[0.1em] text-white/25 px-2.5 py-1 border border-white/10">
-                E-commerce
+                ERP Consulting
               </span>
               <span className="text-[9px] font-mono uppercase tracking-[0.1em] text-white/25 px-2.5 py-1 border border-white/10">
-                Wholesale
+                Implementation
               </span>
             </div>
 
-            {/* Company stats */}
+            {/* Firm stats */}
             <div className="w-full space-y-3">
-              {companyStats.map((stat, i) => (
+              {firmStats.map((stat, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0 }}
@@ -165,13 +167,13 @@ export function CaseStudy() {
           {/* Bottom */}
           <div className="border-t border-white/8 pt-4 mt-auto">
             <p className="text-[10px] font-mono text-white/15 uppercase tracking-[0.08em] text-center">
-              Representative end client profile
+              Representative consulting partner
             </p>
           </div>
         </div>
       </motion.div>
 
-      {/* RIGHT: Case Study Data — from the consulting partner's perspective */}
+      {/* RIGHT: Case Study Data */}
       <div className="flex-1 flex flex-col px-[60px] py-[50px] overflow-hidden">
         {/* Header */}
         <motion.div
@@ -187,7 +189,7 @@ export function CaseStudy() {
             QuickBooks → NetSuite
           </h2>
           <p className="text-[16px] text-black/40">
-            A consulting partner used Source AI to deliver this migration
+            Altius Group used Source AI to deliver a mid-market migration
             for their client in 18 days — not 4 months.
           </p>
         </motion.div>
@@ -272,7 +274,7 @@ export function CaseStudy() {
               transition={{ duration: 0.3, delay: T.beforeAfterLabel }}
               className="text-[9px] font-mono uppercase tracking-[0.15em] text-black/25 mb-3"
             >
-              Client Outcomes
+              End Client Outcomes
             </motion.p>
 
             <div className="grid grid-cols-[1fr_1fr_1fr] gap-3 mb-1.5 px-1">
@@ -311,7 +313,7 @@ export function CaseStudy() {
             </div>
           </div>
 
-          {/* Quote — from the consulting partner, not the end client */}
+          {/* Quote — from the consulting partner */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -320,8 +322,8 @@ export function CaseStudy() {
           >
             <Quote size={20} className="text-black/8 mb-4 scale-x-[-1]" />
             <p className="text-[15px] text-black/55 leading-relaxed mb-5 italic">
-              &ldquo;We quoted $15K fixed-price and delivered in under three weeks.
-              Our old model would have been $35K over four months with an offshore
+              &ldquo;We quoted €14K fixed-price and delivered in under three weeks.
+              Our old model would have been €35K over four months with an offshore
               team. Source handled the technical execution — we kept the client
               relationship and made 50%+ margins.&rdquo;
             </p>
@@ -330,7 +332,7 @@ export function CaseStudy() {
                 Managing Director
               </p>
               <p className="text-[10px] font-mono uppercase tracking-[0.1em] text-black/25">
-                NetSuite Consulting Partner
+                Altius Group
               </p>
             </div>
           </motion.div>
