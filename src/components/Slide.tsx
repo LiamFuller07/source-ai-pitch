@@ -25,7 +25,7 @@ export function Slide({
   useEffect(() => {
     const update = () => {
       setScale(
-        Math.max(
+        Math.min(
           window.innerWidth / DESIGN_WIDTH,
           window.innerHeight / DESIGN_HEIGHT
         )
