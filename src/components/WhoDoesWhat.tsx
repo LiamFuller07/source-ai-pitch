@@ -80,7 +80,6 @@ const endUserItems = [
   "Accepts final migration",
 ];
 
-// Stagger timing (seconds)
 const T = {
   header: 0,
   workflowLabel: 0.3,
@@ -130,19 +129,19 @@ export function WhoDoesWhat() {
       </motion.div>
 
       {/* Main content — workflow left, role breakdown right */}
-      <div className="flex-1 grid grid-cols-[300px_1fr] gap-10">
-        {/* LEFT: Workflow */}
+      <div className="flex-1 grid grid-cols-[420px_1fr] gap-10">
+        {/* LEFT: Workflow — large and prominent */}
         <div className="flex flex-col">
           <motion.p
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.3, delay: T.workflowLabel }}
-            className="text-[10px] font-mono uppercase tracking-[0.15em] text-black/25 mb-3"
+            className="text-[11px] font-mono uppercase tracking-[0.15em] text-black/30 mb-4"
           >
             Workflow
           </motion.p>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col flex-1">
             {flowSteps.map((step, i) => {
               const style = ownerColors[step.owner as keyof typeof ownerColors];
               return (
@@ -155,28 +154,29 @@ export function WhoDoesWhat() {
                     delay: T.workflowStart + i * T.workflowGap,
                     ease: "easeOut",
                   }}
+                  className="flex-1 flex flex-col"
                 >
                   <div
-                    className={`${style.bg} px-4 py-[10px] flex items-center gap-3`}
+                    className={`${style.bg} px-5 flex-1 flex items-center gap-4`}
                   >
                     <step.icon
-                      size={14}
+                      size={18}
                       className={`${style.icon} shrink-0`}
                     />
                     <p
-                      className={`text-[13px] font-medium ${style.text} leading-tight flex-1`}
+                      className={`text-[16px] font-semibold ${style.text} leading-tight flex-1`}
                     >
                       {step.label}
                     </p>
                     <span
-                      className={`text-[7px] font-mono uppercase tracking-[0.1em] px-1.5 py-0.5 shrink-0 ${style.tagStyle}`}
+                      className={`text-[8px] font-mono uppercase tracking-[0.1em] px-2 py-1 shrink-0 ${style.tagStyle}`}
                     >
                       {style.tag}
                     </span>
                   </div>
                   {i < flowSteps.length - 1 && (
-                    <div className="flex justify-center py-[2px]">
-                      <div className="w-[1px] h-[8px] bg-black/10" />
+                    <div className="flex justify-center py-[1px]">
+                      <div className="w-[2px] h-[6px] bg-black/10" />
                     </div>
                   )}
                 </motion.div>
@@ -184,29 +184,29 @@ export function WhoDoesWhat() {
             })}
           </div>
 
-          {/* Legend under workflow */}
+          {/* Legend */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.4, delay: T.summary }}
-            className="mt-5 pt-4 border-t border-black/8 flex flex-col gap-2"
+            className="mt-4 pt-4 border-t border-black/8 flex items-center gap-5"
           >
             <div className="flex items-center gap-2">
-              <div className="w-2.5 h-2.5 bg-black" />
+              <div className="w-3 h-3 bg-black" />
               <span className="text-[10px] font-mono text-black/35">
-                6 steps automated by Source AI
+                Source AI
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-2.5 h-2.5 border-2 border-black/15" />
+              <div className="w-3 h-3 border-2 border-black/15" />
               <span className="text-[10px] font-mono text-black/35">
-                2 consultant review points
+                Consultant
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-2.5 h-2.5 border border-black/8" />
+              <div className="w-3 h-3 border border-black/8" />
               <span className="text-[10px] font-mono text-black/35">
-                1 client approval
+                Client
               </span>
             </div>
           </motion.div>
