@@ -5,7 +5,7 @@ import { Download } from "lucide-react";
 
 export function Nav() {
   const [current, setCurrent] = useState(0);
-  const total = 13;
+  const total = 12;
 
   useEffect(() => {
     const sections = document.querySelectorAll("section");
