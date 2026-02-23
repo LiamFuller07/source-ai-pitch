@@ -78,27 +78,27 @@ export function CaseStudy() {
         initial={{ opacity: 0, x: -20 }}
         animate={inView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.6, delay: T.brand }}
-        className="w-[480px] shrink-0 bg-black relative overflow-hidden flex flex-col"
+        className="w-[400px] shrink-0 bg-black relative overflow-hidden flex flex-col"
       >
         {/* Decorative background */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-blue-950/50 via-black to-slate-900/30" />
           <svg
             className="absolute inset-0 w-full h-full opacity-[0.04]"
-            viewBox="0 0 480 1080"
+            viewBox="0 0 400 1080"
             fill="none"
           >
             {/* Geometric pattern — angular consulting feel */}
             {Array.from({ length: 8 }).map((_, i) => (
               <rect
                 key={i}
-                x={80 + i * 20}
+                x={60 + i * 15}
                 y={400 - i * 15}
-                width={320 - i * 40}
-                height={320 - i * 40}
+                width={280 - i * 35}
+                height={280 - i * 35}
                 stroke="white"
                 strokeWidth="1"
-                transform={`rotate(${i * 5} 240 540)`}
+                transform={`rotate(${i * 5} 200 540)`}
                 fill="none"
               />
             ))}
@@ -174,7 +174,7 @@ export function CaseStudy() {
       </motion.div>
 
       {/* RIGHT: Case Study Data */}
-      <div className="flex-1 flex flex-col px-[60px] py-[50px] overflow-hidden">
+      <div className="flex-1 flex flex-col px-[50px] py-[50px] min-w-0">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
