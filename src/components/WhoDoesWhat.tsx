@@ -2,13 +2,12 @@
 
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import {
   Bot,
   User,
   Building2,
   Check,
-  ArrowRight,
   FileText,
   Search,
   Brain,
@@ -17,9 +16,6 @@ import {
   Rocket,
 } from "lucide-react";
 import { Slide } from "./Slide";
-import { usePresentationStep } from "./PresentationController";
-
-const TOTAL_STEPS = 5;
 
 const flowSteps = [
   { owner: "consultant", label: "Client Call & Notes", icon: FileText },
@@ -84,17 +80,27 @@ const endUserItems = [
   "Accepts final migration",
 ];
 
+// Stagger timing (seconds)
+const T = {
+  header: 0,
+  workflowLabel: 0.3,
+  workflowStart: 0.4,
+  workflowGap: 0.07,
+  sourceCol: 1.1,
+  sourceItemStart: 1.3,
+  sourceItemGap: 0.04,
+  consultantCol: 1.6,
+  consultantItemStart: 1.75,
+  consultantItemGap: 0.05,
+  endUserCol: 1.9,
+  endUserItemStart: 2.05,
+  endUserItemGap: 0.05,
+  summary: 2.5,
+};
+
 export function WhoDoesWhat() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
-  const { setMaxSteps, resetSteps, isStepVisible } = usePresentationStep();
-
-  useEffect(() => {
-    if (inView) {
-      setMaxSteps(TOTAL_STEPS);
-      resetSteps();
-    }
-  }, [inView, setMaxSteps, resetSteps]);
 
   return (
     <Slide
@@ -102,17 +108,17 @@ export function WhoDoesWhat() {
       bg="bg-[#f8f8f8]"
       className="flex flex-col px-[80px] py-[50px]"
     >
-      {/* Header — full width */}
+      {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
-        animate={isStepVisible(1) ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.5 }}
-        className="mb-8"
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.5, delay: T.header }}
+        className="mb-6"
       >
         <p className="text-[14px] font-mono uppercase tracking-[0.2em] text-black/30 mb-2">
           Responsibility Matrix
         </p>
-        <h2 className="text-[48px] font-semibold tracking-[-0.03em] text-black mb-3">
+        <h2 className="text-[48px] font-semibold tracking-[-0.03em] text-black mb-2">
           Who Does What
         </h2>
         <p className="text-[18px] text-black/45 leading-relaxed max-w-[900px]">
@@ -123,14 +129,14 @@ export function WhoDoesWhat() {
         </p>
       </motion.div>
 
-      {/* Main content — workflow left, roles right */}
-      <div className="flex-1 grid grid-cols-[340px_1fr] gap-8">
+      {/* Main content — workflow left, role breakdown right */}
+      <div className="flex-1 grid grid-cols-[300px_1fr] gap-10">
         {/* LEFT: Workflow */}
         <div className="flex flex-col">
           <motion.p
             initial={{ opacity: 0 }}
-            animate={isStepVisible(2) ? { opacity: 1 } : {}}
-            transition={{ duration: 0.3 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.3, delay: T.workflowLabel }}
             className="text-[10px] font-mono uppercase tracking-[0.15em] text-black/25 mb-3"
           >
             Workflow
@@ -142,12 +148,16 @@ export function WhoDoesWhat() {
               return (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={isStepVisible(2) ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.3, delay: i * 0.05 }}
+                  initial={{ opacity: 0, x: -15 }}
+                  animate={inView ? { opacity: 1, x: 0 } : {}}
+                  transition={{
+                    duration: 0.35,
+                    delay: T.workflowStart + i * T.workflowGap,
+                    ease: "easeOut",
+                  }}
                 >
                   <div
-                    className={`${style.bg} px-4 py-[9px] flex items-center gap-3`}
+                    className={`${style.bg} px-4 py-[10px] flex items-center gap-3`}
                   >
                     <step.icon
                       size={14}
@@ -173,40 +183,70 @@ export function WhoDoesWhat() {
               );
             })}
           </div>
+
+          {/* Legend under workflow */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.4, delay: T.summary }}
+            className="mt-5 pt-4 border-t border-black/8 flex flex-col gap-2"
+          >
+            <div className="flex items-center gap-2">
+              <div className="w-2.5 h-2.5 bg-black" />
+              <span className="text-[10px] font-mono text-black/35">
+                6 steps automated by Source AI
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2.5 h-2.5 border-2 border-black/15" />
+              <span className="text-[10px] font-mono text-black/35">
+                2 consultant review points
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2.5 h-2.5 border border-black/8" />
+              <span className="text-[10px] font-mono text-black/35">
+                1 client approval
+              </span>
+            </div>
+          </motion.div>
         </div>
 
-        {/* RIGHT: Three role columns */}
-        <div className="grid grid-cols-3 gap-[1px] self-start">
-          {/* Source AI */}
+        {/* RIGHT: Source AI (large) + Consultant & End User (side by side) */}
+        <div className="flex flex-col gap-[1px]">
+          {/* Source AI — full width, dominant */}
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={isStepVisible(3) ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.4 }}
-            className="bg-black text-white p-5"
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.45, delay: T.sourceCol, ease: "easeOut" }}
+            className="bg-black text-white p-8 flex-1"
           >
-            <div className="flex items-center gap-2 mb-1">
-              <Bot size={16} className="text-white/50" />
-              <p className="text-[18px] font-bold tracking-[-0.01em]">
+            <div className="flex items-center gap-3 mb-1">
+              <Bot size={20} className="text-white/50" />
+              <p className="text-[24px] font-bold tracking-[-0.02em]">
                 Source AI
               </p>
             </div>
-            <p className="text-[9px] font-mono uppercase tracking-[0.12em] text-white/25 mb-4">
-              Handled Autonomously
+            <p className="text-[10px] font-mono uppercase tracking-[0.12em] text-white/25 mb-5">
+              Handled Autonomously &mdash; 85% of the work
             </p>
-            <div className="space-y-2">
+            <div className="grid grid-cols-3 gap-x-8 gap-y-3">
               {sourceItems.map((item, j) => (
                 <motion.div
                   key={j}
-                  initial={{ opacity: 0 }}
-                  animate={isStepVisible(3) ? { opacity: 1 } : {}}
-                  transition={{ duration: 0.2, delay: j * 0.03 }}
+                  initial={{ opacity: 0, x: -5 }}
+                  animate={inView ? { opacity: 1, x: 0 } : {}}
+                  transition={{
+                    duration: 0.25,
+                    delay: T.sourceItemStart + j * T.sourceItemGap,
+                  }}
                   className="flex items-start gap-2"
                 >
                   <Check
-                    size={11}
+                    size={12}
                     className="text-white/25 shrink-0 mt-[3px]"
                   />
-                  <span className="text-[12px] text-white/60 leading-tight">
+                  <span className="text-[13px] text-white/60 leading-tight">
                     {item}
                   </span>
                 </motion.div>
@@ -214,102 +254,84 @@ export function WhoDoesWhat() {
             </div>
           </motion.div>
 
-          {/* Consultant */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={isStepVisible(4) ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.4 }}
-            className="bg-white border-t-2 border-t-black/15 p-5"
-          >
-            <div className="flex items-center gap-2 mb-1">
-              <User size={16} className="text-black/35" />
-              <p className="text-[18px] font-bold tracking-[-0.01em] text-black">
-                Consultant
+          {/* Consultant + End User — side by side */}
+          <div className="grid grid-cols-2 gap-[1px]">
+            {/* Consultant */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.45, delay: T.consultantCol, ease: "easeOut" }}
+              className="bg-white p-7"
+            >
+              <div className="flex items-center gap-2 mb-1">
+                <User size={18} className="text-black/35" />
+                <p className="text-[20px] font-bold tracking-[-0.01em] text-black">
+                  Consultant
+                </p>
+              </div>
+              <p className="text-[9px] font-mono uppercase tracking-[0.12em] text-black/25 mb-4">
+                Review &amp; Confirm
               </p>
-            </div>
-            <p className="text-[9px] font-mono uppercase tracking-[0.12em] text-black/25 mb-4">
-              Review & Confirm
-            </p>
-            <div className="space-y-2.5">
-              {consultantItems.map((item, j) => (
-                <motion.div
-                  key={j}
-                  initial={{ opacity: 0 }}
-                  animate={isStepVisible(4) ? { opacity: 1 } : {}}
-                  transition={{ duration: 0.2, delay: j * 0.04 }}
-                  className="flex items-start gap-2"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-black/15 shrink-0 mt-[5px]" />
-                  <span className="text-[12px] text-black/50 leading-tight">
-                    {item}
-                  </span>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+              <div className="space-y-3">
+                {consultantItems.map((item, j) => (
+                  <motion.div
+                    key={j}
+                    initial={{ opacity: 0, x: -5 }}
+                    animate={inView ? { opacity: 1, x: 0 } : {}}
+                    transition={{
+                      duration: 0.25,
+                      delay: T.consultantItemStart + j * T.consultantItemGap,
+                    }}
+                    className="flex items-start gap-2.5"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-black/15 shrink-0 mt-[6px]" />
+                    <span className="text-[13px] text-black/50 leading-tight">
+                      {item}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
 
-          {/* End User */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={isStepVisible(4) ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            className="bg-white border-t border-t-black/8 p-5"
-          >
-            <div className="flex items-center gap-2 mb-1">
-              <Building2 size={16} className="text-black/35" />
-              <p className="text-[18px] font-bold tracking-[-0.01em] text-black">
-                End User
+            {/* End User */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.45, delay: T.endUserCol, ease: "easeOut" }}
+              className="bg-white p-7"
+            >
+              <div className="flex items-center gap-2 mb-1">
+                <Building2 size={18} className="text-black/35" />
+                <p className="text-[20px] font-bold tracking-[-0.01em] text-black">
+                  End User
+                </p>
+              </div>
+              <p className="text-[9px] font-mono uppercase tracking-[0.12em] text-black/25 mb-4">
+                Answer &amp; Approve
               </p>
-            </div>
-            <p className="text-[9px] font-mono uppercase tracking-[0.12em] text-black/25 mb-4">
-              Answer & Approve
-            </p>
-            <div className="space-y-2.5">
-              {endUserItems.map((item, j) => (
-                <motion.div
-                  key={j}
-                  initial={{ opacity: 0 }}
-                  animate={isStepVisible(4) ? { opacity: 1 } : {}}
-                  transition={{ duration: 0.2, delay: j * 0.04 }}
-                  className="flex items-start gap-2"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-black/10 shrink-0 mt-[5px]" />
-                  <span className="text-[12px] text-black/50 leading-tight">
-                    {item}
-                  </span>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+              <div className="space-y-3">
+                {endUserItems.map((item, j) => (
+                  <motion.div
+                    key={j}
+                    initial={{ opacity: 0, x: -5 }}
+                    animate={inView ? { opacity: 1, x: 0 } : {}}
+                    transition={{
+                      duration: 0.25,
+                      delay: T.endUserItemStart + j * T.endUserItemGap,
+                    }}
+                    className="flex items-start gap-2.5"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-black/10 shrink-0 mt-[6px]" />
+                    <span className="text-[13px] text-black/50 leading-tight">
+                      {item}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
-
-      {/* Summary bar — full width bottom */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={isStepVisible(5) ? { opacity: 1 } : {}}
-        transition={{ duration: 0.4, delay: 0.2 }}
-        className="mt-5 pt-4 border-t border-black/8 flex items-center gap-6"
-      >
-        <div className="flex items-center gap-2">
-          <div className="w-2.5 h-2.5 bg-black" />
-          <span className="text-[11px] font-mono text-black/35">
-            9 automated by Source AI
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-2.5 h-2.5 border-2 border-black/15" />
-          <span className="text-[11px] font-mono text-black/35">
-            5 consultant review
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-2.5 h-2.5 border border-black/8" />
-          <span className="text-[11px] font-mono text-black/35">
-            4 client approval
-          </span>
-        </div>
-      </motion.div>
     </Slide>
   );
 }
