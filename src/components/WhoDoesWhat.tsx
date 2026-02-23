@@ -105,7 +105,7 @@ export function WhoDoesWhat() {
     <Slide
       ref={ref}
       bg="bg-[#f8f8f8]"
-      className="flex flex-col px-[80px] py-[50px]"
+      className="flex flex-col px-[100px] py-[50px]"
     >
       {/* Header */}
       <motion.div
@@ -129,7 +129,7 @@ export function WhoDoesWhat() {
       </motion.div>
 
       {/* Main content — workflow left, role breakdown right */}
-      <div className="flex-1 grid grid-cols-[420px_1fr] gap-10">
+      <div className="flex-1 grid grid-cols-[380px_1fr] gap-8">
         {/* LEFT: Workflow — large and prominent */}
         <div className="flex flex-col">
           <motion.p
@@ -219,7 +219,7 @@ export function WhoDoesWhat() {
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.45, delay: T.sourceCol, ease: "easeOut" }}
-            className="bg-black text-white p-8 flex-1"
+            className="bg-black text-white p-8"
           >
             <div className="flex items-center gap-3 mb-1">
               <Bot size={20} className="text-white/50" />
