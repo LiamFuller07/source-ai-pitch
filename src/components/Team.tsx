@@ -42,7 +42,7 @@ const coreTeam = [
 const consultants = [
   {
     name: "Sean Gillespie",
-    role: "Consultant",
+    role: "Senior Consultant",
     detail: "ERP strategy & client delivery.",
     image: "/team/sean.jpg",
   },
