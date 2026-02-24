@@ -33,6 +33,8 @@ const beforeAfter = [
   { label: "Inventory Sync", before: "Manual / daily", after: "Real-time" },
   { label: "Channel Visibility", before: "Spreadsheets", after: "Unified dashboard" },
   { label: "Intl. Support", before: "Not possible", after: "Multi-currency ready" },
+  { label: "Reporting", before: "48hr manual exports", after: "Live dashboards" },
+  { label: "Audit Trail", before: "Fragmented logs", after: "Fully automated" },
 ];
 
 const T = {
@@ -113,11 +115,11 @@ export function CaseStudy() {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 0.3, delay: T.timelineLabel }}
-          className="text-[13px] font-mono uppercase tracking-[0.18em] text-black/25 mb-2"
+          className="text-[15px] font-mono uppercase tracking-[0.18em] text-black/25 mb-3"
         >
           13-Day Timeline
         </motion.p>
-        <div className="flex h-[48px] gap-[2px]">
+        <div className="flex h-[56px] gap-[2px]">
           {timelinePhases.map((phase, i) => (
             <motion.div
               key={phase.name}
@@ -134,10 +136,10 @@ export function CaseStudy() {
               }}
               className={`${phase.color} flex flex-col items-center justify-center text-white`}
             >
-              <span className="text-[12px] font-medium leading-none">
+              <span className="text-[14px] font-medium leading-none">
                 {phase.name}
               </span>
-              <span className="text-[10px] font-mono text-white/45 mt-0.5">
+              <span className="text-[11px] font-mono text-white/45 mt-0.5">
                 {phase.days}d
               </span>
             </motion.div>
@@ -178,7 +180,7 @@ export function CaseStudy() {
                   duration: 0.25,
                   delay: T.beforeAfterStart + j * T.beforeAfterGap,
                 }}
-                className="grid grid-cols-[1.3fr_1fr_1.2fr] gap-3 py-3.5 border-b border-black/6 px-1"
+                className="grid grid-cols-[1.3fr_1fr_1.2fr] gap-3 py-3 border-b border-black/6 px-1"
               >
                 <span className="text-[16px] font-medium text-black/60">
                   {row.label}
