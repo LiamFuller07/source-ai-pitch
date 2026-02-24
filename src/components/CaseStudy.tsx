@@ -6,12 +6,8 @@ import {
   Clock,
   DollarSign,
   TrendingDown,
-  ShieldCheck,
   Quote,
   Building2,
-  Users,
-  Globe,
-  Server,
 } from "lucide-react";
 import { Slide } from "./Slide";
 
@@ -19,7 +15,6 @@ const heroMetrics = [
   { value: "18", unit: "days", label: "Migration Time", icon: Clock },
   { value: "€11K", unit: "", label: "Total Cost", icon: DollarSign },
   { value: "67%", unit: "", label: "Cost Savings", icon: TrendingDown },
-  { value: "0", unit: "", label: "Data Loss", icon: ShieldCheck },
 ];
 
 const timelinePhases = [
@@ -46,13 +41,12 @@ const beforeAfter = [
 const T = {
   header: 0.1,
   metricsStart: 0.3,
-  metricsGap: 0.08,
+  metricsGap: 0.1,
   timelineLabel: 0.65,
   timelineBar: 0.75,
   bottomRow: 1.0,
   beforeAfterStart: 1.1,
   beforeAfterGap: 0.04,
-  quote: 1.05,
   profile: 1.0,
 };
 
@@ -71,7 +65,7 @@ export function CaseStudy() {
         initial={{ opacity: 0, y: 15 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.5, delay: T.header }}
-        className="mb-6"
+        className="mb-5"
       >
         <p className="text-[11px] font-mono uppercase tracking-[0.2em] text-black/30 mb-2">
           Partner Case Study
@@ -85,8 +79,8 @@ export function CaseStudy() {
         </p>
       </motion.div>
 
-      {/* Hero Metric Cards */}
-      <div className="grid grid-cols-4 gap-3 mb-6">
+      {/* Hero Metric Cards — 3 cards */}
+      <div className="grid grid-cols-3 gap-4 mb-5">
         {heroMetrics.map((metric, i) => (
           <motion.div
             key={metric.label}
@@ -97,20 +91,20 @@ export function CaseStudy() {
               delay: T.metricsStart + i * T.metricsGap,
               ease: "easeOut",
             }}
-            className="bg-white border border-black/8 p-4 flex flex-col"
+            className="bg-white border border-black/8 p-5 flex flex-col"
           >
-            <metric.icon size={13} className="text-black/20 mb-2" />
-            <div className="flex items-baseline gap-1 mb-0.5">
-              <span className="text-[34px] font-semibold tracking-[-0.04em] leading-none text-black">
+            <metric.icon size={14} className="text-black/20 mb-2" />
+            <div className="flex items-baseline gap-1.5 mb-0.5">
+              <span className="text-[38px] font-semibold tracking-[-0.04em] leading-none text-black">
                 {metric.value}
               </span>
               {metric.unit && (
-                <span className="text-[14px] font-light text-black/35">
+                <span className="text-[15px] font-light text-black/35">
                   {metric.unit}
                 </span>
               )}
             </div>
-            <span className="text-[8px] font-mono uppercase tracking-[0.12em] text-black/30">
+            <span className="text-[9px] font-mono uppercase tracking-[0.12em] text-black/30">
               {metric.label}
             </span>
           </motion.div>
@@ -118,7 +112,7 @@ export function CaseStudy() {
       </div>
 
       {/* 18-Day Timeline Bar */}
-      <div className="mb-6">
+      <div className="mb-5">
         <motion.p
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
@@ -127,7 +121,7 @@ export function CaseStudy() {
         >
           18-Day Timeline
         </motion.p>
-        <div className="flex h-[38px] gap-[2px]">
+        <div className="flex h-[36px] gap-[2px]">
           {timelinePhases.map((phase, i) => (
             <motion.div
               key={phase.name}
@@ -155,20 +149,20 @@ export function CaseStudy() {
         </div>
       </div>
 
-      {/* Bottom Row: Before/After | Partner Profile + Quote */}
-      <div className="grid grid-cols-[1fr_1fr] gap-6 min-h-0">
+      {/* Bottom Row — fills remaining height */}
+      <div className="flex-1 grid grid-cols-[1fr_1fr] gap-6 min-h-0">
         {/* Left: End Client Outcomes */}
-        <div className="flex flex-col">
+        <div className="flex flex-col justify-center">
           <motion.p
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.3, delay: T.bottomRow }}
-            className="text-[9px] font-mono uppercase tracking-[0.15em] text-black/25 mb-2"
+            className="text-[9px] font-mono uppercase tracking-[0.15em] text-black/25 mb-3"
           >
             End Client Outcomes
           </motion.p>
 
-          <div className="grid grid-cols-[1.2fr_1fr_1fr] gap-2 mb-1 px-1">
+          <div className="grid grid-cols-[1.2fr_1fr_1.2fr] gap-2 mb-1.5 px-1">
             <span className="text-[8px] font-mono uppercase tracking-[0.1em] text-black/20" />
             <span className="text-[8px] font-mono uppercase tracking-[0.1em] text-black/20">
               Before
@@ -188,15 +182,15 @@ export function CaseStudy() {
                   duration: 0.25,
                   delay: T.beforeAfterStart + j * T.beforeAfterGap,
                 }}
-                className="grid grid-cols-[1.2fr_1fr_1fr] gap-2 py-2 border-b border-black/6 px-1"
+                className="grid grid-cols-[1.2fr_1fr_1.2fr] gap-2 py-2.5 border-b border-black/6 px-1"
               >
-                <span className="text-[11px] font-medium text-black/55">
+                <span className="text-[12px] font-medium text-black/55">
                   {row.label}
                 </span>
-                <span className="text-[11px] text-black/25 line-through decoration-black/15">
+                <span className="text-[12px] text-black/25 line-through decoration-black/15">
                   {row.before}
                 </span>
-                <span className="text-[11px] text-black/65 font-medium">
+                <span className="text-[12px] text-black/65 font-medium">
                   {row.after}
                 </span>
               </motion.div>
@@ -204,7 +198,7 @@ export function CaseStudy() {
           </div>
         </div>
 
-        {/* Right: Partner Profile Card + Quote */}
+        {/* Right: Altius Profile + Quote */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -222,62 +216,39 @@ export function CaseStudy() {
           />
 
           {/* Content */}
-          <div className="relative z-10 flex flex-col h-full p-6">
-            {/* Partner identity */}
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 border border-white/15 flex items-center justify-center">
-                <Building2 size={18} className="text-white/40" />
+          <div className="relative z-10 flex flex-col h-full p-7">
+            {/* Compact partner identity — single row */}
+            <div className="flex items-center gap-3 mb-3 pb-3 border-b border-white/8">
+              <div className="w-9 h-9 border border-white/15 flex items-center justify-center shrink-0">
+                <Building2 size={16} className="text-white/40" />
               </div>
-              <div>
-                <p className="text-[18px] font-bold text-white tracking-[-0.02em]">
+              <div className="flex-1 min-w-0">
+                <p className="text-[16px] font-bold text-white tracking-[-0.02em]">
                   Altius Group
                 </p>
                 <p className="text-[8px] font-mono uppercase tracking-[0.12em] text-white/25">
-                  NetSuite Consulting &middot; Munich
+                  NetSuite Consulting &middot; Munich &middot; 35 consultants
                 </p>
               </div>
             </div>
 
-            {/* Firm details */}
-            <div className="grid grid-cols-3 gap-3 mb-5">
-              <div className="flex items-center gap-2">
-                <Users size={11} className="text-white/20" />
-                <span className="text-[10px] text-white/35 font-mono">
-                  35 consultants
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Globe size={11} className="text-white/20" />
-                <span className="text-[10px] text-white/35 font-mono">
-                  DACH &amp; Nordics
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Server size={11} className="text-white/20" />
-                <span className="text-[10px] text-white/35 font-mono">
-                  NetSuite SP
-                </span>
-              </div>
-            </div>
-
-            {/* Divider */}
-            <div className="border-t border-white/8 mb-4" />
-
-            {/* Quote */}
-            <Quote size={16} className="text-white/10 mb-3 scale-x-[-1]" />
-            <p className="text-[13px] text-white/65 leading-relaxed mb-4 italic">
-              &ldquo;We quoted €14K fixed-price and delivered in under three
-              weeks. Our old model would have been €35K over four months with an
-              offshore team. Source handled the technical execution — we kept the
-              client relationship and made 50%+ margins.&rdquo;
-            </p>
-            <div className="mt-auto">
-              <p className="text-[12px] font-semibold text-white/70">
-                Managing Director
+            {/* Quote — fills remaining space */}
+            <div className="flex flex-col flex-1 justify-center">
+              <Quote size={18} className="text-white/10 mb-4 scale-x-[-1]" />
+              <p className="text-[14px] text-white/65 leading-relaxed mb-5 italic">
+                &ldquo;We quoted €14K fixed-price and delivered in under three
+                weeks. Our old model would have been €35K over four months with
+                an offshore team. Source handled the technical execution — we
+                kept the client relationship and made 50%+ margins.&rdquo;
               </p>
-              <p className="text-[8px] font-mono uppercase tracking-[0.12em] text-white/25 mt-0.5">
-                Altius Group
-              </p>
+              <div>
+                <p className="text-[12px] font-semibold text-white/70">
+                  Managing Director
+                </p>
+                <p className="text-[8px] font-mono uppercase tracking-[0.12em] text-white/25 mt-0.5">
+                  Altius Group
+                </p>
+              </div>
             </div>
           </div>
         </motion.div>
