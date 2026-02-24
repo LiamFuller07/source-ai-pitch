@@ -54,8 +54,8 @@ export function Slide({
           <img
             src="/source-logo.svg"
             alt=""
-            className={`absolute bottom-[30px] right-[40px] w-[24px] h-[24px] pointer-events-none ${
-              isDark ? "opacity-[0.2] invert" : "opacity-[0.1]"
+            className={`absolute bottom-[40px] right-[50px] w-[48px] h-[48px] pointer-events-none ${
+              isDark ? "opacity-[0.15] invert" : "opacity-[0.08]"
             }`}
           />
         </div>

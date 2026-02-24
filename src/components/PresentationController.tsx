@@ -29,16 +29,22 @@ export function PresentationProvider({ children }: { children: React.ReactNode }
   const [currentStep, setCurrentStep] = useState(0);
   const [maxSteps, setMaxSteps] = useState(0);
   const currentSlideRef = useRef(0);
+  const totalSlidesRef = useRef(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   // Track which slide is currently visible
   useEffect(() => {
     const sections = document.querySelectorAll("section");
+    totalSlidesRef.current = sections.length;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const idx = Array.from(sections).indexOf(entry.target as HTMLElement);
-            if (idx >= 0) currentSlideRef.current = idx;
+            if (idx >= 0) {
+              currentSlideRef.current = idx;
+              setCurrentSlide(idx);
+            }
           }
         });
       },
@@ -56,13 +62,12 @@ export function PresentationProvider({ children }: { children: React.ReactNode }
   }, []);
 
   const hasMoreSteps = maxSteps > 0 && currentStep < maxSteps;
+  const isLastSlide = currentSlide >= totalSlidesRef.current - 1;
 
   const advance = useCallback(() => {
     if (hasMoreSteps) {
-      // Advance within the current slide's steps
       setCurrentStep((prev) => Math.min(prev + 1, maxSteps));
     } else {
-      // All steps done (or no steps) — scroll to next slide
       const sections = document.querySelectorAll("section");
       const nextIndex = currentSlideRef.current + 1;
       if (nextIndex < sections.length) {
@@ -73,10 +78,8 @@ export function PresentationProvider({ children }: { children: React.ReactNode }
 
   const goBack = useCallback(() => {
     if (currentStep > 0) {
-      // Go back a step within the current slide
       setCurrentStep((prev) => Math.max(prev - 1, 0));
     } else {
-      // Already at step 0 — scroll to previous slide
       const prevIndex = currentSlideRef.current - 1;
       if (prevIndex >= 0) {
         scrollToSlide(prevIndex);
@@ -84,7 +87,6 @@ export function PresentationProvider({ children }: { children: React.ReactNode }
     }
   }, [currentStep, scrollToSlide]);
 
-  // Keep these for components that call them directly
   const nextStep = useCallback(() => {
     setCurrentStep((prev) => Math.min(prev + 1, maxSteps));
   }, [maxSteps]);
@@ -98,13 +100,11 @@ export function PresentationProvider({ children }: { children: React.ReactNode }
   }, []);
 
   const isStepVisible = useCallback(
-    (step: number) => {
-      return currentStep >= step;
-    },
+    (step: number) => currentStep >= step,
     [currentStep]
   );
 
-  // Keyboard navigation: Space, ArrowRight, ArrowLeft
+  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight" || e.key === " ") {
@@ -115,12 +115,11 @@ export function PresentationProvider({ children }: { children: React.ReactNode }
         goBack();
       }
     };
-
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [advance, goBack]);
 
-  // Click anywhere to advance (ignore interactive elements)
+  // Click to advance
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -135,7 +134,6 @@ export function PresentationProvider({ children }: { children: React.ReactNode }
       }
       advance();
     };
-
     window.addEventListener("click", handleClick);
     return () => window.removeEventListener("click", handleClick);
   }, [advance]);
@@ -153,52 +151,98 @@ export function PresentationProvider({ children }: { children: React.ReactNode }
       }}
     >
       {children}
-      <PresentationControls hasMoreSteps={hasMoreSteps} />
+      <PresentationHint
+        hasMoreSteps={hasMoreSteps}
+        isLastSlide={isLastSlide}
+        currentStep={currentStep}
+        maxSteps={maxSteps}
+      />
     </PresentationContext.Provider>
   );
 }
 
-function PresentationControls({ hasMoreSteps }: { hasMoreSteps: boolean }) {
-  const { currentStep, maxSteps } = usePresentationStep();
-  const [showNudge, setShowNudge] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+function PresentationHint({
+  hasMoreSteps,
+  isLastSlide,
+  currentStep,
+  maxSteps,
+}: {
+  hasMoreSteps: boolean;
+  isLastSlide: boolean;
+  currentStep: number;
+  maxSteps: number;
+}) {
+  const [visible, setVisible] = useState(false);
+  const [pulsing, setPulsing] = useState(false);
+  const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const interactionCount = useRef(0);
 
-  // Show nudge after 4s of inactivity when there are more steps
+  // Show hint after a short delay on load
   useEffect(() => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    setShowNudge(false);
+    const t = setTimeout(() => setVisible(true), 2000);
+    return () => clearTimeout(t);
+  }, []);
 
-    if (hasMoreSteps) {
-      timerRef.current = setTimeout(() => setShowNudge(true), 4000);
-    }
+  // Track interactions — hide hint briefly after user acts, pulse if idle
+  useEffect(() => {
+    const resetIdle = () => {
+      interactionCount.current++;
+      setPulsing(false);
+
+      // After user has interacted a few times, keep hint subtle
+      if (idleTimer.current) clearTimeout(idleTimer.current);
+      idleTimer.current = setTimeout(() => {
+        setPulsing(true);
+      }, 5000);
+    };
+
+    window.addEventListener("keydown", resetIdle);
+    window.addEventListener("click", resetIdle);
+    window.addEventListener("scroll", resetIdle);
+
+    // Start the initial idle timer
+    idleTimer.current = setTimeout(() => setPulsing(true), 5000);
 
     return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
+      window.removeEventListener("keydown", resetIdle);
+      window.removeEventListener("click", resetIdle);
+      window.removeEventListener("scroll", resetIdle);
+      if (idleTimer.current) clearTimeout(idleTimer.current);
     };
-  }, [currentStep, hasMoreSteps]);
+  }, []);
+
+  // Don't show on the very last slide
+  if (isLastSlide && !hasMoreSteps) return null;
+
+  const label = hasMoreSteps ? "Space to reveal" : "Space for next slide";
 
   return (
-    <>
-      {/* Subtle nudge arrow */}
-      {showNudge && hasMoreSteps && (
-        <div
-          className="fixed bottom-8 right-1/2 translate-x-1/2 z-50 flex items-center gap-2 text-black/15 transition-all duration-500 animate-pulse pointer-events-none"
-        >
-          <span className="text-[11px] font-mono uppercase tracking-[0.1em]">
-            Press space or click
-          </span>
-          <ChevronRight size={16} />
-        </div>
-      )}
+    <div
+      className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-700 ${
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+      }`}
+    >
+      <div
+        className={`flex items-center gap-3 px-5 py-2.5 bg-black/[0.06] backdrop-blur-sm rounded-full transition-all duration-500 ${
+          pulsing ? "animate-pulse" : ""
+        }`}
+      >
+        {/* Keyboard icon */}
+        <kbd className="inline-flex items-center justify-center w-[52px] h-[24px] bg-white border border-black/10 rounded text-[10px] font-mono font-medium text-black/40 shadow-[0_1px_0_1px_rgba(0,0,0,0.05)]">
+          SPACE
+        </kbd>
+        <span className="text-[11px] font-mono uppercase tracking-[0.08em] text-black/30">
+          {label}
+        </span>
+        <ChevronRight size={12} className="text-black/20" />
 
-      {/* Step counter — only show when a slide has steps */}
-      {maxSteps > 0 && (
-        <div className="fixed bottom-4 right-4 z-50">
-          <div className="text-[11px] font-mono text-black/30">
-            {currentStep} / {maxSteps}
-          </div>
-        </div>
-      )}
-    </>
+        {/* Step counter pill */}
+        {maxSteps > 0 && (
+          <span className="text-[9px] font-mono text-black/20 border-l border-black/8 pl-3 ml-1">
+            {currentStep}/{maxSteps}
+          </span>
+        )}
+      </div>
+    </div>
   );
 }
