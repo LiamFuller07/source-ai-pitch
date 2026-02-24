@@ -24,7 +24,6 @@ export default function Home() {
       <main>
         <ProblemToday />
         <Solution />
-        <DemoVideo />
         <AiReplacesChain />
         <WhoDoesWhat />
         {/* <WhiteLabel /> */}
