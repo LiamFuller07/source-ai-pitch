@@ -23,7 +23,7 @@ const coreTeam = [
     name: "Shane Fuller",
     role: "Founding Engineer",
     detail: "Former Cybersecurity IT Director. Enterprise security, infrastructure & compliance.",
-    image: null,
+    image: "/team/shane.jpg",
   },
   {
     name: "Brian Kelleher",
