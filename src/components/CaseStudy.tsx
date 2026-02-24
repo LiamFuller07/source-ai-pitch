@@ -1,19 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import {
-  Hexagon,
   Clock,
   DollarSign,
   TrendingDown,
   ShieldCheck,
   Quote,
-  Globe,
-  Users,
-  Award,
-  MapPin,
 } from "lucide-react";
 import { Slide } from "./Slide";
 
@@ -43,24 +37,16 @@ const beforeAfter = [
   { label: "Intl. Support", before: "Not possible", after: "Multi-currency ready" },
 ];
 
-const firmStats = [
-  { icon: Award, label: "NetSuite Solution Provider" },
-  { icon: Globe, label: "DACH & Nordics" },
-  { icon: Users, label: "35 consultants" },
-  { icon: MapPin, label: "Munich, Germany" },
-];
-
 const T = {
-  brand: 0,
-  header: 0.2,
-  metricsStart: 0.4,
-  metricsGap: 0.1,
-  timelineLabel: 0.85,
-  timelineBar: 0.95,
-  beforeAfterLabel: 1.3,
-  beforeAfterStart: 1.4,
+  header: 0.1,
+  metricsStart: 0.3,
+  metricsGap: 0.08,
+  timelineLabel: 0.65,
+  timelineBar: 0.75,
+  beforeAfterLabel: 1.0,
+  beforeAfterStart: 1.1,
   beforeAfterGap: 0.05,
-  quote: 1.7,
+  quote: 1.0,
 };
 
 export function CaseStudy() {
@@ -71,272 +57,208 @@ export function CaseStudy() {
     <Slide
       ref={ref}
       bg="bg-[#f8f8f8]"
-      className="flex px-0 py-0"
+      className="flex flex-col px-[100px] py-[50px]"
     >
-      {/* LEFT: Partner Firm Brand Card */}
+      {/* Header */}
       <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        animate={inView ? { opacity: 1, x: 0 } : {}}
-        transition={{ duration: 0.6, delay: T.brand }}
-        className="w-[400px] shrink-0 bg-black relative overflow-hidden flex flex-col"
+        initial={{ opacity: 0, y: 15 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.5, delay: T.header }}
+        className="mb-8"
       >
-        {/* Decorative background */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-950/50 via-black to-slate-900/30" />
-          <svg
-            className="absolute inset-0 w-full h-full opacity-[0.04]"
-            viewBox="0 0 400 1080"
-            fill="none"
-          >
-            {/* Geometric pattern — angular consulting feel */}
-            {Array.from({ length: 8 }).map((_, i) => (
-              <rect
-                key={i}
-                x={60 + i * 15}
-                y={400 - i * 15}
-                width={280 - i * 35}
-                height={280 - i * 35}
-                stroke="white"
-                strokeWidth="1"
-                transform={`rotate(${i * 5} 200 540)`}
-                fill="none"
-              />
-            ))}
-          </svg>
-          <div
-            className="absolute inset-0 opacity-[0.02]"
-            style={{
-              backgroundImage:
-                "linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)",
-              backgroundSize: "60px 60px",
-            }}
-          />
-        </div>
-
-        {/* Content */}
-        <div className="relative z-10 flex flex-col h-full p-12">
-          {/* Top label */}
-          <p className="text-[10px] font-mono uppercase tracking-[0.15em] text-white/20 mb-auto">
-            Source AI Partner
-          </p>
-
-          {/* Center: Firm identity */}
-          <div className="flex flex-col items-center text-center my-auto">
-            <div className="w-20 h-20 border-2 border-white/15 flex items-center justify-center mb-6">
-              <Hexagon size={38} className="text-white/50" />
-            </div>
-            <h3 className="text-[44px] font-bold text-white tracking-[-0.03em] mb-1">
-              Altius
-            </h3>
-            <p className="text-[22px] font-light text-white/40 tracking-[0.15em] uppercase mb-8">
-              Group
-            </p>
-
-            {/* Capability tags */}
-            <div className="flex flex-wrap justify-center gap-2 mb-10">
-              <span className="text-[9px] font-mono uppercase tracking-[0.1em] text-white/25 px-2.5 py-1 border border-white/10">
-                NetSuite
-              </span>
-              <span className="text-[9px] font-mono uppercase tracking-[0.1em] text-white/25 px-2.5 py-1 border border-white/10">
-                ERP Consulting
-              </span>
-              <span className="text-[9px] font-mono uppercase tracking-[0.1em] text-white/25 px-2.5 py-1 border border-white/10">
-                Implementation
-              </span>
-            </div>
-
-            {/* Firm stats */}
-            <div className="w-full space-y-3">
-              {firmStats.map((stat, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0 }}
-                  animate={inView ? { opacity: 1 } : {}}
-                  transition={{ duration: 0.3, delay: T.brand + 0.3 + i * 0.06 }}
-                  className="flex items-center gap-3 justify-center"
-                >
-                  <stat.icon size={13} className="text-white/20 shrink-0" />
-                  <span className="text-[12px] text-white/40 font-mono">
-                    {stat.label}
-                  </span>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Bottom */}
-          <div className="border-t border-white/8 pt-4 mt-auto">
-            <p className="text-[10px] font-mono text-white/15 uppercase tracking-[0.08em] text-center">
-              Representative consulting partner
-            </p>
-          </div>
-        </div>
+        <p className="text-[11px] font-mono uppercase tracking-[0.2em] text-black/30 mb-2">
+          Partner Case Study
+        </p>
+        <h2 className="text-[44px] font-semibold tracking-[-0.03em] text-black mb-1.5">
+          QuickBooks → NetSuite
+        </h2>
+        <p className="text-[16px] text-black/40">
+          Altius Group used Source AI to deliver a mid-market migration for their client in 18 days — not 4 months.
+        </p>
       </motion.div>
 
-      {/* RIGHT: Case Study Data */}
-      <div className="flex-1 flex flex-col px-[50px] py-[50px] min-w-0">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: T.header }}
-          className="mb-7"
-        >
-          <p className="text-[12px] font-mono uppercase tracking-[0.2em] text-black/30 mb-2">
-            Partner Case Study
-          </p>
-          <h2 className="text-[40px] font-semibold tracking-[-0.03em] text-black mb-1">
-            QuickBooks → NetSuite
-          </h2>
-          <p className="text-[16px] text-black/40">
-            Altius Group used Source AI to deliver a mid-market migration
-            for their client in 18 days — not 4 months.
-          </p>
-        </motion.div>
-
-        {/* Metrics Row */}
-        <div className="grid grid-cols-4 gap-4 mb-7">
-          {heroMetrics.map((metric, i) => (
-            <motion.div
-              key={metric.label}
-              initial={{ opacity: 0, y: 15, scale: 0.95 }}
-              animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-              transition={{
-                duration: 0.4,
-                delay: T.metricsStart + i * T.metricsGap,
-                ease: "easeOut",
-              }}
-              className="bg-black text-white p-5 flex flex-col"
-            >
-              <metric.icon size={15} className="text-white/25 mb-3" />
-              <div className="flex items-baseline gap-1 mb-0.5">
-                <span className="text-[36px] font-light tracking-[-0.04em] leading-none">
+      {/* Hero Metric Cards */}
+      <div className="grid grid-cols-4 gap-4 mb-8">
+        {heroMetrics.map((metric, i) => (
+          <motion.div
+            key={metric.label}
+            initial={{ opacity: 0, y: 15, scale: 0.96 }}
+            animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+            transition={{
+              duration: 0.4,
+              delay: T.metricsStart + i * T.metricsGap,
+              ease: "easeOut",
+            }}
+            className="bg-black text-white flex flex-col overflow-hidden relative"
+          >
+            {/* Thin emerald accent strip on top */}
+            <div className="h-[3px] w-full bg-emerald-500/70 shrink-0" />
+            <div className="p-5 flex flex-col flex-1">
+              <metric.icon size={14} className="text-white/25 mb-3" />
+              <div className="flex items-baseline gap-1 mb-1">
+                <span className="text-[38px] font-light tracking-[-0.04em] leading-none">
                   {metric.value}
                 </span>
                 {metric.unit && (
-                  <span className="text-[15px] font-light text-white/45">
+                  <span className="text-[15px] font-light text-white/40">
                     {metric.unit}
                   </span>
                 )}
               </div>
-              <span className="text-[9px] font-mono uppercase tracking-[0.1em] text-white/30">
+              <span className="text-[9px] font-mono uppercase tracking-[0.12em] text-white/30">
                 {metric.label}
+              </span>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* 18-Day Timeline Bar */}
+      <div className="mb-8">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.3, delay: T.timelineLabel }}
+          className="text-[9px] font-mono uppercase tracking-[0.18em] text-black/25 mb-2"
+        >
+          18-Day Timeline
+        </motion.p>
+        <div className="flex h-[46px] gap-[2px]">
+          {timelinePhases.map((phase, i) => (
+            <motion.div
+              key={phase.name}
+              initial={{ scaleX: 0 }}
+              animate={inView ? { scaleX: 1 } : {}}
+              transition={{
+                duration: 0.35,
+                delay: T.timelineBar + i * 0.05,
+                ease: "easeOut",
+              }}
+              style={{
+                width: `${(phase.days / totalDays) * 100}%`,
+                transformOrigin: "left",
+              }}
+              className={`${phase.color} flex flex-col items-center justify-center text-white`}
+            >
+              <span className="text-[10px] font-medium leading-none">
+                {phase.name}
+              </span>
+              <span className="text-[8px] font-mono text-white/45 mt-0.5">
+                {phase.days}d
               </span>
             </motion.div>
           ))}
         </div>
+      </div>
 
-        {/* Timeline */}
-        <div className="mb-7">
+      {/* Bottom Row: Before/After Table | Quote Card */}
+      <div className="flex-1 grid grid-cols-[1fr_1fr] gap-8 items-stretch min-h-0">
+
+        {/* Before / After Table */}
+        <div className="flex flex-col">
           <motion.p
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.3, delay: T.timelineLabel }}
-            className="text-[9px] font-mono uppercase tracking-[0.15em] text-black/25 mb-2"
+            transition={{ duration: 0.3, delay: T.beforeAfterLabel }}
+            className="text-[9px] font-mono uppercase tracking-[0.15em] text-black/25 mb-3"
           >
-            18-Day Timeline
+            End Client Outcomes
           </motion.p>
-          <div className="flex h-[44px] gap-[2px]">
-            {timelinePhases.map((phase, i) => (
+
+          <div className="grid grid-cols-[1fr_1fr_1fr] gap-3 mb-1.5 px-1">
+            <span className="text-[8px] font-mono uppercase tracking-[0.1em] text-black/20" />
+            <span className="text-[8px] font-mono uppercase tracking-[0.1em] text-black/20">
+              Before
+            </span>
+            <span className="text-[8px] font-mono uppercase tracking-[0.1em] text-black/20">
+              After
+            </span>
+          </div>
+
+          <div className="space-y-0">
+            {beforeAfter.map((row, j) => (
               <motion.div
-                key={phase.name}
-                initial={{ scaleX: 0 }}
-                animate={inView ? { scaleX: 1 } : {}}
+                key={row.label}
+                initial={{ opacity: 0, x: -6 }}
+                animate={inView ? { opacity: 1, x: 0 } : {}}
                 transition={{
-                  duration: 0.35,
-                  delay: T.timelineBar + i * 0.05,
-                  ease: "easeOut",
+                  duration: 0.25,
+                  delay: T.beforeAfterStart + j * T.beforeAfterGap,
                 }}
-                style={{
-                  width: `${(phase.days / totalDays) * 100}%`,
-                  transformOrigin: "left",
-                }}
-                className={`${phase.color} flex flex-col items-center justify-center text-white`}
+                className="grid grid-cols-[1fr_1fr_1fr] gap-3 py-3 border-b border-black/6 px-1"
               >
-                <span className="text-[10px] font-medium leading-none">
-                  {phase.name}
+                <span className="text-[12px] font-medium text-black/55">
+                  {row.label}
                 </span>
-                <span className="text-[8px] font-mono text-white/45 mt-0.5">
-                  {phase.days}d
+                <span className="text-[12px] text-black/25 line-through decoration-black/15">
+                  {row.before}
+                </span>
+                <span className="text-[12px] text-black/65 font-medium">
+                  {row.after}
                 </span>
               </motion.div>
             ))}
           </div>
         </div>
 
-        {/* Bottom: Before/After + Quote side by side */}
-        <div className="flex-1 grid grid-cols-[1fr_1fr] gap-8 items-start">
-          {/* Before / After */}
-          <div>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.3, delay: T.beforeAfterLabel }}
-              className="text-[9px] font-mono uppercase tracking-[0.15em] text-black/25 mb-3"
-            >
-              End Client Outcomes
-            </motion.p>
+        {/* Quote Card — dark, visually rich */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.55, delay: T.quote }}
+          className="bg-black relative overflow-hidden flex flex-col justify-between"
+        >
+          {/* Emerald top accent bar */}
+          <div className="h-[3px] w-full bg-emerald-500 shrink-0" />
 
-            <div className="grid grid-cols-[1fr_1fr_1fr] gap-3 mb-1.5 px-1">
-              <span className="text-[8px] font-mono uppercase tracking-[0.1em] text-black/20" />
-              <span className="text-[8px] font-mono uppercase tracking-[0.1em] text-black/20">
-                Before
-              </span>
-              <span className="text-[8px] font-mono uppercase tracking-[0.1em] text-black/20">
-                After
-              </span>
-            </div>
-
-            <div className="space-y-0">
-              {beforeAfter.map((row, j) => (
-                <motion.div
-                  key={row.label}
-                  initial={{ opacity: 0, x: -6 }}
-                  animate={inView ? { opacity: 1, x: 0 } : {}}
-                  transition={{
-                    duration: 0.25,
-                    delay: T.beforeAfterStart + j * T.beforeAfterGap,
-                  }}
-                  className="grid grid-cols-[1fr_1fr_1fr] gap-3 py-2.5 border-b border-black/6 px-1"
-                >
-                  <span className="text-[12px] font-medium text-black/55">
-                    {row.label}
-                  </span>
-                  <span className="text-[12px] text-black/25 line-through decoration-black/15">
-                    {row.before}
-                  </span>
-                  <span className="text-[12px] text-black/65 font-medium">
-                    {row.after}
-                  </span>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Quote — from the consulting partner */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: T.quote }}
-            className="bg-white p-8 flex flex-col justify-center h-full"
+          {/* Decorative geometric pattern */}
+          <svg
+            className="absolute inset-0 w-full h-full opacity-[0.045] pointer-events-none"
+            viewBox="0 0 600 300"
+            fill="none"
+            preserveAspectRatio="xMidYMid slice"
           >
-            <Quote size={20} className="text-black/8 mb-4 scale-x-[-1]" />
-            <p className="text-[15px] text-black/55 leading-relaxed mb-5 italic">
+            {Array.from({ length: 7 }).map((_, i) => (
+              <rect
+                key={i}
+                x={60 + i * 22}
+                y={30 + i * 18}
+                width={480 - i * 44}
+                height={240 - i * 36}
+                stroke="white"
+                strokeWidth="1"
+                fill="none"
+              />
+            ))}
+            {/* Diagonal accent lines */}
+            <line x1="0" y1="300" x2="300" y2="0" stroke="white" strokeWidth="0.5" />
+            <line x1="100" y1="300" x2="400" y2="0" stroke="white" strokeWidth="0.5" />
+            <line x1="300" y1="300" x2="600" y2="0" stroke="white" strokeWidth="0.5" />
+          </svg>
+
+          {/* Subtle gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-900/40 via-black to-black/90 pointer-events-none" />
+
+          {/* Quote content */}
+          <div className="relative z-10 flex flex-col flex-1 justify-center p-8">
+            <Quote size={22} className="text-white/10 mb-5 scale-x-[-1]" />
+            <p className="text-[15px] text-white/75 leading-relaxed mb-6 italic">
               &ldquo;We quoted €14K fixed-price and delivered in under three weeks.
               Our old model would have been €35K over four months with an offshore
               team. Source handled the technical execution — we kept the client
               relationship and made 50%+ margins.&rdquo;
             </p>
-            <div>
-              <p className="text-[13px] font-semibold text-black/65">
+            <div className="border-t border-white/10 pt-4">
+              <p className="text-[13px] font-semibold text-white/80">
                 Managing Director
               </p>
-              <p className="text-[10px] font-mono uppercase tracking-[0.1em] text-black/25">
+              <p className="text-[9px] font-mono uppercase tracking-[0.12em] text-white/30 mt-0.5">
                 Altius Group
               </p>
             </div>
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
+
       </div>
     </Slide>
   );
