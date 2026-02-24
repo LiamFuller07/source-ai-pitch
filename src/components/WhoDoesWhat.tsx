@@ -88,7 +88,7 @@ const timelinePhases = [
   { name: "Config", days: 5, color: "bg-black" },
   { name: "Migration", days: 3, color: "bg-black/70" },
   { name: "QA", days: 2, color: "bg-black/45" },
-  { name: "Go-live", days: 1, color: "bg-emerald-600" },
+  { name: "Go-live", days: 1, color: "bg-black" },
 ];
 
 const totalDays = timelinePhases.reduce((sum, p) => sum + p.days, 0);
