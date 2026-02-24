@@ -4,13 +4,11 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 import {
-  Bot,
   User,
   Building2,
   Check,
   FileText,
   Search,
-  Brain,
   MessageSquare,
   ClipboardCheck,
   Rocket,
@@ -19,9 +17,7 @@ import { Slide } from "./Slide";
 
 const flowSteps = [
   { owner: "consultant", label: "Client Call & Notes", icon: FileText },
-  { owner: "source", label: "Access QuickBooks", icon: Search },
-  { owner: "source", label: "System Scan", icon: Search },
-  { owner: "source", label: "Infer Workflows", icon: Brain },
+  { owner: "source", label: "Connect & Scan", icon: Search },
   { owner: "source", label: "AI Questionnaire", icon: MessageSquare },
   { owner: "source", label: "Draft BRD", icon: FileText },
   { owner: "consultant", label: "Consultant Review", icon: ClipboardCheck },
@@ -29,27 +25,30 @@ const flowSteps = [
   { owner: "source", label: "AI Migration", icon: Rocket },
 ];
 
-const ownerColors = {
+const ownerStyles = {
   source: {
-    bg: "bg-black",
+    bar: "bg-black",
     text: "text-white",
     icon: "text-white/40",
     tag: "SOURCE",
-    tagStyle: "text-white/40 bg-white/10",
+    tagStyle: "text-white/50 bg-white/10",
+    dot: "bg-white",
   },
   consultant: {
-    bg: "bg-white border border-black/12",
+    bar: "bg-white border border-black/10",
     text: "text-black",
-    icon: "text-black/25",
-    tag: "CONSULTANT",
+    icon: "text-black/20",
+    tag: "YOU",
     tagStyle: "text-black/30 bg-black/[0.04]",
+    dot: "bg-black/20",
   },
   customer: {
-    bg: "bg-white border border-black/12",
-    text: "text-black",
-    icon: "text-black/25",
+    bar: "bg-white border border-black/8",
+    text: "text-black/70",
+    icon: "text-black/15",
     tag: "CLIENT",
-    tagStyle: "text-black/30 bg-black/[0.04]",
+    tagStyle: "text-black/25 bg-black/[0.03]",
+    dot: "bg-black/15",
   },
 };
 
@@ -84,17 +83,17 @@ const T = {
   header: 0,
   workflowLabel: 0.3,
   workflowStart: 0.4,
-  workflowGap: 0.07,
-  sourceCol: 1.1,
-  sourceItemStart: 1.3,
+  workflowGap: 0.08,
+  sourceCol: 1.0,
+  sourceItemStart: 1.2,
   sourceItemGap: 0.04,
-  consultantCol: 1.6,
-  consultantItemStart: 1.75,
+  consultantCol: 1.5,
+  consultantItemStart: 1.65,
   consultantItemGap: 0.05,
-  endUserCol: 1.9,
-  endUserItemStart: 2.05,
+  endUserCol: 1.8,
+  endUserItemStart: 1.95,
   endUserItemGap: 0.05,
-  summary: 2.5,
+  summary: 2.3,
 };
 
 export function WhoDoesWhat() {
@@ -129,8 +128,8 @@ export function WhoDoesWhat() {
       </motion.div>
 
       {/* Main content — workflow left, role breakdown right */}
-      <div className="flex-1 grid grid-cols-[380px_1fr] gap-8">
-        {/* LEFT: Workflow — large and prominent */}
+      <div className="flex-1 grid grid-cols-[360px_1fr] gap-10">
+        {/* LEFT: Workflow */}
         <div className="flex flex-col">
           <motion.p
             initial={{ opacity: 0 }}
@@ -143,7 +142,8 @@ export function WhoDoesWhat() {
 
           <div className="flex flex-col flex-1">
             {flowSteps.map((step, i) => {
-              const style = ownerColors[step.owner as keyof typeof ownerColors];
+              const style = ownerStyles[step.owner as keyof typeof ownerStyles];
+              const isSource = step.owner === "source";
               return (
                 <motion.div
                   key={i}
@@ -157,14 +157,24 @@ export function WhoDoesWhat() {
                   className="flex-1 flex flex-col"
                 >
                   <div
-                    className={`${style.bg} px-5 flex-1 flex items-center gap-4`}
+                    className={`${style.bar} px-5 flex-1 flex items-center gap-4`}
                   >
-                    <step.icon
-                      size={18}
-                      className={`${style.icon} shrink-0`}
-                    />
+                    {/* Source logo mark for Source steps, icon for others */}
+                    {isSource ? (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img
+                        src="/source-logo.svg"
+                        alt=""
+                        className="w-[16px] h-[16px] shrink-0 invert opacity-40"
+                      />
+                    ) : (
+                      <step.icon
+                        size={16}
+                        className={`${style.icon} shrink-0`}
+                      />
+                    )}
                     <p
-                      className={`text-[16px] font-semibold ${style.text} leading-tight flex-1`}
+                      className={`text-[15px] font-semibold ${style.text} leading-tight flex-1`}
                     >
                       {step.label}
                     </p>
@@ -222,7 +232,12 @@ export function WhoDoesWhat() {
             className="bg-black text-white p-8"
           >
             <div className="flex items-center gap-3 mb-1">
-              <Bot size={20} className="text-white/50" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/source-logo.svg"
+                alt="Source AI"
+                className="w-[22px] h-[22px] invert opacity-50"
+              />
               <p className="text-[24px] font-bold tracking-[-0.02em]">
                 Source AI
               </p>

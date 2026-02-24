@@ -21,6 +21,7 @@ export function Slide({
   ref,
 }: SlideProps) {
   const [scale, setScale] = useState(1);
+  const isDark = bg.includes("black");
 
   useEffect(() => {
     const update = () => {
@@ -46,7 +47,18 @@ export function Slide({
           transform: `translate(-50%, -50%) scale(${scale})`,
         }}
       >
-        <div className={`w-full h-full ${className}`}>{children}</div>
+        <div className={`w-full h-full relative ${className}`}>
+          {children}
+          {/* Source logo — bottom right */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/source-logo.svg"
+            alt=""
+            className={`absolute bottom-[30px] right-[40px] w-[24px] h-[24px] pointer-events-none ${
+              isDark ? "opacity-[0.2] invert" : "opacity-[0.1]"
+            }`}
+          />
+        </div>
       </div>
     </section>
   );
