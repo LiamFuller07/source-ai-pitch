@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
-import { ExternalLink } from "lucide-react";
 import { Slide } from "./Slide";
 
 export function Cta() {
@@ -32,29 +31,12 @@ export function Cta() {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.15 }}
-          className="text-[68px] font-semibold tracking-[-0.03em] leading-snug text-white mb-6"
+          className="text-[68px] font-semibold tracking-[-0.03em] leading-snug text-white"
         >
           Source is <span className="italic">NOT</span> a tool.
           <br />
           It fundamentally changes consulting in the age of AI.
         </motion.h2>
-
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-8"
-        >
-          <a
-            href="http://35.233.101.128:3002/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 bg-white text-black px-8 py-4 text-[13px] font-mono uppercase tracking-[0.1em] font-medium hover:bg-white/90 transition-colors"
-          >
-            <ExternalLink size={16} />
-            See Source in Action
-          </a>
-        </motion.div>
       </div>
     </Slide>
   );
