@@ -93,8 +93,8 @@ export function AiReplacesChain() {
             {oldChainSteps.map((step, i) => {
               const stepNum = 2 + i; // steps 2,3,4,5,6
               const isVisible = isStepVisible(stepNum);
-              // Cross out when the NEXT chain step appears (not immediately)
-              const isCrossed = step.crossedOut && isStepVisible(stepNum + 1);
+              // Cross out only after the "After" row appears (step 7)
+              const isCrossed = step.crossedOut && isStepVisible(7);
 
               return (
                 <div key={step.label} className="flex items-center gap-3">
