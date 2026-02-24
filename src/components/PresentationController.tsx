@@ -28,7 +28,63 @@ export const usePresentationStep = () => useContext(PresentationContext);
 export function PresentationProvider({ children }: { children: React.ReactNode }) {
   const [currentStep, setCurrentStep] = useState(0);
   const [maxSteps, setMaxSteps] = useState(0);
+  const currentSlideRef = useRef(0);
 
+  // Track which slide is currently visible
+  useEffect(() => {
+    const sections = document.querySelectorAll("section");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = Array.from(sections).indexOf(entry.target as HTMLElement);
+            if (idx >= 0) currentSlideRef.current = idx;
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
+
+  const scrollToSlide = useCallback((index: number) => {
+    const sections = document.querySelectorAll("section");
+    if (sections[index]) {
+      sections[index].scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
+
+  const hasMoreSteps = maxSteps > 0 && currentStep < maxSteps;
+
+  const advance = useCallback(() => {
+    if (hasMoreSteps) {
+      // Advance within the current slide's steps
+      setCurrentStep((prev) => Math.min(prev + 1, maxSteps));
+    } else {
+      // All steps done (or no steps) — scroll to next slide
+      const sections = document.querySelectorAll("section");
+      const nextIndex = currentSlideRef.current + 1;
+      if (nextIndex < sections.length) {
+        scrollToSlide(nextIndex);
+      }
+    }
+  }, [hasMoreSteps, maxSteps, scrollToSlide]);
+
+  const goBack = useCallback(() => {
+    if (currentStep > 0) {
+      // Go back a step within the current slide
+      setCurrentStep((prev) => Math.max(prev - 1, 0));
+    } else {
+      // Already at step 0 — scroll to previous slide
+      const prevIndex = currentSlideRef.current - 1;
+      if (prevIndex >= 0) {
+        scrollToSlide(prevIndex);
+      }
+    }
+  }, [currentStep, scrollToSlide]);
+
+  // Keep these for components that call them directly
   const nextStep = useCallback(() => {
     setCurrentStep((prev) => Math.min(prev + 1, maxSteps));
   }, [maxSteps]);
@@ -48,23 +104,23 @@ export function PresentationProvider({ children }: { children: React.ReactNode }
     [currentStep]
   );
 
-  // Keyboard navigation
+  // Keyboard navigation: Space, ArrowRight, ArrowLeft
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight" || e.key === " ") {
         e.preventDefault();
-        nextStep();
+        advance();
       } else if (e.key === "ArrowLeft") {
         e.preventDefault();
-        prevStep();
+        goBack();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [nextStep, prevStep]);
+  }, [advance, goBack]);
 
-  // Click anywhere to advance (ignore clicks on buttons, links, inputs)
+  // Click anywhere to advance (ignore interactive elements)
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -77,12 +133,12 @@ export function PresentationProvider({ children }: { children: React.ReactNode }
       ) {
         return;
       }
-      nextStep();
+      advance();
     };
 
     window.addEventListener("click", handleClick);
     return () => window.removeEventListener("click", handleClick);
-  }, [nextStep]);
+  }, [advance]);
 
   return (
     <PresentationContext.Provider
@@ -97,17 +153,15 @@ export function PresentationProvider({ children }: { children: React.ReactNode }
       }}
     >
       {children}
-      <PresentationControls />
+      <PresentationControls hasMoreSteps={hasMoreSteps} />
     </PresentationContext.Provider>
   );
 }
 
-function PresentationControls() {
-  const { currentStep, maxSteps, nextStep } = usePresentationStep();
+function PresentationControls({ hasMoreSteps }: { hasMoreSteps: boolean }) {
+  const { currentStep, maxSteps } = usePresentationStep();
   const [showNudge, setShowNudge] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const hasMoreSteps = maxSteps > 0 && currentStep < maxSteps;
 
   // Show nudge after 4s of inactivity when there are more steps
   useEffect(() => {
@@ -127,24 +181,24 @@ function PresentationControls() {
     <>
       {/* Subtle nudge arrow */}
       {showNudge && hasMoreSteps && (
-        <button
-          onClick={nextStep}
-          className="fixed bottom-8 right-1/2 translate-x-1/2 z-50 flex items-center gap-2 text-black/15 hover:text-black/40 transition-all duration-500 animate-pulse cursor-pointer"
-          aria-label="Next step"
+        <div
+          className="fixed bottom-8 right-1/2 translate-x-1/2 z-50 flex items-center gap-2 text-black/15 transition-all duration-500 animate-pulse pointer-events-none"
         >
           <span className="text-[11px] font-mono uppercase tracking-[0.1em]">
-            Click or press arrow
+            Press space or click
           </span>
           <ChevronRight size={16} />
-        </button>
+        </div>
       )}
 
-      {/* Step counter */}
-      <div className="fixed bottom-4 right-4 z-50">
-        <div className="text-[11px] font-mono text-black/30">
-          {currentStep} / {maxSteps}
+      {/* Step counter — only show when a slide has steps */}
+      {maxSteps > 0 && (
+        <div className="fixed bottom-4 right-4 z-50">
+          <div className="text-[11px] font-mono text-black/30">
+            {currentStep} / {maxSteps}
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }
