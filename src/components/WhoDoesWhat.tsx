@@ -82,12 +82,11 @@ const endUserItems = [
 ];
 
 const timelinePhases = [
-  { name: "Scan", days: 2, color: "bg-black/70" },
-  { name: "Analysis", days: 3, color: "bg-black/55" },
+  { name: "Scan", days: 1, color: "bg-black/70" },
+  { name: "Analysis", days: 2, color: "bg-black/55" },
   { name: "BRD", days: 2, color: "bg-black/45" },
-  { name: "Config", days: 5, color: "bg-black" },
-  { name: "Migration", days: 3, color: "bg-black/70" },
-  { name: "QA", days: 2, color: "bg-black/45" },
+  { name: "Config", days: 4, color: "bg-black" },
+  { name: "Migration & QA", days: 3, color: "bg-black/70" },
   { name: "Go-live", days: 1, color: "bg-black" },
 ];
 
@@ -151,7 +150,7 @@ export function WhoDoesWhat() {
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.3, delay: T.workflowLabel }}
-            className="text-[11px] font-mono uppercase tracking-[0.15em] text-black/30 mb-3"
+            className="text-[13px] font-mono uppercase tracking-[0.15em] text-black/30 mb-3"
           >
             Workflow
           </motion.p>
@@ -191,12 +190,12 @@ export function WhoDoesWhat() {
                         />
                       )}
                       <p
-                        className={`text-[13px] font-semibold ${style.text} leading-tight flex-1`}
+                        className={`text-[15px] font-semibold ${style.text} leading-tight flex-1`}
                       >
                         {step.label}
                       </p>
                       <span
-                        className={`text-[8px] font-mono uppercase tracking-[0.1em] px-2 py-0.5 shrink-0 ${style.tagStyle}`}
+                        className={`text-[10px] font-mono uppercase tracking-[0.1em] px-2 py-0.5 shrink-0 ${style.tagStyle}`}
                       >
                         {style.tag}
                       </span>
@@ -247,19 +246,19 @@ export function WhoDoesWhat() {
           >
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-black" />
-              <span className="text-[10px] font-mono text-black/35">
+              <span className="text-[12px] font-mono text-black/35">
                 Source AI
               </span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 border-2 border-black/15" />
-              <span className="text-[10px] font-mono text-black/35">
+              <span className="text-[12px] font-mono text-black/35">
                 Consultant
               </span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 border border-black/8" />
-              <span className="text-[10px] font-mono text-black/35">
+              <span className="text-[12px] font-mono text-black/35">
                 Client
               </span>
             </div>
@@ -286,10 +285,10 @@ export function WhoDoesWhat() {
                 Source AI
               </p>
             </div>
-            <p className="text-[10px] font-mono uppercase tracking-[0.12em] text-white/25 mb-4">
+            <p className="text-[12px] font-mono uppercase tracking-[0.12em] text-white/25 mb-4">
               Handled Autonomously &mdash; 85% of the work
             </p>
-            <div className="grid grid-cols-3 gap-x-8 gap-y-2.5">
+            <div className="grid grid-cols-3 gap-x-8 gap-y-3">
               {sourceItems.map((item, j) => (
                 <motion.div
                   key={j}
@@ -302,10 +301,10 @@ export function WhoDoesWhat() {
                   className="flex items-start gap-2"
                 >
                   <Check
-                    size={11}
+                    size={12}
                     className="text-white/25 shrink-0 mt-[3px]"
                   />
-                  <span className="text-[12px] text-white/60 leading-tight">
+                  <span className="text-[14px] text-white/60 leading-tight">
                     {item}
                   </span>
                 </motion.div>
@@ -328,7 +327,7 @@ export function WhoDoesWhat() {
                   Consultant
                 </p>
               </div>
-              <p className="text-[9px] font-mono uppercase tracking-[0.12em] text-black/25 mb-3">
+              <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-3">
                 Review &amp; Confirm
               </p>
               <div className="space-y-2.5">
@@ -343,8 +342,8 @@ export function WhoDoesWhat() {
                     }}
                     className="flex items-start gap-2.5"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-black/15 shrink-0 mt-[5px]" />
-                    <span className="text-[12px] text-black/50 leading-tight">
+                    <span className="w-1.5 h-1.5 rounded-full bg-black/15 shrink-0 mt-[6px]" />
+                    <span className="text-[14px] text-black/50 leading-tight">
                       {item}
                     </span>
                   </motion.div>
@@ -365,7 +364,7 @@ export function WhoDoesWhat() {
                   End User
                 </p>
               </div>
-              <p className="text-[9px] font-mono uppercase tracking-[0.12em] text-black/25 mb-3">
+              <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-3">
                 Answer &amp; Approve
               </p>
               <div className="space-y-2.5">
@@ -380,8 +379,8 @@ export function WhoDoesWhat() {
                     }}
                     className="flex items-start gap-2.5"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-black/10 shrink-0 mt-[5px]" />
-                    <span className="text-[12px] text-black/50 leading-tight">
+                    <span className="w-1.5 h-1.5 rounded-full bg-black/10 shrink-0 mt-[6px]" />
+                    <span className="text-[14px] text-black/50 leading-tight">
                       {item}
                     </span>
                   </motion.div>
@@ -392,17 +391,17 @@ export function WhoDoesWhat() {
         </div>
       </div>
 
-      {/* 18-Day Timeline — full width */}
+      {/* 13-Day Timeline — full width */}
       <div className="mt-5">
         <motion.p
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 0.3, delay: T.timelineLabel }}
-          className="text-[9px] font-mono uppercase tracking-[0.15em] text-black/25 mb-2"
+          className="text-[13px] font-mono uppercase tracking-[0.15em] text-black/25 mb-2"
         >
           18-Day Timeline
         </motion.p>
-        <div className="flex h-[44px] gap-[2px]">
+        <div className="flex h-[48px] gap-[2px]">
           {timelinePhases.map((phase, i) => (
             <motion.div
               key={phase.name}
@@ -419,10 +418,10 @@ export function WhoDoesWhat() {
               }}
               className={`${phase.color} flex flex-col items-center justify-center text-white`}
             >
-              <span className="text-[10px] font-medium leading-none">
+              <span className="text-[12px] font-medium leading-none">
                 {phase.name}
               </span>
-              <span className="text-[8px] font-mono text-white/45 mt-0.5">
+              <span className="text-[10px] font-mono text-white/45 mt-0.5">
                 {phase.days}d
               </span>
             </motion.div>
