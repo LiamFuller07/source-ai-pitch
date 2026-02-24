@@ -44,7 +44,19 @@ const consultants = [
     name: "Sean Gillespie",
     role: "Consultant",
     detail: "ERP strategy & client delivery.",
-    image: null,
+    image: "/team/sean.jpg",
+  },
+  {
+    name: "Matthew Rodgers",
+    role: "Senior Consultant",
+    detail: "ERP implementation & enterprise transformation.",
+    image: "/team/matthew.jpg",
+  },
+  {
+    name: "Bryan McCutchan",
+    role: "Consultant",
+    detail: "ERP migration & systems integration.",
+    image: "/team/bryan.jpg",
   },
 ];
 
@@ -201,7 +213,7 @@ export function Team() {
           >
             Consultants
           </motion.p>
-          <div className="grid grid-cols-2 gap-5 max-w-[700px]">
+          <div className="grid grid-cols-3 gap-5">
             {consultants.map((member, i) => (
               <motion.div
                 key={member.name}
