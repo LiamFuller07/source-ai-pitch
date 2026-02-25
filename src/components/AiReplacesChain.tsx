@@ -177,7 +177,7 @@ export function AiReplacesChain() {
               <img
                 src="/quickbooks-logo.svg"
                 alt="QuickBooks"
-                className="h-[28px] w-auto"
+                className="h-[48px] w-auto max-w-full"
               />
             </motion.div>
 
@@ -293,7 +293,7 @@ export function AiReplacesChain() {
               <img
                 src="/netsuite-logo.svg"
                 alt="NetSuite"
-                className="h-[28px] w-auto"
+                className="h-[48px] w-auto max-w-full"
               />
             </motion.div>
           </div>
