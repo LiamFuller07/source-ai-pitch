@@ -37,15 +37,12 @@ const flowSteps = [
 ];
 
 const sourceItems: { label: string; icon: LucideIcon }[] = [
-  { label: "System scanning & schema analysis", icon: Search },
+  { label: "System scanning & analysis", icon: Search },
   { label: "Business logic inference", icon: Lightbulb },
-  { label: "Strategy & pain point identification", icon: MessageSquare },
-  { label: "Questionnaire generation", icon: FileText },
-  { label: "Draft BRD (AS-IS to TO-BE)", icon: ClipboardCheck },
-  { label: "Migration plan generation", icon: Route },
-  { label: "Implementation & configuration", icon: Settings },
-  { label: "Data migration execution", icon: Database },
-  { label: "Validation & proof artifacts", icon: ShieldCheck },
+  { label: "BRD generation", icon: ClipboardCheck },
+  { label: "Migration planning", icon: Route },
+  { label: "Implementation & config", icon: Settings },
+  { label: "Testing & validation", icon: ShieldCheck },
 ];
 
 const consultantItems: { label: string; icon: LucideIcon }[] = [
@@ -242,7 +239,6 @@ export function WhoDoesWhat() {
           className="bg-black text-white px-8 py-6 flex flex-col"
         >
           <div className="flex items-center gap-3 mb-1">
-            <Sparkles size={20} className="text-white/45" />
             <p className="text-[22px] font-bold tracking-[-0.02em]">Source AI</p>
           </div>
           <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-white/25 mb-5">
