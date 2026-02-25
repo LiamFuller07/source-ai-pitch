@@ -115,9 +115,10 @@ export function WhoDoesWhat() {
         const isActive = globalIndex === activeStep;
         const isAI = step.owner === "source";
         const isLast = i === row.length - 1;
+        const isFinalStep = globalIndex === flowSteps.length - 1;
 
         return (
-          <div key={step.label} className="flex items-center min-w-0 flex-1">
+          <div key={step.label} className={`flex items-center min-w-0 ${isFinalStep ? "flex-[1.6]" : "flex-1"}`}>
             <motion.div
               initial={{ opacity: 0, scale: 0.85, y: 10 }}
               animate={
