@@ -35,7 +35,7 @@ export function Cta() {
         >
           Source is <span className="italic">NOT</span> a tool.
           <br />
-          It fundamentally changes consulting in the age of AI.
+          It changes consulting in the age of AI.
         </motion.h2>
       </div>
     </Slide>

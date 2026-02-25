@@ -9,19 +9,19 @@ import { Slide } from "./Slide";
 const migrationPaths = [
   {
     left: { name: "QuickBooks", logo: "/quickbooks-logo.svg", height: "h-[40px]" },
-    right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[36px]" },
+    right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[48px]" },
     bidirectional: true,
     connectedTools: ["+ Shopify", "+ HubSpot", "+ Stripe"],
   },
   {
     left: { name: "Xero", logo: "/xero-logo.svg", height: "h-[48px]" },
-    right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[36px]" },
+    right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[48px]" },
     bidirectional: false,
     connectedTools: ["+ Stripe", "+ PayPal"],
   },
   {
     left: { name: "QuickBooks", logo: "/quickbooks-logo.svg", height: "h-[40px]" },
-    right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[36px]" },
+    right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[48px]" },
     bidirectional: false,
     connectedTools: ["+ Salesforce", "+ SharePoint"],
   },
