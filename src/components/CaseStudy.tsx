@@ -152,9 +152,9 @@ export function CaseStudy() {
                 width: `${(phase.days / totalDays) * 100}%`,
                 transformOrigin: "left",
               }}
-              className={`${phase.color} flex flex-col items-center justify-center text-white gap-1`}
+              className={`${phase.color} flex flex-col items-center justify-center text-white gap-1.5`}
             >
-              <phase.icon size={14} className="text-white/40" />
+              <phase.icon size={12} className="text-white" />
               <span className="text-[15px] font-bold leading-none">
                 {phase.name}
               </span>
