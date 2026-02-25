@@ -96,9 +96,6 @@ export function SupportedSystems() {
                   alt={path.left.name}
                   className={`${path.left.height} w-auto max-w-[180px] object-contain`}
                 />
-                <span className="text-[13px] font-mono text-black/25">
-                  {path.left.name}
-                </span>
                 {/* Connected tools */}
                 {path.connectedTools && (
                   <div className="flex flex-wrap items-center justify-center gap-1 mt-1">
@@ -129,9 +126,6 @@ export function SupportedSystems() {
                   alt={path.right.name}
                   className={`${path.right.height} w-auto max-w-[180px] object-contain`}
                 />
-                <span className="text-[13px] font-mono text-black/25">
-                  {path.right.name}
-                </span>
               </div>
             </div>
           </motion.div>
