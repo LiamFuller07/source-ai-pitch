@@ -3,15 +3,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
-import { ArrowRight } from "lucide-react";
 import { Slide } from "./Slide";
-
-const migrations = [
-  { from: "QuickBooks", to: "NetSuite" },
-  { from: "Xero", to: "NetSuite" },
-  { from: "QuickBooks", to: "Dynamics 365" },
-  { from: "Xero", to: "Dynamics 365" },
-];
 
 const comparisonRows = [
   {
@@ -32,7 +24,7 @@ const comparisonRows = [
   {
     label: "Scope Creep Risk",
     traditional: "High — discovered mid-build",
-    source: "Low — system scan upfront",
+    source: "Low — AI system scan",
   },
   {
     label: "Offshore Team Ramp-up",
@@ -126,31 +118,6 @@ export function Pricing() {
               </div>
             </motion.div>
           ))}
-        </motion.div>
-
-        {/* Supported migration paths */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.22 }}
-          className="mb-6 flex items-center gap-6"
-        >
-          <p className="text-[12px] font-mono uppercase tracking-[0.12em] text-black/35 shrink-0">
-            &lt; 21 Day Migrations
-          </p>
-          <div className="h-[1px] w-6 bg-black/15" />
-          <div className="flex items-center gap-2">
-            {migrations.map((m, i) => (
-              <div key={`${m.from}-${m.to}`} className="flex items-center gap-2">
-                <span className="text-[13px] font-mono text-black/50 bg-black/[0.04] px-3 py-1">
-                  {m.from} → {m.to}
-                </span>
-                {i < migrations.length - 1 && (
-                  <div className="w-[1px] h-4 bg-black/10" />
-                )}
-              </div>
-            ))}
-          </div>
         </motion.div>
 
         {/* Revenue split breakdown */}
