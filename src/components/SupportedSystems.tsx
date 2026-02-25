@@ -8,26 +8,27 @@ import { Slide } from "./Slide";
 
 const migrationPaths = [
   {
-    left: { name: "QuickBooks", logo: "/quickbooks-logo.svg", height: "h-[52px]" },
-    right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[80px]" },
+    left: { name: "QuickBooks", logo: "/quickbooks-logo.svg", height: "h-[40px]" },
+    right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[36px]" },
     bidirectional: true,
     connectedTools: ["+ Shopify", "+ HubSpot", "+ Stripe"],
   },
   {
-    left: { name: "Xero", logo: "/xero-logo.svg", height: "h-[52px]" },
-    right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[80px]" },
+    left: { name: "Xero", logo: "/xero-logo.svg", height: "h-[48px]" },
+    right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[36px]" },
     bidirectional: false,
     connectedTools: ["+ Stripe", "+ PayPal"],
   },
   {
-    left: { name: "Dynamics 365", logo: "/dynamics365-logo.svg", height: "h-[52px]" },
-    right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[80px]" },
+    left: { name: "QuickBooks", logo: "/quickbooks-logo.svg", height: "h-[40px]" },
+    right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[36px]" },
     bidirectional: false,
     connectedTools: ["+ Salesforce", "+ SharePoint"],
   },
 ];
 
 const comingSoon = [
+  "Dynamics 365",
   "Sage",
   "MYOB",
   "SAP",
@@ -62,8 +63,7 @@ export function SupportedSystems() {
           AI Supported Migrations
         </h2>
         <p className="text-[20px] text-black/45 max-w-[900px] leading-relaxed">
-          Source AI handles the full migration between these systems —
-          not just one platform, but any supported path.
+          Full migration support across any of these paths.
         </p>
       </motion.div>
 
@@ -176,14 +176,6 @@ export function SupportedSystems() {
             </div>
           </div>
 
-          <div className="shrink-0 ml-8">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/netsuite-logo.svg"
-              alt="NetSuite"
-              className="h-[60px] w-auto opacity-15"
-            />
-          </div>
         </div>
       </motion.div>
     </Slide>

@@ -84,11 +84,11 @@ export function CaseStudy() {
           <img src="/quickbooks-logo.svg" alt="QuickBooks" className="h-[36px] w-auto" />
           <span className="text-[24px] text-black/20">→</span>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/netsuite-logo.svg" alt="NetSuite" className="h-[52px] w-auto" />
+          <img src="/netsuite-logo.svg" alt="NetSuite" className="h-[36px] w-auto" />
           <div className="w-[1px] h-10 bg-black/10 ml-2" />
           <div className="flex flex-col gap-1">
-            <span className="text-[11px] font-mono uppercase tracking-[0.1em] text-black/25">Mid-market retail</span>
-            <span className="text-[11px] font-mono uppercase tracking-[0.1em] text-black/25">~120 employees</span>
+            <span className="text-[11px] font-mono uppercase tracking-[0.1em] text-black/70">Mid-market retail</span>
+            <span className="text-[11px] font-mono uppercase tracking-[0.1em] text-black/70">~120 employees</span>
           </div>
         </div>
       </motion.div>
@@ -248,7 +248,7 @@ export function CaseStudy() {
             {/* Quote */}
             <div className="flex flex-col flex-1 justify-center">
               <Quote size={20} className="text-white/20 mb-4 scale-x-[-1]" />
-              <p className="text-[18px] text-white/80 leading-relaxed mb-6 italic">
+              <p className="text-[18px] text-white font-medium leading-relaxed mb-6 italic">
                 &ldquo;We quoted €14K fixed-price and delivered in under three
                 weeks. Our old model would have been €35K over four months with
                 an offshore team. Source handled the technical execution — we
