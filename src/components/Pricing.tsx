@@ -14,7 +14,7 @@ const comparisonRows = [
   {
     label: "Typical Cost to Client",
     traditional: "$30K–$40K",
-    source: "$8K–$15K",
+    source: "$8K–$15K*",
   },
   {
     label: "BRD Revisions",
@@ -147,6 +147,16 @@ export function Pricing() {
             </div>
           </div>
         </motion.div>
+
+        {/* Footnote */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.35 }}
+          className="mt-4 text-[12px] text-black/25 leading-relaxed"
+        >
+          * Indicative pricing based on a standard mid-market migration. Final quote provided after system scan.
+        </motion.p>
       </div>
     </Slide>
   );
