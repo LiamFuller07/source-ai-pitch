@@ -21,14 +21,13 @@ const migrationPaths = [
   },
   {
     left: { name: "QuickBooks", logo: "/quickbooks-logo.svg", height: "h-[40px]" },
-    right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[48px]" },
+    right: { name: "Dynamics 365", logo: "/dynamics365-logo.svg", height: "h-[48px]" },
     bidirectional: false,
     connectedTools: ["+ Salesforce", "+ SharePoint", "+ 100s more"],
   },
 ];
 
 const comingSoon = [
-  "Dynamics 365",
   "Sage",
   "MYOB",
   "SAP",
