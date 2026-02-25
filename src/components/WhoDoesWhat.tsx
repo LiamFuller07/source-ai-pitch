@@ -86,7 +86,7 @@ export function WhoDoesWhat() {
 
     const handler = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight" || e.key === "ArrowDown") {
-        if (activeStep < flowSteps.length - 1) {
+        if (activeStep < flowSteps.length + 2) {
           e.preventDefault();
           e.stopPropagation();
           setActiveStep((prev) => prev + 1);
@@ -234,20 +234,18 @@ export function WhoDoesWhat() {
       {/* Horizontal separator — only after all steps revealed */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={activeStep >= flowSteps.length - 1 ? { opacity: 1 } : { opacity: 0 }}
+        animate={activeStep >= flowSteps.length ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.3 }}
         className="border-t border-black/10 my-6"
       />
 
-      {/* Responsibility cards — only after all steps revealed */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={activeStep >= flowSteps.length - 1 ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className="flex-1 grid grid-cols-[1.2fr_1fr_1fr] gap-[4px] min-h-0"
-      >
+      {/* Responsibility cards — appear one by one */}
+      <div className="flex-1 grid grid-cols-[1.2fr_1fr_1fr] gap-[4px] min-h-0">
         {/* Source AI */}
-        <div
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={activeStep >= flowSteps.length ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
           className="bg-black text-white px-8 py-6 flex flex-col"
         >
           <div className="flex items-center gap-3 mb-1">
@@ -266,10 +264,13 @@ export function WhoDoesWhat() {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Consultant */}
-        <div
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={activeStep >= flowSteps.length + 1 ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
           className="bg-white border border-black/10 px-8 py-6 flex flex-col"
         >
           <div className="flex items-center gap-2.5 mb-1">
@@ -291,10 +292,13 @@ export function WhoDoesWhat() {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* End User */}
-        <div
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={activeStep >= flowSteps.length + 2 ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
           className="bg-white border border-black/10 px-8 py-6 flex flex-col"
         >
           <div className="flex items-center gap-2.5 mb-1">
@@ -316,8 +320,8 @@ export function WhoDoesWhat() {
               </div>
             ))}
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </Slide>
   );
 }
