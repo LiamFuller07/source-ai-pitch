@@ -16,7 +16,7 @@ const reasons = [
   },
   {
     title: "Happier Customers",
-    stat: "<21",
+    stat: "Sub 21",
     statLabel: "day migrations",
     description:
       "Days not months for migrations — faster delivery with validated artifacts",
