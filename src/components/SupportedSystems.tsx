@@ -11,16 +11,19 @@ const migrationPaths = [
     left: { name: "QuickBooks", logo: "/quickbooks-logo.svg", height: "h-[52px]" },
     right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[80px]" },
     bidirectional: true,
+    connectedTools: ["+ Shopify", "+ HubSpot", "+ Stripe"],
   },
   {
     left: { name: "Xero", logo: "/xero-logo.svg", height: "h-[52px]" },
     right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[80px]" },
     bidirectional: false,
+    connectedTools: ["+ Stripe", "+ PayPal"],
   },
   {
     left: { name: "Dynamics 365", logo: "/dynamics365-logo.svg", height: "h-[52px]" },
     right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[80px]" },
     bidirectional: false,
+    connectedTools: ["+ Salesforce", "+ SharePoint"],
   },
 ];
 
@@ -30,6 +33,9 @@ const comingSoon = [
   "SAP",
   "Freshbooks",
   "Zoho Books",
+  "DEAR Systems",
+  "Reckon",
+  "Custom / Legacy ERPs",
 ];
 
 export function SupportedSystems() {
@@ -83,7 +89,7 @@ export function SupportedSystems() {
 
             {/* Logos with arrow */}
             <div className="flex items-center justify-center gap-6 flex-1">
-              <div className="flex flex-col items-center gap-4 flex-1">
+              <div className="flex flex-col items-center gap-3 flex-1">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={path.left.logo}
@@ -93,6 +99,19 @@ export function SupportedSystems() {
                 <span className="text-[13px] font-mono text-black/25">
                   {path.left.name}
                 </span>
+                {/* Connected tools */}
+                {path.connectedTools && (
+                  <div className="flex flex-wrap items-center justify-center gap-1 mt-1">
+                    {path.connectedTools.map((tool) => (
+                      <span
+                        key={tool}
+                        className="text-[10px] font-mono text-black/30 bg-black/[0.04] px-2 py-0.5"
+                      >
+                        {tool}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="shrink-0">
@@ -103,7 +122,7 @@ export function SupportedSystems() {
                 )}
               </div>
 
-              <div className="flex flex-col items-center gap-4 flex-1">
+              <div className="flex flex-col items-center gap-3 flex-1">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={path.right.logo}
