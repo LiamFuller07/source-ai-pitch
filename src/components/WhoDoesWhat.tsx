@@ -244,7 +244,7 @@ export function WhoDoesWhat() {
           <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-white/25 mb-5">
             Handled Autonomously &mdash; 85% of the work
           </p>
-          <div className="grid grid-cols-2 gap-x-8 gap-y-5 flex-1 content-start">
+          <div className="space-y-5 flex-1">
             {sourceItems.map((item, j) => (
               <div key={j} className="flex items-center gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-white/40 shrink-0" />
