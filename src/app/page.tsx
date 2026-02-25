@@ -32,6 +32,7 @@ export default function Home() {
         <CaseStudy />
         <Team />
         <Pricing />
+        <SupportedSystems />
         <Cta />
         <Demo />
       </main>
