@@ -137,25 +137,6 @@ export function WhoDoesWhat() {
                   : "bg-transparent border border-transparent"
               }`}
             >
-              {/* AI indicator */}
-              <div className="flex items-center justify-between mb-3">
-                {isAI ? (
-                  <Sparkles
-                    size={14}
-                    className={
-                      isActive ? "text-white/50" : "text-black/20"
-                    }
-                  />
-                ) : (
-                  <User
-                    size={14}
-                    className={
-                      isActive ? "text-white/50" : "text-black/20"
-                    }
-                  />
-                )}
-              </div>
-
               {/* Icon + label */}
               <div className="flex items-center gap-3">
                 <step.icon
