@@ -63,9 +63,12 @@ export function Pricing() {
           <p className="text-[16px] font-mono uppercase tracking-[0.2em] text-black/30 mb-3">
             Pricing
           </p>
-          <h2 className="text-[56px] font-semibold tracking-[-0.03em] text-black">
+          <h2 className="text-[56px] font-semibold tracking-[-0.03em] text-black mb-3">
             Simple Revenue Share
           </h2>
+          <p className="text-[20px] text-black/45 leading-relaxed">
+            Source has transparent and flexible pricing, looking for partners.
+          </p>
         </motion.div>
 
         {/* Comparison table */}
@@ -119,6 +122,9 @@ export function Pricing() {
             </motion.div>
           ))}
         </motion.div>
+
+        {/* Separator */}
+        <div className="border-t border-black/10 my-2" />
 
         {/* Revenue split breakdown */}
         <motion.div
