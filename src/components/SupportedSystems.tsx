@@ -3,28 +3,30 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowLeftRight } from "lucide-react";
 import { Slide } from "./Slide";
 
 const migrationPaths = [
   {
-    from: { name: "QuickBooks", logo: "/quickbooks-logo.svg", height: "h-[52px]" },
-    to: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[80px]" },
+    left: { name: "QuickBooks", logo: "/quickbooks-logo.svg", height: "h-[52px]" },
+    right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[80px]" },
+    bidirectional: true,
   },
   {
-    from: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[80px]" },
-    to: { name: "QuickBooks", logo: "/quickbooks-logo.svg", height: "h-[52px]" },
+    left: { name: "Xero", logo: "/xero-logo.svg", height: "h-[52px]" },
+    right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[80px]" },
+    bidirectional: false,
   },
   {
-    from: { name: "Xero", logo: "/xero-logo.svg", height: "h-[52px]" },
-    to: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[80px]" },
+    left: { name: "Dynamics 365", logo: "/dynamics365-logo.svg", height: "h-[52px]" },
+    right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[80px]" },
+    bidirectional: false,
   },
 ];
 
 const comingSoon = [
   "Sage",
   "MYOB",
-  "Dynamics 365",
   "SAP",
   "Freshbooks",
   "Zoho Books",
@@ -51,7 +53,7 @@ export function SupportedSystems() {
           Supported Systems
         </p>
         <h2 className="text-[56px] font-semibold tracking-[-0.03em] text-black mb-3">
-          Migration Paths
+          AI Supported Migrations
         </h2>
         <p className="text-[20px] text-black/45 max-w-[900px] leading-relaxed">
           Source AI handles the full migration between these systems —
@@ -63,7 +65,7 @@ export function SupportedSystems() {
       <div className="flex-1 grid grid-cols-3 gap-5 mb-8 min-h-0">
         {migrationPaths.map((path, i) => (
           <motion.div
-            key={`${path.from.name}-${path.to.name}`}
+            key={`${path.left.name}-${path.right.name}`}
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.2 + i * 0.1 }}
@@ -79,33 +81,37 @@ export function SupportedSystems() {
               </span>
             </div>
 
-            {/* From → To with logos */}
+            {/* Logos with arrow */}
             <div className="flex items-center justify-center gap-6 flex-1">
               <div className="flex flex-col items-center gap-4 flex-1">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={path.from.logo}
-                  alt={path.from.name}
-                  className={`${path.from.height} w-auto max-w-[180px] object-contain`}
+                  src={path.left.logo}
+                  alt={path.left.name}
+                  className={`${path.left.height} w-auto max-w-[180px] object-contain`}
                 />
                 <span className="text-[13px] font-mono text-black/25">
-                  {path.from.name}
+                  {path.left.name}
                 </span>
               </div>
 
               <div className="shrink-0">
-                <ArrowRight size={36} strokeWidth={1.5} className="text-black/25" />
+                {path.bidirectional ? (
+                  <ArrowLeftRight size={36} strokeWidth={1.5} className="text-black/25" />
+                ) : (
+                  <ArrowRight size={36} strokeWidth={1.5} className="text-black/25" />
+                )}
               </div>
 
               <div className="flex flex-col items-center gap-4 flex-1">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={path.to.logo}
-                  alt={path.to.name}
-                  className={`${path.to.height} w-auto max-w-[180px] object-contain`}
+                  src={path.right.logo}
+                  alt={path.right.name}
+                  className={`${path.right.height} w-auto max-w-[180px] object-contain`}
                 />
                 <span className="text-[13px] font-mono text-black/25">
-                  {path.to.name}
+                  {path.right.name}
                 </span>
               </div>
             </div>
