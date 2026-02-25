@@ -8,21 +8,32 @@ import {
   BadgeDollarSign,
   MessageSquareText,
   ClipboardCheck,
+  ScanSearch,
+  BrainCircuit,
+  Lightbulb,
+  Network,
+  FileText,
+  Route,
+  Wrench,
+  ShieldCheck,
+  CheckCircle2,
+  Rocket,
+  type LucideIcon,
 } from "lucide-react";
 import { Slide } from "./Slide";
 import { usePresentationStep } from "./PresentationController";
 
-const engineCapabilities = [
-  "System scanning",
-  "Business logic inference",
-  "Strategy generation",
-  "Data mapping & discovery",
-  "BRD generation",
-  "Migration plan",
-  "Implementation & config",
-  "Testing & QA",
-  "Validation & proof",
-  "Go-live execution",
+const engineCapabilities: { label: string; icon: LucideIcon }[] = [
+  { label: "System scanning", icon: ScanSearch },
+  { label: "Business logic inference", icon: BrainCircuit },
+  { label: "Strategy generation", icon: Lightbulb },
+  { label: "Data mapping & discovery", icon: Network },
+  { label: "BRD generation", icon: FileText },
+  { label: "Migration plan", icon: Route },
+  { label: "Implementation & config", icon: Wrench },
+  { label: "Testing & QA", icon: ShieldCheck },
+  { label: "Validation & proof", icon: CheckCircle2 },
+  { label: "Go-live execution", icon: Rocket },
 ];
 
 const oldChainSteps = [
@@ -254,14 +265,14 @@ export function AiReplacesChain() {
               <div className="grid grid-cols-2 gap-x-8 gap-y-3.5">
                 {engineCapabilities.map((cap, i) => (
                   <motion.div
-                    key={cap}
+                    key={cap.label}
                     initial={{ opacity: 0 }}
                     animate={isStepVisible(9) ? { opacity: 1 } : {}}
                     transition={{ delay: 0.1 + i * 0.05 }}
                     className="flex items-center gap-3 whitespace-nowrap"
                   >
-                    <div className="w-3 h-3 bg-white shrink-0" />
-                    <span className="text-[16px] text-white/70">{cap}</span>
+                    <cap.icon size={15} className="text-white/35 shrink-0" />
+                    <span className="text-[16px] text-white/70">{cap.label}</span>
                   </motion.div>
                 ))}
               </div>
@@ -348,15 +359,6 @@ export function AiReplacesChain() {
                   className="absolute inset-y-0 left-0 flex items-center"
                 >
                   <div className="h-[10px] bg-black w-full" />
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={isStepVisible(11) ? { opacity: 1 } : {}}
-                  transition={{ duration: 0.3, delay: 0.8 }}
-                  className="absolute top-0 bottom-0 flex items-center"
-                  style={{ left: "8%" }}
-                >
-                  <div className="w-3 h-3 rounded-full bg-black" />
                 </motion.div>
               </div>
               <motion.p
