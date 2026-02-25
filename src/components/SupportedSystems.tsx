@@ -14,7 +14,7 @@ const migrationPaths = [
     connectedTools: ["+ Shopify", "+ HubSpot", "+ Stripe", "+ 100s more"],
   },
   {
-    left: { name: "Xero", logo: "/xero-logo.svg", height: "h-[60px]" },
+    left: { name: "Xero", logo: "/xero-logo.svg", height: "h-[36px]" },
     right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[48px]" },
     bidirectional: false,
     connectedTools: ["+ Stripe", "+ PayPal", "+ 100s more"],
