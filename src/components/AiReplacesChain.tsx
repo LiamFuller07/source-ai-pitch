@@ -272,7 +272,7 @@ export function AiReplacesChain() {
                     className="flex items-center gap-3 whitespace-nowrap"
                   >
                     <cap.icon size={15} className="text-white/35 shrink-0" />
-                    <span className="text-[16px] text-white/70">{cap.label}</span>
+                    <span className="text-[16px] font-medium text-white">{cap.label}</span>
                   </motion.div>
                 ))}
               </div>

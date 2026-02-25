@@ -71,21 +71,21 @@ export function WhyPartner() {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="mb-10"
+          className="mb-8"
         >
-          <p className="text-[18px] font-mono uppercase tracking-[0.2em] text-black/40 mb-4">
+          <p className="text-[14px] font-mono uppercase tracking-[0.2em] text-black/30 mb-3">
             The Partnership
           </p>
-          <h2 className="text-[72px] font-semibold tracking-[-0.03em] mb-4">
+          <h2 className="text-[52px] font-semibold tracking-[-0.03em] mb-3">
             Why Partner with Source AI
           </h2>
-          <p className="text-[24px] text-black/45 max-w-[900px] leading-relaxed">
+          <p className="text-[20px] text-black/45 max-w-[900px] leading-relaxed">
             Source AI doesn&apos;t replace your consultancy — it makes every
             engagement more profitable, faster, and more scalable.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-3 gap-8">
+        <div className="grid grid-cols-3 gap-6">
           {reasons.map((reason, i) => (
             <motion.div
               key={reason.title}
@@ -96,18 +96,18 @@ export function WhyPartner() {
                   : { opacity: 0, scale: 0.8, y: 20 }
               }
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="border-2 border-black/10 p-10 hover:border-black/25 transition-colors flex flex-col justify-center min-h-[240px]"
+              className="border border-black/10 p-8 hover:border-black/25 transition-colors flex flex-col justify-center min-h-[200px]"
             >
-              <p className="text-[64px] font-bold tracking-[-0.03em] text-black leading-none mb-2">
+              <p className="text-[48px] font-bold tracking-[-0.03em] text-black leading-none mb-1">
                 {reason.stat}
               </p>
-              <p className="text-[16px] font-mono uppercase tracking-[0.15em] text-black/30 mb-6">
+              <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/30 mb-4">
                 {reason.statLabel}
               </p>
-              <p className="text-[24px] font-semibold text-black mb-3">
+              <p className="text-[20px] font-semibold text-black mb-2">
                 {reason.title}
               </p>
-              <p className="text-[18px] text-black/50 leading-relaxed">
+              <p className="text-[15px] text-black/50 leading-relaxed">
                 {reason.description}
               </p>
             </motion.div>

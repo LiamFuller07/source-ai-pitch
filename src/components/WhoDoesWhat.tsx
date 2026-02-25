@@ -24,16 +24,24 @@ import { Slide } from "./Slide";
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
-const flowSteps = [
-  { owner: "consultant" as const, label: "Client Call & Notes", icon: FileText },
-  { owner: "source" as const, label: "Connect & Scan", icon: Search },
-  { owner: "source" as const, label: "AI Questionnaire", icon: MessageSquare },
-  { owner: "source" as const, label: "Draft BRD", icon: FileText },
-  { owner: "consultant" as const, label: "Consultant Review", icon: ClipboardCheck },
-  { owner: "customer" as const, label: "Customer Sign-Off", icon: Check },
-  { owner: "source" as const, label: "AI Migration", icon: Rocket },
-  { owner: "source" as const, label: "Testing & QA", icon: ShieldCheck },
-  { owner: "consultant" as const, label: "Go-Live & Handover", icon: HeartHandshake },
+type FlowStep = {
+  owner: "consultant" | "source" | "customer";
+  label: string;
+  icon: LucideIcon | null;
+  emoji?: string;
+};
+
+const flowSteps: FlowStep[] = [
+  { owner: "consultant", label: "Client Call & Notes", icon: FileText },
+  { owner: "source", label: "Connect & Scan", icon: Search },
+  { owner: "source", label: "AI Questionnaire", icon: MessageSquare },
+  { owner: "source", label: "Draft BRD", icon: FileText },
+  { owner: "consultant", label: "Consultant Review", icon: ClipboardCheck },
+  { owner: "customer", label: "Customer Sign-Off", icon: Check },
+  { owner: "source", label: "AI Migration", icon: Rocket },
+  { owner: "source", label: "Testing & QA", icon: ShieldCheck },
+  { owner: "consultant", label: "Go-Live & Handover", icon: HeartHandshake },
+  { owner: "customer", label: "Happy Customer", icon: null, emoji: "🎉" },
 ];
 
 const sourceItems: { label: string; icon: LucideIcon }[] = [
@@ -60,7 +68,7 @@ const endUserItems: { label: string; icon: LucideIcon }[] = [
   { label: "Accepts final migration", icon: Check },
 ];
 
-// Row layout: 5 + 4
+// Row layout: 5 + 5
 const flowRow1 = flowSteps.slice(0, 5);
 const flowRow2 = flowSteps.slice(5);
 
@@ -143,12 +151,16 @@ export function WhoDoesWhat() {
               )}
               {/* Icon + label */}
               <div className="flex items-center gap-3">
-                <step.icon
-                  size={18}
-                  className={`shrink-0 ${
-                    isActive ? "text-white/50" : "text-black/25"
-                  }`}
-                />
+                {step.emoji ? (
+                  <span className="text-[18px] shrink-0">{step.emoji}</span>
+                ) : step.icon ? (
+                  <step.icon
+                    size={18}
+                    className={`shrink-0 ${
+                      isActive ? "text-white/50" : "text-black/25"
+                    }`}
+                  />
+                ) : null}
                 <p
                   className={`text-[17px] font-semibold leading-tight ${
                     isActive ? "text-white" : "text-black"
