@@ -110,7 +110,7 @@ export function WhoDoesWhat() {
   }, [inView, activeStep]);
 
   const renderStepRow = (row: typeof flowSteps, rowOffset: number) => (
-    <div className="flex items-stretch gap-0">
+    <div className="flex items-stretch gap-2">
       {row.map((step, i) => {
         const globalIndex = rowOffset + i;
         const isVisible = globalIndex <= activeStep;
@@ -129,7 +129,7 @@ export function WhoDoesWhat() {
               }
               transition={{ duration: 0.35, ease: "easeOut" }}
               onClick={() => setActiveStep(globalIndex)}
-              className={`flex-1 min-w-0 px-5 py-5 cursor-pointer transition-colors duration-200 ${
+              className={`flex-1 min-w-0 px-5 py-6 cursor-pointer transition-colors duration-200 ${
                 isActive
                   ? "bg-black text-white"
                   : isVisible
@@ -206,11 +206,11 @@ export function WhoDoesWhat() {
         transition={{ duration: 0.3, delay: 0.2 }}
         className="text-[12px] font-mono uppercase tracking-[0.18em] text-black/25 mb-3"
       >
-        Workflow &mdash; Use arrow keys to step through
+        Workflow
       </motion.p>
 
       {/* Workflow rows — 5+5 */}
-      <div className="flex flex-col gap-[6px] mb-0">
+      <div className="flex flex-col gap-3 mb-0">
         {renderStepRow(flowRow1, 0)}
         {renderStepRow(flowRow2, 5)}
       </div>
@@ -232,16 +232,16 @@ export function WhoDoesWhat() {
       >
         {/* Source AI */}
         <div
-          className="bg-black text-white p-8 flex flex-col"
+          className="bg-black text-white px-8 py-5 flex flex-col"
         >
           <div className="flex items-center gap-3 mb-1">
             <Sparkles size={20} className="text-white/45" />
             <p className="text-[22px] font-bold tracking-[-0.02em]">Source AI</p>
           </div>
-          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-white/25 mb-6">
+          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-white/25 mb-4">
             Handled Autonomously &mdash; 85% of the work
           </p>
-          <div className="grid grid-cols-2 gap-x-6 gap-y-4 flex-1 content-start">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-3 flex-1 content-start">
             {sourceItems.map((item, j) => (
               <div key={j} className="flex items-start gap-2.5">
                 <item.icon size={14} className="text-white/25 shrink-0 mt-[3px]" />
@@ -255,7 +255,7 @@ export function WhoDoesWhat() {
 
         {/* Consultant */}
         <div
-          className="bg-white border border-black/10 p-8 flex flex-col"
+          className="bg-white border border-black/10 px-8 py-5 flex flex-col"
         >
           <div className="flex items-center gap-2.5 mb-1">
             <User size={18} className="text-black/30" />
@@ -263,10 +263,10 @@ export function WhoDoesWhat() {
               Consultant
             </p>
           </div>
-          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-6">
+          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-4">
             Review &amp; Confirm
           </p>
-          <div className="space-y-4">
+          <div className="space-y-3">
             {consultantItems.map((item, j) => (
               <div key={j} className="flex items-start gap-2.5">
                 <item.icon size={14} className="text-black/20 shrink-0 mt-[3px]" />
@@ -280,7 +280,7 @@ export function WhoDoesWhat() {
 
         {/* End User */}
         <div
-          className="bg-white border border-black/10 p-8 flex flex-col"
+          className="bg-white border border-black/10 px-8 py-5 flex flex-col"
         >
           <div className="flex items-center gap-2.5 mb-1">
             <Building2 size={18} className="text-black/30" />
@@ -288,10 +288,10 @@ export function WhoDoesWhat() {
               End User
             </p>
           </div>
-          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-6">
+          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-4">
             Answer &amp; Approve
           </p>
-          <div className="space-y-4">
+          <div className="space-y-3">
             {endUserItems.map((item, j) => (
               <div key={j} className="flex items-start gap-2.5">
                 <item.icon size={14} className="text-black/15 shrink-0 mt-[3px]" />

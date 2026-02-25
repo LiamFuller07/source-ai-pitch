@@ -14,14 +14,14 @@ const migrationPaths = [
     connectedTools: ["+ Shopify", "+ HubSpot", "+ Stripe", "+ 100s more"],
   },
   {
-    left: { name: "Xero", logo: "/xero-logo.svg", height: "h-[48px]" },
+    left: { name: "Xero", logo: "/xero-logo.svg", height: "h-[60px]" },
     right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[48px]" },
     bidirectional: false,
     connectedTools: ["+ Stripe", "+ PayPal", "+ 100s more"],
   },
   {
     left: { name: "QuickBooks", logo: "/quickbooks-logo.svg", height: "h-[40px]" },
-    right: { name: "Dynamics 365", logo: "/dynamics365-logo.svg", height: "h-[48px]" },
+    right: { name: "Dynamics 365", logo: "/dynamics365-logo.svg", height: "h-[60px]" },
     bidirectional: false,
     connectedTools: ["+ Salesforce", "+ SharePoint", "+ 100s more"],
   },

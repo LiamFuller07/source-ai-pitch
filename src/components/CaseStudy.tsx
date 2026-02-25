@@ -20,13 +20,13 @@ const heroMetrics = [
   { value: "67%", unit: "", label: "Cost Savings", icon: TrendingDown },
 ];
 
-const timelinePhases: { name: string; days: number; color: string; icon: LucideIcon }[] = [
-  { name: "Scan", days: 1, color: "bg-black/60", icon: Sparkles },
-  { name: "Analysis", days: 2, color: "bg-black/45", icon: Sparkles },
-  { name: "BRD", days: 2, color: "bg-black/35", icon: Sparkles },
-  { name: "Config", days: 4, color: "bg-black", icon: Sparkles },
-  { name: "Migration & QA", days: 3, color: "bg-black/60", icon: Sparkles },
-  { name: "Go-live", days: 1, color: "bg-black", icon: User },
+const timelinePhases: { name: string; days: number; color: string; ai: boolean }[] = [
+  { name: "Scan", days: 1, color: "bg-black/60", ai: true },
+  { name: "Analysis", days: 2, color: "bg-black/45", ai: true },
+  { name: "BRD", days: 2, color: "bg-black/35", ai: true },
+  { name: "Config", days: 4, color: "bg-black", ai: true },
+  { name: "Migration & QA", days: 3, color: "bg-black/60", ai: true },
+  { name: "Go-live", days: 1, color: "bg-black", ai: false },
 ];
 
 const totalDays = timelinePhases.reduce((sum, p) => sum + p.days, 0);
@@ -152,19 +152,24 @@ export function CaseStudy() {
                 width: `${(phase.days / totalDays) * 100}%`,
                 transformOrigin: "left",
               }}
-              className={`${phase.color} flex flex-col items-center justify-center text-white gap-1.5`}
+              className={`${phase.color} flex flex-col items-center justify-center text-white gap-1`}
             >
-              <phase.icon size={12} className="text-white" />
               <span className="text-[15px] font-bold leading-none">
                 {phase.name}
               </span>
               <span className="text-[12px] font-mono font-medium text-white/50">
                 {phase.days}d
               </span>
+              <span className="text-[9px] font-mono uppercase tracking-[0.1em] text-white/40 mt-0.5">
+                {phase.ai ? "AI" : "You"}
+              </span>
             </motion.div>
           ))}
         </div>
       </div>
+
+      {/* Separator */}
+      <div className="border-t border-black/10 my-2" />
 
       {/* Bottom Row — fills remaining height */}
       <div className="flex-1 grid grid-cols-[1fr_1fr] gap-8 min-h-0">
