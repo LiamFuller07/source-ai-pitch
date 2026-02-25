@@ -28,13 +28,13 @@ const migrationPaths = [
 ];
 
 const comingSoon = [
-  "Sage",
   "MYOB",
-  "SAP",
+  "Acumatica",
   "Freshbooks",
   "Zoho Books",
   "DEAR Systems",
   "Reckon",
+  "Wave",
   "Custom / Legacy ERPs",
 ];
 

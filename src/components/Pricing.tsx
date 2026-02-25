@@ -145,7 +145,7 @@ export function Pricing() {
             <div className="w-[1px] h-16 bg-white/10" />
             <div>
               <p className="text-[24px] font-semibold tracking-[-0.02em] mb-2">
-                Try it risk-free.
+                Your first migration is free.
               </p>
               <p className="text-[16px] text-white/45 leading-relaxed max-w-[500px]">
                 Your first migration is on us — no cost, no commitment.
