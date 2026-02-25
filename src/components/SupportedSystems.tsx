@@ -154,9 +154,13 @@ export function SupportedSystems() {
               <p className="text-[12px] font-mono uppercase tracking-[0.12em] text-black/30 mb-3">
                 Coming Soon
               </p>
-              <p className="text-[36px] font-semibold tracking-[-0.03em] leading-none text-black">
-                Anything → NetSuite
-              </p>
+              <div className="flex items-center gap-4">
+                <span className="text-[36px] font-semibold tracking-[-0.03em] leading-none text-black">
+                  Anything →
+                </span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/netsuite-logo.svg" alt="NetSuite" className="h-[48px] w-auto" />
+              </div>
             </div>
 
             <div className="w-[1px] h-16 bg-black/10" />
