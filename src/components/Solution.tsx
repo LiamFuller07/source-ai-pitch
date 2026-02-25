@@ -43,7 +43,7 @@ export function Solution() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-[40px] text-black/50 leading-relaxed max-w-[1100px] mx-auto font-medium"
         >
-          An AI engine that automates 80% of ERP migrations —
+          An AI engine that automates <span className="text-black">80% of ERP migrations</span> —
           <br />
           so your consultancy wins more deals, moves faster,
           <br />
