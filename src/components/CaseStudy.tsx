@@ -64,18 +64,33 @@ export function CaseStudy() {
         initial={{ opacity: 0, y: 15 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.5, delay: T.header }}
-        className="mb-8"
+        className="mb-8 flex items-end justify-between"
       >
-        <p className="text-[14px] font-mono uppercase tracking-[0.2em] text-black/30 mb-3">
-          Partner Case Study
-        </p>
-        <h2 className="text-[48px] font-semibold tracking-[-0.03em] text-black mb-2">
-          QuickBooks → NetSuite
-        </h2>
-        <p className="text-[20px] text-black/40">
-          Wild Tech used Source AI to deliver a mid-market migration in 18
-          days — not 4 months.
-        </p>
+        <div>
+          <p className="text-[14px] font-mono uppercase tracking-[0.2em] text-black/30 mb-3">
+            Partner Case Study
+          </p>
+          <h2 className="text-[48px] font-semibold tracking-[-0.03em] text-black mb-2">
+            QuickBooks → NetSuite
+          </h2>
+          <p className="text-[20px] text-black/40">
+            Wild Tech used Source AI to deliver a mid-market migration in 13
+            days — not 4 months.
+          </p>
+        </div>
+        {/* Migration type visual */}
+        <div className="flex items-center gap-5 shrink-0 ml-10 mb-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/quickbooks-logo.svg" alt="QuickBooks" className="h-[36px] w-auto" />
+          <span className="text-[24px] text-black/20">→</span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/netsuite-logo.svg" alt="NetSuite" className="h-[52px] w-auto" />
+          <div className="w-[1px] h-10 bg-black/10 ml-2" />
+          <div className="flex flex-col gap-1">
+            <span className="text-[11px] font-mono uppercase tracking-[0.1em] text-black/25">Mid-market retail</span>
+            <span className="text-[11px] font-mono uppercase tracking-[0.1em] text-black/25">~120 employees</span>
+          </div>
+        </div>
       </motion.div>
 
       {/* Hero Metric Cards — 3 cards */}
@@ -119,7 +134,7 @@ export function CaseStudy() {
         >
           13-Day Timeline
         </motion.p>
-        <div className="flex h-[56px] gap-[2px]">
+        <div className="flex h-[72px] gap-[2px]">
           {timelinePhases.map((phase, i) => (
             <motion.div
               key={phase.name}
@@ -136,10 +151,10 @@ export function CaseStudy() {
               }}
               className={`${phase.color} flex flex-col items-center justify-center text-white`}
             >
-              <span className="text-[14px] font-medium leading-none">
+              <span className="text-[15px] font-bold leading-none">
                 {phase.name}
               </span>
-              <span className="text-[11px] font-mono text-white/45 mt-0.5">
+              <span className="text-[12px] font-mono font-medium text-white/50 mt-1">
                 {phase.days}d
               </span>
             </motion.div>
