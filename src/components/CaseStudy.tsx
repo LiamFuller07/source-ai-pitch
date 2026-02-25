@@ -205,7 +205,7 @@ export function CaseStudy() {
         >
           {/* Decorative grid pattern */}
           <div
-            className="absolute inset-0 opacity-[0.03] pointer-events-none"
+            className="absolute inset-0 opacity-[0.08] pointer-events-none"
             style={{
               backgroundImage:
                 "linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)",
@@ -216,8 +216,8 @@ export function CaseStudy() {
           {/* Content */}
           <div className="relative z-10 flex flex-col h-full p-8">
             {/* Compact partner identity */}
-            <div className="flex items-center gap-3 mb-4 pb-4 border-b border-white/8">
-              <div className="w-10 h-10 border border-white/15 flex items-center justify-center shrink-0">
+            <div className="flex items-center gap-3 mb-4 pb-4 border-b border-white/15">
+              <div className="w-10 h-10 border border-white/25 flex items-center justify-center shrink-0">
                 <Building2 size={18} className="text-white/40" />
               </div>
               <div className="flex-1 min-w-0">
@@ -232,8 +232,8 @@ export function CaseStudy() {
 
             {/* Quote */}
             <div className="flex flex-col flex-1 justify-center">
-              <Quote size={20} className="text-white/10 mb-4 scale-x-[-1]" />
-              <p className="text-[18px] text-white/65 leading-relaxed mb-6 italic">
+              <Quote size={20} className="text-white/20 mb-4 scale-x-[-1]" />
+              <p className="text-[18px] text-white/80 leading-relaxed mb-6 italic">
                 &ldquo;We quoted €14K fixed-price and delivered in under three
                 weeks. Our old model would have been €35K over four months with
                 an offshore team. Source handled the technical execution — we

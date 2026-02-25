@@ -166,10 +166,19 @@ export function Pricing() {
           <div className="flex items-center gap-10">
             <div>
               <p className="text-[48px] font-bold tracking-[-0.04em] leading-none">
+                FREE
+              </p>
+              <p className="text-[12px] font-mono uppercase tracking-[0.1em] text-white/30 mt-2">
+                First migration
+              </p>
+            </div>
+            <div className="w-[1px] h-16 bg-white/10" />
+            <div>
+              <p className="text-[48px] font-bold tracking-[-0.04em] leading-none">
                 30%
               </p>
               <p className="text-[12px] font-mono uppercase tracking-[0.1em] text-white/30 mt-2">
-                Source AI fee
+                Source AI fee after
               </p>
             </div>
             <div className="w-[1px] h-16 bg-white/10" />
@@ -184,11 +193,12 @@ export function Pricing() {
             <div className="w-[1px] h-16 bg-white/10" />
             <div>
               <p className="text-[24px] font-semibold tracking-[-0.02em] mb-2">
-                Simple, transparent pricing.
+                Try it risk-free.
               </p>
               <p className="text-[16px] text-white/45 leading-relaxed max-w-[500px]">
-                Source&apos;s 30% is built into the project fee — you keep 70%
-                with zero delivery overhead.
+                Your first migration is on us. After that, Source&apos;s 30% is
+                built into the project fee — you keep 70% with zero delivery
+                overhead.
               </p>
             </div>
           </div>

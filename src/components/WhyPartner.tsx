@@ -8,7 +8,7 @@ import { Slide } from "./Slide";
 
 const reasons = [
   {
-    title: "50%+ Margins",
+    title: "Make More Money",
     stat: "50%+",
     statLabel: "project margins",
     description:

@@ -60,16 +60,6 @@ const endUserItems = [
   "Accepts final migration",
 ];
 
-const timelinePhases = [
-  { name: "Scan", days: 1, color: "bg-black/70" },
-  { name: "Analysis", days: 2, color: "bg-black/55" },
-  { name: "BRD", days: 2, color: "bg-black/45" },
-  { name: "Config", days: 4, color: "bg-black" },
-  { name: "Migration & QA", days: 3, color: "bg-black/70" },
-  { name: "Go-live", days: 1, color: "bg-black" },
-];
-
-const totalDays = timelinePhases.reduce((sum, p) => sum + p.days, 0);
 
 // ─── Styling maps ─────────────────────────────────────────────────────────────
 
@@ -118,8 +108,6 @@ const T = {
   consultantItemGap: 0.04,
   endUserItemStart: 1.25,
   endUserItemGap: 0.04,
-  timelineLabel: 1.0,
-  timelineBar: 1.1,
 };
 
 // Row layout: 5 + 5
@@ -171,12 +159,9 @@ function StepCard({
         {/* Icon + label */}
         <div className="flex items-center gap-3">
           {isSource ? (
-            /* eslint-disable-next-line @next/next/no-img-element */
-            <img
-              src="/source-logo.svg"
-              alt=""
-              className="w-[16px] h-[16px] shrink-0 opacity-30"
-            />
+            <span className="text-[14px] font-[family-name:var(--font-display)] text-black/25 shrink-0 leading-none">
+              source
+            </span>
           ) : (
             <step.icon size={16} className={`${style.icon} shrink-0`} />
           )}
@@ -190,12 +175,12 @@ function StepCard({
       {!isLast && (
         <motion.div
           initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 0.3 } : {}}
+          animate={inView ? { opacity: 1 } : {}}
           transition={{
             duration: 0.2,
             delay: T.workflowStart + globalIndex * T.workflowGap + 0.12,
           }}
-          className="shrink-0 px-1 text-[20px] text-black/20"
+          className="shrink-0 px-2 text-[22px] font-bold text-black/30"
         >
           →
         </motion.div>
@@ -214,14 +199,14 @@ export function WhoDoesWhat() {
     <Slide
       ref={ref}
       bg="bg-[#f8f8f8]"
-      className="flex flex-col px-[100px] py-[50px]"
+      className="flex flex-col px-[100px] py-[60px]"
     >
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.5, delay: T.header }}
-        className="mb-5"
+        className="mb-6"
       >
         <p className="text-[14px] font-mono uppercase tracking-[0.2em] text-black/30 mb-2">
           Responsibility Matrix
@@ -248,7 +233,7 @@ export function WhoDoesWhat() {
       </motion.p>
 
       {/* Workflow rows — 5+5 */}
-      <div className="flex flex-col gap-[6px] mb-6">
+      <div className="flex flex-col gap-[6px] mb-8">
         {/* Row 1: steps 1–5 */}
         <div className="flex items-stretch gap-0">
           {flowRow1.map((step, i) => (
@@ -276,14 +261,14 @@ export function WhoDoesWhat() {
         </div>
       </div>
 
-      {/* Responsibility cards — Source AI dominant, Consultant + End User beside */}
-      <div className="grid grid-cols-[1.2fr_1fr_1fr] gap-[4px] mb-4">
+      {/* Responsibility cards — grows to fill remaining space */}
+      <div className="flex-1 grid grid-cols-[1.2fr_1fr_1fr] gap-[4px] min-h-0">
         {/* Source AI */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.45, delay: T.cardsStart }}
-          className="bg-black text-white p-7"
+          className="bg-black text-white p-8 flex flex-col"
         >
           <div className="flex items-center gap-3 mb-1">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -294,10 +279,10 @@ export function WhoDoesWhat() {
             />
             <p className="text-[22px] font-bold tracking-[-0.02em]">Source AI</p>
           </div>
-          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-white/25 mb-5">
+          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-white/25 mb-6">
             Handled Autonomously &mdash; 85% of the work
           </p>
-          <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-4 flex-1 content-start">
             {sourceItems.map((item, j) => (
               <motion.div
                 key={j}
@@ -309,8 +294,8 @@ export function WhoDoesWhat() {
                 }}
                 className="flex items-start gap-2.5"
               >
-                <Check size={13} className="text-white/25 shrink-0 mt-[3px]" />
-                <span className="text-[15px] text-white/60 leading-tight">{item}</span>
+                <Check size={14} className="text-white/25 shrink-0 mt-[3px]" />
+                <span className="text-[16px] text-white/60 leading-tight">{item}</span>
               </motion.div>
             ))}
           </div>
@@ -321,7 +306,7 @@ export function WhoDoesWhat() {
           initial={{ opacity: 0, y: 16 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.45, delay: T.cardsStart + T.cardsGap }}
-          className="bg-white border border-black/10 p-7"
+          className="bg-white border border-black/10 p-8 flex flex-col"
         >
           <div className="flex items-center gap-2.5 mb-1">
             <User size={18} className="text-black/30" />
@@ -329,10 +314,10 @@ export function WhoDoesWhat() {
               Consultant
             </p>
           </div>
-          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-5">
+          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-6">
             Review &amp; Confirm
           </p>
-          <div className="space-y-3.5">
+          <div className="space-y-4">
             {consultantItems.map((item, j) => (
               <motion.div
                 key={j}
@@ -344,8 +329,8 @@ export function WhoDoesWhat() {
                 }}
                 className="flex items-start gap-2.5"
               >
-                <span className="w-[6px] h-[6px] rounded-full bg-black/15 shrink-0 mt-[6px]" />
-                <span className="text-[15px] text-black/55 leading-tight">{item}</span>
+                <span className="w-[6px] h-[6px] rounded-full bg-black/15 shrink-0 mt-[7px]" />
+                <span className="text-[16px] text-black/55 leading-tight">{item}</span>
               </motion.div>
             ))}
           </div>
@@ -356,7 +341,7 @@ export function WhoDoesWhat() {
           initial={{ opacity: 0, y: 16 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.45, delay: T.cardsStart + T.cardsGap * 2 }}
-          className="bg-white border border-black/10 p-7"
+          className="bg-white border border-black/10 p-8 flex flex-col"
         >
           <div className="flex items-center gap-2.5 mb-1">
             <Building2 size={18} className="text-black/30" />
@@ -364,10 +349,10 @@ export function WhoDoesWhat() {
               End User
             </p>
           </div>
-          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-5">
+          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-6">
             Answer &amp; Approve
           </p>
-          <div className="space-y-3.5">
+          <div className="space-y-4">
             {endUserItems.map((item, j) => (
               <motion.div
                 key={j}
@@ -379,51 +364,14 @@ export function WhoDoesWhat() {
                 }}
                 className="flex items-start gap-2.5"
               >
-                <span className="w-[6px] h-[6px] rounded-full bg-black/10 shrink-0 mt-[6px]" />
-                <span className="text-[15px] text-black/50 leading-tight">{item}</span>
+                <span className="w-[6px] h-[6px] rounded-full bg-black/10 shrink-0 mt-[7px]" />
+                <span className="text-[16px] text-black/50 leading-tight">{item}</span>
               </motion.div>
             ))}
           </div>
         </motion.div>
       </div>
 
-      {/* 13-Day Timeline */}
-      <div>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.3, delay: T.timelineLabel }}
-          className="text-[12px] font-mono uppercase tracking-[0.18em] text-black/25 mb-2"
-        >
-          13-Day Timeline
-        </motion.p>
-        <div className="flex h-[48px] gap-[2px]">
-          {timelinePhases.map((phase, i) => (
-            <motion.div
-              key={phase.name}
-              initial={{ scaleX: 0 }}
-              animate={inView ? { scaleX: 1 } : {}}
-              transition={{
-                duration: 0.35,
-                delay: T.timelineBar + i * 0.05,
-                ease: "easeOut",
-              }}
-              style={{
-                width: `${(phase.days / totalDays) * 100}%`,
-                transformOrigin: "left",
-              }}
-              className={`${phase.color} flex flex-col items-center justify-center text-white`}
-            >
-              <span className="text-[13px] font-medium leading-none">
-                {phase.name}
-              </span>
-              <span className="text-[10px] font-mono text-white/45 mt-0.5">
-                {phase.days}d
-              </span>
-            </motion.div>
-          ))}
-        </div>
-      </div>
     </Slide>
   );
 }
