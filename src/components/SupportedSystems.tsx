@@ -113,25 +113,28 @@ export function SupportedSystems() {
         ))}
       </div>
 
-      {/* Coming Soon — Anything → NetSuite */}
+      {/* Separator */}
+      <div className="border-t border-black/10 my-2" />
+
+      {/* Coming Soon — white bg for future logos */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ delay: 0.5 }}
-        className="bg-black text-white p-8"
+        className="bg-white border border-black/10 p-8"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-10">
             <div>
-              <p className="text-[12px] font-mono uppercase tracking-[0.12em] text-white/30 mb-3">
+              <p className="text-[12px] font-mono uppercase tracking-[0.12em] text-black/30 mb-3">
                 Coming Soon
               </p>
-              <p className="text-[36px] font-semibold tracking-[-0.03em] leading-none">
+              <p className="text-[36px] font-semibold tracking-[-0.03em] leading-none text-black">
                 Anything → NetSuite
               </p>
             </div>
 
-            <div className="w-[1px] h-16 bg-white/10" />
+            <div className="w-[1px] h-16 bg-black/10" />
 
             <div className="flex items-center gap-3 flex-wrap">
               {comingSoon.map((name, i) => (
@@ -140,7 +143,7 @@ export function SupportedSystems() {
                   initial={{ opacity: 0 }}
                   animate={inView ? { opacity: 1 } : {}}
                   transition={{ delay: 0.7 + i * 0.06 }}
-                  className="text-[14px] font-mono text-white/40 bg-white/[0.06] px-4 py-2"
+                  className="text-[14px] font-mono text-black/50 bg-black/[0.04] border border-black/10 px-4 py-2"
                 >
                   {name}
                 </motion.span>
@@ -153,7 +156,7 @@ export function SupportedSystems() {
             <img
               src="/netsuite-logo.svg"
               alt="NetSuite"
-              className="h-[60px] w-auto opacity-20 invert"
+              className="h-[60px] w-auto opacity-15"
             />
           </div>
         </div>
