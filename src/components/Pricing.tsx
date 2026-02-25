@@ -71,12 +71,9 @@ export function Pricing() {
           <p className="text-[16px] font-mono uppercase tracking-[0.2em] text-black/30 mb-3">
             Pricing
           </p>
-          <h2 className="text-[56px] font-semibold tracking-[-0.03em] text-black mb-3">
+          <h2 className="text-[56px] font-semibold tracking-[-0.03em] text-black">
             Simple Revenue Share
           </h2>
-          <p className="text-[20px] text-black/45 max-w-[900px] leading-relaxed">
-            Source takes just 30% — you keep 70% with zero delivery cost.
-          </p>
         </motion.div>
 
         {/* Comparison table */}
@@ -174,31 +171,11 @@ export function Pricing() {
             </div>
             <div className="w-[1px] h-16 bg-white/10" />
             <div>
-              <p className="text-[48px] font-bold tracking-[-0.04em] leading-none">
-                30%
-              </p>
-              <p className="text-[12px] font-mono uppercase tracking-[0.1em] text-white/30 mt-2">
-                Source AI fee after
-              </p>
-            </div>
-            <div className="w-[1px] h-16 bg-white/10" />
-            <div>
-              <p className="text-[48px] font-bold tracking-[-0.04em] leading-none">
-                70%
-              </p>
-              <p className="text-[12px] font-mono uppercase tracking-[0.1em] text-white/30 mt-2">
-                You keep
-              </p>
-            </div>
-            <div className="w-[1px] h-16 bg-white/10" />
-            <div>
               <p className="text-[24px] font-semibold tracking-[-0.02em] mb-2">
                 Try it risk-free.
               </p>
               <p className="text-[16px] text-white/45 leading-relaxed max-w-[500px]">
-                Your first migration is on us. After that, Source&apos;s 30% is
-                built into the project fee — you keep 70% with zero delivery
-                overhead.
+                Your first migration is on us — no cost, no commitment.
               </p>
             </div>
           </div>
