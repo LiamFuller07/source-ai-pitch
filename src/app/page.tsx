@@ -30,7 +30,6 @@ export default function Home() {
         {/* <WhiteLabel /> */}
         <WhyPartner />
         <CaseStudy />
-        <Partners />
         <Pricing />
         <SupportedSystems />
         <Team />
