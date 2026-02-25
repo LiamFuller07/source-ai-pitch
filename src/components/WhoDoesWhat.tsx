@@ -75,31 +75,31 @@ const totalDays = timelinePhases.reduce((sum, p) => sum + p.days, 0);
 
 const ownerStyles = {
   source: {
-    card: "bg-black",
-    text: "text-white",
-    icon: "text-white/35",
+    card: "bg-white border border-black/20",
+    text: "text-black",
+    icon: "text-black/30",
     tag: "SOURCE",
-    tagStyle: "bg-white/10 text-white/50",
-    numberBg: "bg-white/15 text-white/60",
-    connector: "bg-white/25",
+    tagStyle: "bg-black text-white",
+    numberBg: "bg-black/[0.08] text-black/50",
+    connector: "bg-black/20",
   },
   consultant: {
-    card: "bg-white border border-black/15",
+    card: "bg-white border border-black/20",
     text: "text-black",
     icon: "text-black/25",
     tag: "YOU",
-    tagStyle: "bg-black/[0.05] text-black/35",
+    tagStyle: "bg-black/[0.06] text-black/40",
     numberBg: "bg-black/[0.06] text-black/40",
     connector: "bg-black/20",
   },
   customer: {
-    card: "bg-white border border-black/10",
+    card: "bg-white border border-black/20",
     text: "text-black/70",
     icon: "text-black/20",
     tag: "CLIENT",
-    tagStyle: "bg-black/[0.03] text-black/25",
+    tagStyle: "bg-black/[0.04] text-black/30",
     numberBg: "bg-black/[0.04] text-black/30",
-    connector: "bg-black/15",
+    connector: "bg-black/20",
   },
 };
 
@@ -175,7 +175,7 @@ function StepCard({
             <img
               src="/source-logo.svg"
               alt=""
-              className="w-[16px] h-[16px] shrink-0 invert opacity-35"
+              className="w-[16px] h-[16px] shrink-0 opacity-30"
             />
           ) : (
             <step.icon size={16} className={`${style.icon} shrink-0`} />
