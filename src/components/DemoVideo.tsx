@@ -40,7 +40,7 @@ export function DemoVideo() {
           <p className="text-[14px] font-mono uppercase tracking-[0.2em] text-white/30 mb-3">
             Live Demo
           </p>
-          <h2 className="text-[48px] font-semibold font-[family-name:var(--font-display)] tracking-[-0.03em] text-white">
+          <h2 className="text-[48px] font-normal font-[family-name:var(--font-display)] tracking-[-0.03em] text-white">
             See Source AI in Action
           </h2>
         </motion.div>

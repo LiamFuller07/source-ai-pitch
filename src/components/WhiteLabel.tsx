@@ -87,7 +87,7 @@ export function WhiteLabel() {
           <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-black/40 mb-3">
             Your Brand
           </p>
-          <h2 className="text-4xl md:text-5xl font-semibold font-[family-name:var(--font-display)] tracking-[-0.03em]">
+          <h2 className="text-4xl md:text-5xl font-normal font-[family-name:var(--font-display)] tracking-[-0.03em]">
             White Label Delivery
           </h2>
         </motion.div>

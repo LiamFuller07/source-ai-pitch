@@ -25,7 +25,7 @@ export function Solution() {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.15 }}
-          className="text-[120px] font-semibold font-[family-name:var(--font-display)] tracking-[-0.04em] leading-[0.9] text-black mb-10"
+          className="text-[120px] font-normal font-[family-name:var(--font-display)] tracking-[-0.04em] leading-[0.9] text-black mb-10"
         >
           Source
         </motion.h2>

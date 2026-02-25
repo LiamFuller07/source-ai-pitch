@@ -16,7 +16,7 @@ export function Frustration() {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-[100px] font-semibold font-[family-name:var(--font-display)] tracking-[-0.03em] leading-tight text-white mb-10"
+          className="text-[100px] font-normal font-[family-name:var(--font-display)] tracking-[-0.03em] leading-tight text-white mb-10"
         >
           Customers are frustrated.
         </motion.h2>

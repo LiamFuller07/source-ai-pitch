@@ -71,7 +71,7 @@ export function Pricing() {
           <p className="text-[16px] font-mono uppercase tracking-[0.2em] text-black/30 mb-3">
             Pricing
           </p>
-          <h2 className="text-[56px] font-semibold font-[family-name:var(--font-display)] tracking-[-0.03em] text-black mb-3">
+          <h2 className="text-[56px] font-normal font-[family-name:var(--font-display)] tracking-[-0.03em] text-black mb-3">
             Simple Revenue Share
           </h2>
           <p className="text-[20px] text-black/45 max-w-[900px] leading-relaxed">

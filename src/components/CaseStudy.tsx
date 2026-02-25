@@ -69,7 +69,7 @@ export function CaseStudy() {
         <p className="text-[14px] font-mono uppercase tracking-[0.2em] text-black/30 mb-3">
           Partner Case Study
         </p>
-        <h2 className="text-[48px] font-semibold font-[family-name:var(--font-display)] tracking-[-0.03em] text-black mb-2">
+        <h2 className="text-[48px] font-normal font-[family-name:var(--font-display)] tracking-[-0.03em] text-black mb-2">
           QuickBooks → NetSuite
         </h2>
         <p className="text-[20px] text-black/40">
@@ -93,7 +93,7 @@ export function CaseStudy() {
             className="bg-white border border-black/8 p-6 flex flex-col"
           >
             <div className="flex items-baseline gap-2 mb-1">
-              <span className="text-[52px] font-semibold font-[family-name:var(--font-display)] tracking-[-0.04em] leading-none text-black">
+              <span className="text-[52px] font-normal font-[family-name:var(--font-display)] tracking-[-0.04em] leading-none text-black">
                 {metric.value}
               </span>
               {metric.unit && (

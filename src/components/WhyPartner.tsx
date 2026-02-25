@@ -76,7 +76,7 @@ export function WhyPartner() {
           <p className="text-[18px] font-mono uppercase tracking-[0.2em] text-black/40 mb-4">
             The Partnership
           </p>
-          <h2 className="text-[72px] font-semibold font-[family-name:var(--font-display)] tracking-[-0.03em] mb-4">
+          <h2 className="text-[72px] font-normal font-[family-name:var(--font-display)] tracking-[-0.03em] mb-4">
             Why Partner with Source AI
           </h2>
           <p className="text-[24px] text-black/45 max-w-[900px] leading-relaxed">

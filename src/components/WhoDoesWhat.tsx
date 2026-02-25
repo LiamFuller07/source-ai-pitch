@@ -131,7 +131,7 @@ export function WhoDoesWhat() {
         <p className="text-[14px] font-mono uppercase tracking-[0.2em] text-black/30 mb-2">
           Responsibility Matrix
         </p>
-        <h2 className="text-[48px] font-semibold font-[family-name:var(--font-display)] tracking-[-0.03em] text-black mb-2">
+        <h2 className="text-[48px] font-normal font-[family-name:var(--font-display)] tracking-[-0.03em] text-black mb-2">
           Who Does What
         </h2>
         <p className="text-[18px] text-black/45 leading-relaxed max-w-[900px]">

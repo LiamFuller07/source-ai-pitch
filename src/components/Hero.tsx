@@ -22,7 +22,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="text-[180px] font-semibold font-[family-name:var(--font-display)] tracking-[-0.04em] leading-[0.9] text-white mb-14"
+          className="text-[180px] font-normal font-[family-name:var(--font-display)] tracking-[-0.04em] leading-[0.9] text-white mb-14"
         >
           SOURCE AI
         </motion.h1>
