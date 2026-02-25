@@ -141,12 +141,14 @@ export function WhoDoesWhat() {
                   : "bg-transparent border border-transparent"
               }`}
             >
-              {/* AI badge */}
-              {isAI && (
+              {/* Role badge */}
+              {!step.emoji && (
                 <span className={`absolute top-2 right-3 text-[9px] font-mono font-bold tracking-[0.08em] ${
-                  isActive ? "text-white/30" : "text-black/20"
+                  isActive
+                    ? "text-white/50"
+                    : isAI ? "text-black/40" : "text-black/25"
                 }`}>
-                  AI
+                  {isAI ? "AI" : "Consultant"}
                 </span>
               )}
               {/* Icon + label */}
