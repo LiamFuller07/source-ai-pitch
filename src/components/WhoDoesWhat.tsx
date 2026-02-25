@@ -277,7 +277,7 @@ export function WhoDoesWhat() {
       </div>
 
       {/* Responsibility cards — Source AI dominant, Consultant + End User beside */}
-      <div className="grid grid-cols-[1.2fr_1fr_1fr] gap-[4px] flex-1 min-h-0 mb-4">
+      <div className="grid grid-cols-[1.2fr_1fr_1fr] gap-[4px] mb-4">
         {/* Source AI */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
