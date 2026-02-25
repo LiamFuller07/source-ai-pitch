@@ -72,7 +72,7 @@ export function Workflow() {
           <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-black/40 mb-3">
             The Process
           </p>
-          <h2 className="text-4xl md:text-5xl font-normal font-[family-name:var(--font-display)] tracking-[-0.03em]">
+          <h2 className="text-4xl md:text-5xl font-semibold tracking-[-0.03em]">
             The Source AI Workflow
           </h2>
         </motion.div>

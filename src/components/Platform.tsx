@@ -36,7 +36,7 @@ export function Platform() {
           <p className="text-[11px] font-mono uppercase tracking-[0.2em] text-white/30 mb-3">
             Source AI
           </p>
-          <h2 className="text-4xl md:text-5xl font-normal font-[family-name:var(--font-display)] tracking-[-0.03em] text-white mb-3">
+          <h2 className="text-4xl md:text-5xl font-semibold tracking-[-0.03em] text-white mb-3">
             Migration Intelligence Platform
           </h2>
           <p className="text-white/40 text-sm max-w-2xl mx-auto leading-relaxed">

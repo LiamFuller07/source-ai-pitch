@@ -60,7 +60,7 @@ export function WhoWeWorkWith() {
         <p className="text-[14px] font-mono uppercase tracking-[0.2em] text-black/30 mb-2">
           Who We Work With
         </p>
-        <h2 className="text-[48px] font-normal font-[family-name:var(--font-display)] tracking-[-0.03em] text-black">
+        <h2 className="text-[48px] font-semibold tracking-[-0.03em] text-black">
           Built for mid-market migrations.
         </h2>
       </motion.div>

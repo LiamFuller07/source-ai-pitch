@@ -69,11 +69,11 @@ export function CaseStudy() {
         <p className="text-[14px] font-mono uppercase tracking-[0.2em] text-black/30 mb-3">
           Partner Case Study
         </p>
-        <h2 className="text-[48px] font-normal font-[family-name:var(--font-display)] tracking-[-0.03em] text-black mb-2">
+        <h2 className="text-[48px] font-semibold tracking-[-0.03em] text-black mb-2">
           QuickBooks → NetSuite
         </h2>
         <p className="text-[20px] text-black/40">
-          Altius Group used Source AI to deliver a mid-market migration in 18
+          Wild Tech used Source AI to deliver a mid-market migration in 18
           days — not 4 months.
         </p>
       </motion.div>
@@ -93,7 +93,7 @@ export function CaseStudy() {
             className="bg-white border border-black/8 p-6 flex flex-col"
           >
             <div className="flex items-baseline gap-2 mb-1">
-              <span className="text-[52px] font-normal font-[family-name:var(--font-display)] tracking-[-0.04em] leading-none text-black">
+              <span className="text-[52px] font-semibold tracking-[-0.04em] leading-none text-black">
                 {metric.value}
               </span>
               {metric.unit && (
@@ -222,10 +222,10 @@ export function CaseStudy() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-[20px] font-bold text-white tracking-[-0.02em]">
-                  Altius Group
+                  Wild Tech
                 </p>
                 <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-white/30">
-                  NetSuite Consulting &middot; Munich &middot; 35 consultants
+                  NetSuite Solution Provider &middot; Australia
                 </p>
               </div>
             </div>
@@ -244,7 +244,7 @@ export function CaseStudy() {
                   Managing Director
                 </p>
                 <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-white/25 mt-1">
-                  Altius Group
+                  Wild Tech
                 </p>
               </div>
             </div>

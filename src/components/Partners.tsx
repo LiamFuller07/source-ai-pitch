@@ -53,7 +53,7 @@ export function Partners() {
           <p className="text-[18px] font-mono uppercase tracking-[0.2em] text-black/30 mb-4">
             Our Partners
           </p>
-          <h2 className="text-[72px] font-normal font-[family-name:var(--font-display)] tracking-[-0.03em] text-black mb-4">
+          <h2 className="text-[72px] font-semibold tracking-[-0.03em] text-black mb-4">
             Trusted by leading consultancies.
           </h2>
           <p className="text-[22px] text-black/40 max-w-[900px] leading-relaxed">

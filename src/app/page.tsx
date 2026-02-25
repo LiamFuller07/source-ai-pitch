@@ -29,10 +29,9 @@ export default function Home() {
         <WhoDoesWhat />
         {/* <WhiteLabel /> */}
         <WhyPartner />
-        <Pricing />
-        <Partners />
         <CaseStudy />
         <Team />
+        <Pricing />
         <Cta />
         <Demo />
       </main>

@@ -31,7 +31,7 @@ export function Cta() {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.15 }}
-          className="text-[68px] font-normal font-[family-name:var(--font-display)] tracking-[-0.03em] leading-snug text-white"
+          className="text-[68px] font-semibold tracking-[-0.03em] leading-snug text-white"
         >
           Source is <span className="italic">NOT</span> a tool.
           <br />

@@ -33,7 +33,7 @@ export function SupportedSystems() {
           <p className="text-[18px] font-mono uppercase tracking-[0.2em] text-black/30 mb-4">
             Supported Systems
           </p>
-          <h2 className="text-[64px] font-normal font-[family-name:var(--font-display)] tracking-[-0.03em] text-black mb-4">
+          <h2 className="text-[64px] font-semibold tracking-[-0.03em] text-black mb-4">
             Migration paths we cover.
           </h2>
           <p className="text-[22px] text-black/40 max-w-[700px] mx-auto leading-relaxed">
