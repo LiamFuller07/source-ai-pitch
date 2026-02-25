@@ -128,7 +128,6 @@ function StepCard({
   isLast: boolean;
 }) {
   const style = ownerStyles[step.owner as keyof typeof ownerStyles];
-  const isSource = step.owner === "source";
 
   return (
     <div className="flex items-center min-w-0 flex-1">
@@ -140,12 +139,12 @@ function StepCard({
           delay: T.workflowStart + globalIndex * T.workflowGap,
           ease: "easeOut",
         }}
-        className={`${style.card} flex-1 min-w-0 px-5 py-4`}
+        className={`${style.card} flex-1 min-w-0 px-5 py-5`}
       >
         {/* Top: number + tag */}
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center justify-between mb-4">
           <span
-            className={`text-[12px] font-mono font-medium w-[24px] h-[24px] rounded-full flex items-center justify-center shrink-0 ${style.numberBg}`}
+            className={`text-[13px] font-mono font-medium w-[28px] h-[28px] rounded-full flex items-center justify-center shrink-0 ${style.numberBg}`}
           >
             {globalIndex + 1}
           </span>
@@ -158,14 +157,8 @@ function StepCard({
 
         {/* Icon + label */}
         <div className="flex items-center gap-3">
-          {isSource ? (
-            <span className="text-[14px] font-[family-name:var(--font-display)] text-black/25 shrink-0 leading-none">
-              source
-            </span>
-          ) : (
-            <step.icon size={16} className={`${style.icon} shrink-0`} />
-          )}
-          <p className={`text-[16px] font-semibold leading-tight ${style.text}`}>
+          <step.icon size={18} className={`${style.icon} shrink-0`} />
+          <p className={`text-[17px] font-semibold leading-tight ${style.text}`}>
             {step.label}
           </p>
         </div>
