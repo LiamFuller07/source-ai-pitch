@@ -245,7 +245,7 @@ export function WhoDoesWhat() {
             {sourceItems.map((item, j) => (
               <div key={j} className="flex items-start gap-2.5">
                 <item.icon size={14} className="text-white/25 shrink-0 mt-[3px]" />
-                <span className="text-[16px] text-white/60 leading-tight">
+                <span className="text-[16px] font-light text-white/45 leading-tight">
                   {item.label}
                 </span>
               </div>
