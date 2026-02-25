@@ -238,20 +238,20 @@ export function WhoDoesWhat() {
       >
         {/* Source AI */}
         <div
-          className="bg-black text-white px-8 py-5 flex flex-col"
+          className="bg-black text-white px-8 py-6 flex flex-col"
         >
           <div className="flex items-center gap-3 mb-1">
             <Sparkles size={20} className="text-white/45" />
             <p className="text-[22px] font-bold tracking-[-0.02em]">Source AI</p>
           </div>
-          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-white/25 mb-4">
+          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-white/25 mb-5">
             Handled Autonomously &mdash; 85% of the work
           </p>
-          <div className="grid grid-cols-2 gap-x-6 gap-y-3 flex-1 content-start">
+          <div className="grid grid-cols-2 gap-x-8 gap-y-4 flex-1 content-start">
             {sourceItems.map((item, j) => (
-              <div key={j} className="flex items-start gap-2.5">
-                <item.icon size={14} className="text-white/25 shrink-0 mt-[3px]" />
-                <span className="text-[16px] font-light text-white/45 leading-tight">
+              <div key={j} className="flex items-center gap-3">
+                <div className="w-1 h-1 rounded-full bg-white/40 shrink-0" />
+                <span className="text-[15px] text-white/70 leading-snug">
                   {item.label}
                 </span>
               </div>
@@ -261,7 +261,7 @@ export function WhoDoesWhat() {
 
         {/* Consultant */}
         <div
-          className="bg-white border border-black/10 px-8 py-5 flex flex-col"
+          className="bg-white border border-black/10 px-8 py-6 flex flex-col"
         >
           <div className="flex items-center gap-2.5 mb-1">
             <User size={18} className="text-black/30" />
@@ -269,14 +269,14 @@ export function WhoDoesWhat() {
               Consultant
             </p>
           </div>
-          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-4">
+          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-5">
             Review &amp; Confirm
           </p>
-          <div className="space-y-3">
+          <div className="space-y-4">
             {consultantItems.map((item, j) => (
-              <div key={j} className="flex items-start gap-2.5">
-                <item.icon size={14} className="text-black/20 shrink-0 mt-[3px]" />
-                <span className="text-[16px] text-black/55 leading-tight">
+              <div key={j} className="flex items-center gap-3">
+                <div className="w-1 h-1 rounded-full bg-black/30 shrink-0" />
+                <span className="text-[15px] text-black/70 leading-snug">
                   {item.label}
                 </span>
               </div>
@@ -286,7 +286,7 @@ export function WhoDoesWhat() {
 
         {/* End User */}
         <div
-          className="bg-white border border-black/10 px-8 py-5 flex flex-col"
+          className="bg-white border border-black/10 px-8 py-6 flex flex-col"
         >
           <div className="flex items-center gap-2.5 mb-1">
             <Building2 size={18} className="text-black/30" />
@@ -294,14 +294,14 @@ export function WhoDoesWhat() {
               End User
             </p>
           </div>
-          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-4">
+          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-5">
             Answer &amp; Approve
           </p>
-          <div className="space-y-3">
+          <div className="space-y-4">
             {endUserItems.map((item, j) => (
-              <div key={j} className="flex items-start gap-2.5">
-                <item.icon size={14} className="text-black/15 shrink-0 mt-[3px]" />
-                <span className="text-[16px] text-black/50 leading-tight">
+              <div key={j} className="flex items-center gap-3">
+                <div className="w-1 h-1 rounded-full bg-black/30 shrink-0" />
+                <span className="text-[15px] text-black/70 leading-snug">
                   {item.label}
                 </span>
               </div>
