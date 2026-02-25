@@ -234,16 +234,23 @@ export function WhoDoesWhat() {
         {renderStepRow(flowRow2, 5)}
       </div>
 
-      {/* Horizontal separator */}
-      <div className="border-t border-black/10 my-6" />
+      {/* Horizontal separator — only after all steps revealed */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={activeStep >= flowSteps.length - 1 ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 0.3 }}
+        className="border-t border-black/10 my-6"
+      />
 
-      {/* Responsibility cards — grows to fill remaining space */}
-      <div className="flex-1 grid grid-cols-[1.2fr_1fr_1fr] gap-[4px] min-h-0">
+      {/* Responsibility cards — only after all steps revealed */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={activeStep >= flowSteps.length - 1 ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="flex-1 grid grid-cols-[1.2fr_1fr_1fr] gap-[4px] min-h-0"
+      >
         {/* Source AI */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.45, delay: 0.4 }}
+        <div
           className="bg-black text-white p-8 flex flex-col"
         >
           <div className="flex items-center gap-3 mb-1">
@@ -263,13 +270,10 @@ export function WhoDoesWhat() {
               </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* Consultant */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.45, delay: 0.48 }}
+        <div
           className="bg-white border border-black/10 p-8 flex flex-col"
         >
           <div className="flex items-center gap-2.5 mb-1">
@@ -291,13 +295,10 @@ export function WhoDoesWhat() {
               </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* End User */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.45, delay: 0.56 }}
+        <div
           className="bg-white border border-black/10 p-8 flex flex-col"
         >
           <div className="flex items-center gap-2.5 mb-1">
@@ -319,8 +320,8 @@ export function WhoDoesWhat() {
               </div>
             ))}
           </div>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
     </Slide>
   );
 }
