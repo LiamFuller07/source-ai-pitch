@@ -17,9 +17,15 @@ export function Demo() {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-[72px] font-semibold tracking-[-0.03em] text-black mb-10"
+          className="text-[72px] font-normal font-[family-name:var(--font-display)] tracking-[0.01em] text-black mb-10"
         >
-          See <span style={{ fontFamily: "'Coolvetica', sans-serif" }}>Source</span> in action.
+          See Source in action
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/source-logo.svg"
+            alt=""
+            className="inline-block w-[18px] h-[18px] ml-2 mb-2 align-baseline"
+          />
         </motion.h2>
 
         <motion.a
