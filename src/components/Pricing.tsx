@@ -75,8 +75,7 @@ export function Pricing() {
             Simple Revenue Share
           </h2>
           <p className="text-[20px] text-black/45 max-w-[900px] leading-relaxed">
-            Your first migration is completely free. After that, Source takes
-            just 30% — you keep 70% with zero delivery cost.
+            Source takes just 30% — you keep 70% with zero delivery cost.
           </p>
         </motion.div>
 
@@ -167,19 +166,10 @@ export function Pricing() {
           <div className="flex items-center gap-10">
             <div>
               <p className="text-[48px] font-bold tracking-[-0.04em] leading-none">
-                FREE
-              </p>
-              <p className="text-[12px] font-mono uppercase tracking-[0.1em] text-white/30 mt-2">
-                First migration
-              </p>
-            </div>
-            <div className="w-[1px] h-16 bg-white/10" />
-            <div>
-              <p className="text-[48px] font-bold tracking-[-0.04em] leading-none">
                 30%
               </p>
               <p className="text-[12px] font-mono uppercase tracking-[0.1em] text-white/30 mt-2">
-                Source AI fee after
+                Source AI fee
               </p>
             </div>
             <div className="w-[1px] h-16 bg-white/10" />
@@ -194,12 +184,11 @@ export function Pricing() {
             <div className="w-[1px] h-16 bg-white/10" />
             <div>
               <p className="text-[24px] font-semibold tracking-[-0.02em] mb-2">
-                Try it risk-free.
+                Simple, transparent pricing.
               </p>
               <p className="text-[16px] text-white/45 leading-relaxed max-w-[500px]">
-                Your first migration is on us. After that, Source&apos;s 30% is
-                built into the project fee — you keep 70% with zero delivery
-                overhead.
+                Source&apos;s 30% is built into the project fee — you keep 70%
+                with zero delivery overhead.
               </p>
             </div>
           </div>
