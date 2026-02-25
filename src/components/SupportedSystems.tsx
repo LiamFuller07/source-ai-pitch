@@ -74,10 +74,10 @@ export function SupportedSystems() {
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.2 + i * 0.1 }}
-            className="bg-white border border-black/10 p-8 flex flex-col"
+            className="bg-white border border-black/10 flex flex-col"
           >
             {/* Status badge */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between px-8 pt-6 pb-0">
               <span className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25">
                 Migration Path
               </span>
@@ -87,27 +87,14 @@ export function SupportedSystems() {
             </div>
 
             {/* Logos with arrow */}
-            <div className="flex items-center justify-center gap-6 flex-1">
-              <div className="flex flex-col items-center gap-3 flex-1">
+            <div className="flex items-center justify-center gap-6 flex-1 px-8 py-6">
+              <div className="flex flex-col items-center flex-1">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={path.left.logo}
                   alt={path.left.name}
                   className={`${path.left.height} w-auto max-w-[180px] object-contain`}
                 />
-                {/* Connected tools */}
-                {path.connectedTools && (
-                  <div className="flex flex-wrap items-center justify-center gap-1 mt-1">
-                    {path.connectedTools.map((tool) => (
-                      <span
-                        key={tool}
-                        className="text-[10px] font-mono text-white font-bold bg-black px-2.5 py-1"
-                      >
-                        {tool}
-                      </span>
-                    ))}
-                  </div>
-                )}
               </div>
 
               <div className="shrink-0">
@@ -118,7 +105,7 @@ export function SupportedSystems() {
                 )}
               </div>
 
-              <div className="flex flex-col items-center gap-3 flex-1">
+              <div className="flex flex-col items-center flex-1">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={path.right.logo}
@@ -127,6 +114,23 @@ export function SupportedSystems() {
                 />
               </div>
             </div>
+
+            {/* Integrations bar */}
+            {path.connectedTools && (
+              <div className="border-t border-black/8 px-8 py-4 flex flex-wrap items-center gap-2">
+                <span className="text-[10px] font-mono uppercase tracking-[0.1em] text-black/30 mr-1">
+                  Integrations
+                </span>
+                {path.connectedTools.map((tool) => (
+                  <span
+                    key={tool}
+                    className="text-[10px] font-mono text-black font-bold bg-white border border-black/15 px-2.5 py-1"
+                  >
+                    {tool}
+                  </span>
+                ))}
+              </div>
+            )}
           </motion.div>
         ))}
       </div>
