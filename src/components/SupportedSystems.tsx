@@ -76,18 +76,8 @@ export function SupportedSystems() {
             transition={{ delay: 0.2 + i * 0.1 }}
             className="bg-white border border-black/10 flex flex-col"
           >
-            {/* Status badge */}
-            <div className="flex items-center justify-between px-8 pt-6 pb-0">
-              <span className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25">
-                Migration Path
-              </span>
-              <span className="text-[10px] font-mono uppercase tracking-[0.1em] bg-black text-white px-3 py-1 font-medium">
-                Live
-              </span>
-            </div>
-
             {/* Logos with arrow */}
-            <div className="flex items-center justify-center gap-6 flex-1 px-8 py-6">
+            <div className="flex items-center justify-center gap-6 flex-1 px-8 py-4">
               <div className="flex flex-col items-center flex-1">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
