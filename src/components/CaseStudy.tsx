@@ -8,6 +8,9 @@ import {
   TrendingDown,
   Quote,
   Building2,
+  Sparkles,
+  User,
+  type LucideIcon,
 } from "lucide-react";
 import { Slide } from "./Slide";
 
@@ -17,13 +20,13 @@ const heroMetrics = [
   { value: "67%", unit: "", label: "Cost Savings", icon: TrendingDown },
 ];
 
-const timelinePhases = [
-  { name: "Scan", days: 1, color: "bg-black/60" },
-  { name: "Analysis", days: 2, color: "bg-black/45" },
-  { name: "BRD", days: 2, color: "bg-black/35" },
-  { name: "Config", days: 4, color: "bg-black" },
-  { name: "Migration & QA", days: 3, color: "bg-black/60" },
-  { name: "Go-live", days: 1, color: "bg-black" },
+const timelinePhases: { name: string; days: number; color: string; icon: LucideIcon }[] = [
+  { name: "Scan", days: 1, color: "bg-black/60", icon: Sparkles },
+  { name: "Analysis", days: 2, color: "bg-black/45", icon: Sparkles },
+  { name: "BRD", days: 2, color: "bg-black/35", icon: Sparkles },
+  { name: "Config", days: 4, color: "bg-black", icon: Sparkles },
+  { name: "Migration & QA", days: 3, color: "bg-black/60", icon: Sparkles },
+  { name: "Go-live", days: 1, color: "bg-black", icon: User },
 ];
 
 const totalDays = timelinePhases.reduce((sum, p) => sum + p.days, 0);
@@ -149,12 +152,13 @@ export function CaseStudy() {
                 width: `${(phase.days / totalDays) * 100}%`,
                 transformOrigin: "left",
               }}
-              className={`${phase.color} flex flex-col items-center justify-center text-white`}
+              className={`${phase.color} flex flex-col items-center justify-center text-white gap-1`}
             >
+              <phase.icon size={14} className="text-white/40" />
               <span className="text-[15px] font-bold leading-none">
                 {phase.name}
               </span>
-              <span className="text-[12px] font-mono font-medium text-white/50 mt-1">
+              <span className="text-[12px] font-mono font-medium text-white/50">
                 {phase.days}d
               </span>
             </motion.div>
