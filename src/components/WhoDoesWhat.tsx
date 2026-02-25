@@ -195,7 +195,7 @@ export function WhoDoesWhat() {
         <h2 className="text-[48px] font-semibold tracking-[-0.03em] text-black mb-2">
           Who Does What
         </h2>
-        <p className="text-[18px] text-black/45 leading-relaxed max-w-[900px]">
+        <p className="text-[22px] text-black/45 leading-relaxed max-w-[900px]">
           <span className="font-semibold text-black">Source AI</span> does the
           technical execution end-to-end.{" "}
           <span className="font-semibold text-black">The consultant</span> keeps
