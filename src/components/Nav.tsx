@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Download } from "lucide-react";
-
 export function Nav() {
   const [current, setCurrent] = useState(0);
   const total = 10;
@@ -26,16 +24,6 @@ export function Nav() {
 
   return (
     <>
-      {/* Download button */}
-      <a
-        href="/Source-AI-Pitch-Deck.pptx"
-        download
-        className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-black text-white px-4 py-2.5 text-[11px] font-mono uppercase tracking-[0.08em] hover:bg-black/80 transition-colors"
-      >
-        <Download size={14} />
-        Download PPTX
-      </a>
-
       {/* Slide nav dots */}
       <nav className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-2">
         {Array.from({ length: total }).map((_, i) => (
