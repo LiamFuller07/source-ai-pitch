@@ -19,12 +19,12 @@ export function Demo() {
           transition={{ duration: 0.8 }}
           className="text-[72px] font-normal font-[family-name:var(--font-display)] tracking-[0.01em] text-black mb-10"
         >
-          See Source in action
-          {/* eslint-disable-next-line @next/next/no-img-element */}
+          See Source in action{/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/source-logo.svg"
             alt=""
-            className="inline-block w-[18px] h-[18px] ml-2 mb-2 align-baseline"
+            className="inline-block w-[28px] h-[28px] ml-1 -mb-[2px]"
+            style={{ verticalAlign: "baseline" }}
           />
         </motion.h2>
 
