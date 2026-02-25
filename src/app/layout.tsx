@@ -5,11 +5,11 @@ import "./globals.css";
 const coolvetica = localFont({
   src: "./fonts/coolvetica-rg.woff",
   display: "swap",
-  variable: "--font-coolvetica",
+  variable: "--font-display",
 });
 
 const inter = localFont({
-  src: "./fonts/inter-latin.woff2",
+  src: "./fonts/inter-var.woff2",
   display: "swap",
   variable: "--font-inter",
 });

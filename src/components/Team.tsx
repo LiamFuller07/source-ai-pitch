@@ -124,7 +124,7 @@ export function Team() {
           <p className="text-[18px] font-mono uppercase tracking-[0.2em] text-black/30 mb-4">
             The Team
           </p>
-          <h2 className="text-[72px] font-semibold tracking-[-0.03em] text-black mb-2">
+          <h2 className="text-[72px] font-semibold font-[family-name:var(--font-display)] tracking-[-0.03em] text-black mb-2">
             Built by AI engineers.
           </h2>
           <p className="text-[22px] text-black/40 max-w-[800px] leading-relaxed">

@@ -65,7 +65,7 @@ export function ProblemToday() {
           <p className="text-[18px] font-mono uppercase tracking-[0.2em] text-black/40 mb-3">
             The Problem
           </p>
-          <h2 className="text-[56px] font-semibold tracking-[-0.03em] mb-0">
+          <h2 className="text-[56px] font-semibold font-[family-name:var(--font-display)] tracking-[-0.03em] mb-0">
             How Migrations Work Today
           </h2>
           <div className="w-[120px] h-[2px] bg-black/10 mt-4" />
