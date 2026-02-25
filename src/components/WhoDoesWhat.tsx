@@ -248,11 +248,11 @@ export function WhoDoesWhat() {
           <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-white/25 mb-5">
             Handled Autonomously &mdash; 85% of the work
           </p>
-          <div className="grid grid-cols-2 gap-x-8 gap-y-4 flex-1 content-start">
+          <div className="grid grid-cols-2 gap-x-8 gap-y-5 flex-1 content-start">
             {sourceItems.map((item, j) => (
               <div key={j} className="flex items-center gap-3">
-                <div className="w-1 h-1 rounded-full bg-white/40 shrink-0" />
-                <span className="text-[15px] font-medium text-white leading-snug">
+                <div className="w-1.5 h-1.5 rounded-full bg-white/40 shrink-0" />
+                <span className="text-[18px] font-medium text-white leading-snug">
                   {item.label}
                 </span>
               </div>
@@ -273,11 +273,11 @@ export function WhoDoesWhat() {
           <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-5">
             Review &amp; Confirm
           </p>
-          <div className="space-y-4">
+          <div className="space-y-5">
             {consultantItems.map((item, j) => (
               <div key={j} className="flex items-center gap-3">
-                <div className="w-1 h-1 rounded-full bg-black/30 shrink-0" />
-                <span className="text-[15px] text-black/70 leading-snug">
+                <div className="w-1.5 h-1.5 rounded-full bg-black/30 shrink-0" />
+                <span className="text-[18px] text-black/70 leading-snug">
                   {item.label}
                 </span>
               </div>
@@ -298,11 +298,11 @@ export function WhoDoesWhat() {
           <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-5">
             Answer &amp; Approve
           </p>
-          <div className="space-y-4">
+          <div className="space-y-5">
             {endUserItems.map((item, j) => (
               <div key={j} className="flex items-center gap-3">
-                <div className="w-1 h-1 rounded-full bg-black/30 shrink-0" />
-                <span className="text-[15px] text-black/70 leading-snug">
+                <div className="w-1.5 h-1.5 rounded-full bg-black/30 shrink-0" />
+                <span className="text-[18px] text-black/70 leading-snug">
                   {item.label}
                 </span>
               </div>
