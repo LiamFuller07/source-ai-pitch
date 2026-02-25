@@ -101,7 +101,7 @@ export function SupportedSystems() {
                     {path.connectedTools.map((tool) => (
                       <span
                         key={tool}
-                        className="text-[10px] font-mono text-black/30 bg-black/[0.04] px-2 py-0.5"
+                        className="text-[10px] font-mono text-white font-bold bg-black px-2.5 py-1"
                       >
                         {tool}
                       </span>
