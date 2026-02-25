@@ -30,9 +30,9 @@ export default function Home() {
         {/* <WhiteLabel /> */}
         <WhyPartner />
         <CaseStudy />
-        <Team />
         <Pricing />
         <SupportedSystems />
+        <Team />
         <Cta />
         <Demo />
       </main>
