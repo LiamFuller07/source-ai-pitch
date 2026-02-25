@@ -11,19 +11,19 @@ const migrationPaths = [
     left: { name: "QuickBooks", logo: "/quickbooks-logo.svg", height: "h-[40px]" },
     right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[48px]" },
     bidirectional: true,
-    connectedTools: ["+ Shopify", "+ HubSpot", "+ Stripe"],
+    connectedTools: ["+ Shopify", "+ HubSpot", "+ Stripe", "+ 100s more"],
   },
   {
     left: { name: "Xero", logo: "/xero-logo.svg", height: "h-[48px]" },
     right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[48px]" },
     bidirectional: false,
-    connectedTools: ["+ Stripe", "+ PayPal"],
+    connectedTools: ["+ Stripe", "+ PayPal", "+ 100s more"],
   },
   {
     left: { name: "QuickBooks", logo: "/quickbooks-logo.svg", height: "h-[40px]" },
     right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[48px]" },
     bidirectional: false,
-    connectedTools: ["+ Salesforce", "+ SharePoint"],
+    connectedTools: ["+ Salesforce", "+ SharePoint", "+ 100s more"],
   },
 ];
 
@@ -63,7 +63,7 @@ export function SupportedSystems() {
           AI Supported Migrations
         </h2>
         <p className="text-[20px] text-black/45 max-w-[900px] leading-relaxed">
-          Full migration support across any of these paths.
+          Source is capable across these paths today, along with 100s of integrations attached to them.
         </p>
       </motion.div>
 
