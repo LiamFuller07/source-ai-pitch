@@ -160,7 +160,7 @@ export function CaseStudy() {
               <span className="text-[12px] font-mono font-medium text-white/50">
                 {phase.days}d
               </span>
-              <span className="text-[9px] font-mono uppercase tracking-[0.1em] text-white/40 mt-0.5">
+              <span className={`text-[9px] font-mono uppercase tracking-[0.1em] mt-0.5 ${phase.ai ? "font-bold text-white/80" : "text-white/40"}`}>
                 {phase.ai ? "AI" : "You"}
               </span>
             </motion.div>

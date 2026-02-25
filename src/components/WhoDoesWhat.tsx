@@ -12,7 +12,6 @@ import {
   ClipboardCheck,
   Rocket,
   ShieldCheck,
-  GraduationCap,
   HeartHandshake,
   Sparkles,
   Lightbulb,
@@ -34,7 +33,6 @@ const flowSteps = [
   { owner: "customer" as const, label: "Customer Sign-Off", icon: Check },
   { owner: "source" as const, label: "AI Migration", icon: Rocket },
   { owner: "source" as const, label: "Testing & QA", icon: ShieldCheck },
-  { owner: "source" as const, label: "Training Docs", icon: GraduationCap },
   { owner: "consultant" as const, label: "Go-Live & Handover", icon: HeartHandshake },
 ];
 
@@ -65,7 +63,7 @@ const endUserItems: { label: string; icon: LucideIcon }[] = [
   { label: "Accepts final migration", icon: Check },
 ];
 
-// Row layout: 5 + 5
+// Row layout: 5 + 4
 const flowRow1 = flowSteps.slice(0, 5);
 const flowRow2 = flowSteps.slice(5);
 
@@ -110,7 +108,7 @@ export function WhoDoesWhat() {
   }, [inView, activeStep]);
 
   const renderStepRow = (row: typeof flowSteps, rowOffset: number) => (
-    <div className="flex items-stretch gap-2">
+    <div className="flex items-stretch gap-3">
       {row.map((step, i) => {
         const globalIndex = rowOffset + i;
         const isVisible = globalIndex <= activeStep;
@@ -129,7 +127,7 @@ export function WhoDoesWhat() {
               }
               transition={{ duration: 0.35, ease: "easeOut" }}
               onClick={() => setActiveStep(globalIndex)}
-              className={`flex-1 min-w-0 px-5 py-6 cursor-pointer transition-colors duration-200 ${
+              className={`flex-1 min-w-0 px-5 py-6 cursor-pointer transition-colors duration-200 relative ${
                 isActive
                   ? "bg-black text-white"
                   : isVisible
@@ -137,6 +135,14 @@ export function WhoDoesWhat() {
                   : "bg-transparent border border-transparent"
               }`}
             >
+              {/* AI badge */}
+              {isAI && (
+                <span className={`absolute top-2 right-3 text-[9px] font-mono font-bold tracking-[0.08em] ${
+                  isActive ? "text-white/30" : "text-black/20"
+                }`}>
+                  AI
+                </span>
+              )}
               {/* Icon + label */}
               <div className="flex items-center gap-3">
                 <step.icon
