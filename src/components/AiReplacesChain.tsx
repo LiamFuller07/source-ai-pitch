@@ -293,7 +293,7 @@ export function AiReplacesChain() {
               <img
                 src="/netsuite-logo.svg"
                 alt="NetSuite"
-                className="h-[48px] w-auto max-w-full"
+                className="h-[80px] w-auto max-w-full"
               />
             </motion.div>
           </div>
