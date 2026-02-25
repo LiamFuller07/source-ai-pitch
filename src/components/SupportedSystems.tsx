@@ -107,7 +107,7 @@ export function SupportedSystems() {
 
             {/* Integrations bar */}
             {path.connectedTools && (
-              <div className="border-t border-black/8 px-8 py-4 flex flex-wrap items-center gap-2">
+              <div className="border-t border-black/8 bg-black/[0.03] px-8 py-4 flex flex-wrap items-center gap-2">
                 <span className="text-[10px] font-mono uppercase tracking-[0.1em] text-black/30 mr-1">
                   Integrations
                 </span>
