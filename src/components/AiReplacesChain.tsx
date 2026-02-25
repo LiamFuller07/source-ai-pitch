@@ -286,10 +286,15 @@ export function AiReplacesChain() {
               transition={{ duration: 0.4 }}
               className="border border-black/10 p-6 flex flex-col justify-center"
             >
-              <p className="text-[14px] font-mono uppercase tracking-[0.1em] text-black/40 mb-2">
+              <p className="text-[14px] font-mono uppercase tracking-[0.1em] text-black/40 mb-3">
                 Live System
               </p>
-              <p className="text-[26px] font-bold text-black">NetSuite</p>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/netsuite-logo.svg"
+                alt="NetSuite"
+                className="h-[28px] w-auto"
+              />
             </motion.div>
           </div>
 
