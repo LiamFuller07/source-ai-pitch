@@ -28,7 +28,7 @@ export default function Home() {
         <AiReplacesChain />
         <WhoDoesWhat />
         {/* <WhiteLabel /> */}
-        <CaseStudy />
+        {/* <CaseStudy /> */}
         <SupportedSystems />
         <WhyPartner />
         <Pricing />
