@@ -41,6 +41,11 @@ body {
   color: #000000;
 }
 
+/* Lucide icons: match Inter's stroke weight */
+.lucide {
+  stroke-width: 1.75;
+}
+
 /* Each slide snaps into view */
 section {
   scroll-snap-align: start;
