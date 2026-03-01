@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
 const coolvetica = localFont({
@@ -8,8 +9,9 @@ const coolvetica = localFont({
   variable: "--font-display",
 });
 
-const inter = localFont({
-  src: "./fonts/inter-var.woff2",
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
   variable: "--font-inter",
 });
