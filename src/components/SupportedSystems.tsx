@@ -11,19 +11,19 @@ const migrationPaths = [
     left: { name: "QuickBooks", logo: "/quickbooks-logo.svg", height: "h-[40px]" },
     right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[48px]" },
     bidirectional: true,
-    connectedTools: ["+ Shopify", "+ HubSpot", "+ Stripe", "+ 100s more"],
+    connectedTools: ["+ Shopify", "+ HubSpot", "+ Stripe"],
   },
   {
     left: { name: "Xero", logo: "/xero-logo.svg", height: "h-[36px]" },
     right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[48px]" },
-    bidirectional: false,
-    connectedTools: ["+ Stripe", "+ PayPal", "+ 100s more"],
+    bidirectional: true,
+    connectedTools: ["+ Stripe", "+ PayPal", "+ Xero"],
   },
   {
     left: { name: "QuickBooks", logo: "/quickbooks-logo.svg", height: "h-[40px]" },
     right: { name: "Dynamics 365", logo: "/dynamics365-logo.svg", height: "h-[60px]" },
-    bidirectional: false,
-    connectedTools: ["+ Salesforce", "+ SharePoint", "+ 100s more"],
+    bidirectional: true,
+    connectedTools: ["+ Salesforce", "+ SharePoint", "+ Teams"],
   },
 ];
 
@@ -107,14 +107,14 @@ export function SupportedSystems() {
 
             {/* Integrations bar */}
             {path.connectedTools && (
-              <div className="border-t border-black/8 bg-black/[0.03] px-8 py-4 flex flex-wrap items-center gap-2">
-                <span className="text-[10px] font-mono uppercase tracking-[0.1em] text-black/30 mr-1">
+              <div className="border-t border-black/8 bg-black/[0.03] px-8 py-5 flex flex-wrap items-center gap-2.5">
+                <span className="text-[12px] font-mono uppercase tracking-[0.1em] text-black/30 mr-1">
                   Integrations
                 </span>
                 {path.connectedTools.map((tool) => (
                   <span
                     key={tool}
-                    className="text-[10px] font-mono text-black font-bold bg-white border border-black/15 px-2.5 py-1"
+                    className="text-[13px] font-mono text-black font-bold bg-white border border-black/15 px-3 py-1.5"
                   >
                     {tool}
                   </span>

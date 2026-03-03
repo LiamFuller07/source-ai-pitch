@@ -367,7 +367,7 @@ export function AiReplacesChain() {
                 transition={{ duration: 0.3, delay: 0.8 }}
                 className="text-[18px] font-mono text-black font-bold w-[150px] shrink-0"
               >
-                Sub 21 days
+                Under 21 days
               </motion.p>
             </div>
           </motion.div>

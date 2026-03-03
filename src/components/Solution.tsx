@@ -41,13 +41,13 @@ export function Solution() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-[40px] text-black/50 leading-relaxed max-w-[1100px] mx-auto font-medium"
+          className="text-[40px] text-black/50 leading-relaxed max-w-[1100px] mx-auto font-normal"
         >
-          An AI engine that automates <span className="text-black">80% of ERP migrations</span> —
+          An AI engine that automates <span className="text-black font-semibold">80% of ERP migrations</span> —
           <br />
           so your consultancy wins more deals, moves faster,
           <br />
-          and <span className="text-black">makes more money.</span>
+          and <span className="text-black font-semibold">makes more money.</span>
         </motion.p>
       </div>
     </Slide>

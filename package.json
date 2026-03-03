@@ -5,7 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "capture:slides": "node capture-slides.mjs --mode=slides",
+    "capture:main": "node capture-slides.mjs --mode=main",
+    "pptx": "python3 generate-pptx.py",
+    "pptx:slides": "npm run capture:slides && npm run pptx",
+    "pptx:main": "npm run capture:main && npm run pptx"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.18",
@@ -19,5 +24,9 @@
     "react-dom": "^19.2.4",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "pdf-lib": "^1.17.1",
+    "playwright": "^1.58.2"
   }
 }

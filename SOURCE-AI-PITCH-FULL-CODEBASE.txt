@@ -1,0 +1,4197 @@
+// ═══════════════════════════════════════════════════════════════════════════
+// SOURCE AI PITCH DECK — COMPLETE CODEBASE
+// ═══════════════════════════════════════════════════════════════════════════
+// Stack: Next.js 16 + React 19 + Tailwind CSS 4 + Framer Motion 12 + Lucide
+// Deploy: Vercel (static export)
+// ═══════════════════════════════════════════════════════════════════════════
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: package.json
+// ═══════════════════════════════════════════════════════════════════════════
+
+{
+  "name": "source-ai-pitch",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "capture:slides": "node capture-slides.mjs --mode=slides",
+    "capture:main": "node capture-slides.mjs --mode=main",
+    "pptx": "python3 generate-pptx.py",
+    "pptx:slides": "npm run capture:slides && npm run pptx",
+    "pptx:main": "npm run capture:main && npm run pptx"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/node": "^25.2.3",
+    "@types/react": "^19.2.14",
+    "framer-motion": "^12.34.0",
+    "lucide-react": "^0.564.0",
+    "next": "^16.1.6",
+    "postcss": "^8.5.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "pdf-lib": "^1.17.1",
+    "playwright": "^1.58.2"
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: next.config.ts
+// ═══════════════════════════════════════════════════════════════════════════
+
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  output: "export",
+};
+
+export default nextConfig;
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: tsconfig.json
+// ═══════════════════════════════════════════════════════════════════════════
+
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/app/globals.css
+// ═══════════════════════════════════════════════════════════════════════════
+
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #ffffff;
+  --color-bg-card: #f5f5f5;
+  --color-bg-elevated: #fafafa;
+  --color-border: rgba(0, 0, 0, 0.1);
+  --color-border-hover: rgba(0, 0, 0, 0.2);
+  --color-text-primary: #000000;
+  --color-text-secondary: rgba(0, 0, 0, 0.6);
+  --color-text-muted: rgba(0, 0, 0, 0.4);
+  --color-accent: #000000;
+  --color-red: #cc0000;
+
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-display), -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", "Fira Code", monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+  -webkit-scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100%;
+}
+
+body {
+  background: #ffffff;
+  color: #000000;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+::selection {
+  background: rgba(0, 0, 0, 0.1);
+  color: #000000;
+}
+
+/* Each slide snaps into view */
+section {
+  scroll-snap-align: start;
+  -webkit-scroll-snap-align: start;
+}
+
+/* Prevent content from breaking out of slides */
+section * {
+  box-sizing: border-box;
+}
+
+/* Fallback for browsers that don't support dvh */
+@supports not (height: 100dvh) {
+  section {
+    height: 100vh !important;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/app/layout.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+import type { Metadata } from "next";
+import localFont from "next/font/local";
+import "./globals.css";
+
+const coolvetica = localFont({
+  src: "./fonts/coolvetica-rg.woff",
+  display: "swap",
+  variable: "--font-display",
+});
+
+const inter = localFont({
+  src: "./fonts/inter-var.woff2",
+  display: "swap",
+  variable: "--font-inter",
+});
+
+export const metadata: Metadata = {
+  title: "Source AI — The Migration Engine for Consultants",
+  description:
+    "From transcript to live system. Source AI handles discovery, scanning, strategy, BRD generation, and migration execution.",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" className={`${coolvetica.variable} ${inter.variable}`}>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/app/page.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { Hero } from "@/components/Hero";
+import { ProblemToday } from "@/components/ProblemToday";
+import { Solution } from "@/components/Solution";
+import { AiReplacesChain } from "@/components/AiReplacesChain";
+import { SupportedSystems } from "@/components/SupportedSystems";
+import { WhoDoesWhat } from "@/components/WhoDoesWhat";
+import { DemoVideo } from "@/components/DemoVideo";
+import { WhiteLabel } from "@/components/WhiteLabel";
+import { WhyPartner } from "@/components/WhyPartner";
+import { Pricing } from "@/components/Pricing";
+import { Partners } from "@/components/Partners";
+import { CaseStudy } from "@/components/CaseStudy";
+import { Team } from "@/components/Team";
+import { Cta } from "@/components/Cta";
+import { Demo } from "@/components/Demo";
+import { Nav } from "@/components/Nav";
+import { PresentationProvider } from "@/components/PresentationController";
+
+export default function Home() {
+  return (
+    <PresentationProvider>
+      <Nav />
+      <main>
+        <ProblemToday />
+        <Solution />
+        <AiReplacesChain />
+        <WhoDoesWhat />
+        {/* <WhiteLabel /> */}
+        {/* <CaseStudy /> */}
+        <SupportedSystems />
+        <WhyPartner />
+        <Pricing />
+        <Team />
+        <Cta />
+        <Demo />
+      </main>
+    </PresentationProvider>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/Slide.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { useEffect, useState, useCallback } from "react";
+
+const DESIGN_WIDTH = 1920;
+const DESIGN_HEIGHT = 1080;
+
+interface SlideProps {
+  children: React.ReactNode;
+  className?: string;
+  bg?: string;
+  id?: string;
+  ref?: React.Ref<HTMLElement>;
+}
+
+export function Slide({
+  children,
+  className = "",
+  bg = "bg-white",
+  id,
+  ref,
+}: SlideProps) {
+  const [scale, setScale] = useState<number | null>(null);
+  const isDark = bg.includes("black");
+
+  const update = useCallback(() => {
+    const vh = window.innerHeight;
+    const vw = window.innerWidth;
+    setScale(Math.min(vw / DESIGN_WIDTH, vh / DESIGN_HEIGHT));
+  }, []);
+
+  useEffect(() => {
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [update]);
+
+  return (
+    <section
+      ref={ref}
+      id={id}
+      className={`relative overflow-hidden ${bg}`}
+      style={{ height: "100dvh" }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          width: DESIGN_WIDTH,
+          height: DESIGN_HEIGHT,
+          transformOrigin: "center center",
+          transform: `translate(-50%, -50%) scale(${scale ?? 0.5})`,
+          opacity: scale === null ? 0 : 1,
+          transition: scale === null ? "none" : "opacity 0.15s ease-in",
+        }}
+      >
+        <div
+          className={`relative ${className}`}
+          style={{ width: "100%", height: "100%", overflow: "hidden" }}
+        >
+          {children}
+          {/* Source logo — bottom right */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/source-logo.svg"
+            alt=""
+            className={`absolute bottom-[40px] right-[50px] w-[48px] h-[48px] pointer-events-none ${
+              isDark ? "opacity-[0.15] invert" : "opacity-[0.08]"
+            }`}
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/PresentationController.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { createContext, useContext, useState, useCallback, useEffect, useRef } from "react";
+import { ChevronRight } from "lucide-react";
+
+interface PresentationContextType {
+  currentStep: number;
+  maxSteps: number;
+  nextStep: () => void;
+  prevStep: () => void;
+  resetSteps: () => void;
+  setMaxSteps: (max: number) => void;
+  isStepVisible: (step: number) => boolean;
+}
+
+const PresentationContext = createContext<PresentationContextType>({
+  currentStep: 0,
+  maxSteps: 0,
+  nextStep: () => {},
+  prevStep: () => {},
+  resetSteps: () => {},
+  setMaxSteps: () => {},
+  isStepVisible: () => false,
+});
+
+export const usePresentationStep = () => useContext(PresentationContext);
+
+export function PresentationProvider({ children }: { children: React.ReactNode }) {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [maxSteps, setMaxSteps] = useState(0);
+  const currentSlideRef = useRef(0);
+  const totalSlidesRef = useRef(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Track which slide is currently visible
+  useEffect(() => {
+    const sections = document.querySelectorAll("section");
+    totalSlidesRef.current = sections.length;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = Array.from(sections).indexOf(entry.target as HTMLElement);
+            if (idx >= 0) {
+              currentSlideRef.current = idx;
+              setCurrentSlide(idx);
+            }
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
+
+  const scrollToSlide = useCallback((index: number) => {
+    const sections = document.querySelectorAll("section");
+    if (sections[index]) {
+      sections[index].scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
+
+  const hasMoreSteps = maxSteps > 0 && currentStep < maxSteps;
+  const isLastSlide = currentSlide >= totalSlidesRef.current - 1;
+
+  const advance = useCallback(() => {
+    if (hasMoreSteps) {
+      setCurrentStep((prev) => Math.min(prev + 1, maxSteps));
+    } else {
+      const sections = document.querySelectorAll("section");
+      const nextIndex = currentSlideRef.current + 1;
+      if (nextIndex < sections.length) {
+        scrollToSlide(nextIndex);
+      }
+    }
+  }, [hasMoreSteps, maxSteps, scrollToSlide]);
+
+  const goBack = useCallback(() => {
+    if (currentStep > 0) {
+      setCurrentStep((prev) => Math.max(prev - 1, 0));
+    } else {
+      const prevIndex = currentSlideRef.current - 1;
+      if (prevIndex >= 0) {
+        scrollToSlide(prevIndex);
+      }
+    }
+  }, [currentStep, scrollToSlide]);
+
+  const nextStep = useCallback(() => {
+    setCurrentStep((prev) => Math.min(prev + 1, maxSteps));
+  }, [maxSteps]);
+
+  const prevStep = useCallback(() => {
+    setCurrentStep((prev) => Math.max(prev - 1, 0));
+  }, []);
+
+  const resetSteps = useCallback(() => {
+    setCurrentStep(0);
+  }, []);
+
+  const isStepVisible = useCallback(
+    (step: number) => currentStep >= step,
+    [currentStep]
+  );
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight" || e.key === " ") {
+        e.preventDefault();
+        advance();
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        goBack();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [advance, goBack]);
+
+  // Click to advance
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target.closest("button") ||
+        target.closest("a") ||
+        target.closest("input") ||
+        target.closest("textarea") ||
+        target.closest("nav")
+      ) {
+        return;
+      }
+      advance();
+    };
+    window.addEventListener("click", handleClick);
+    return () => window.removeEventListener("click", handleClick);
+  }, [advance]);
+
+  return (
+    <PresentationContext.Provider
+      value={{
+        currentStep,
+        maxSteps,
+        nextStep,
+        prevStep,
+        resetSteps,
+        setMaxSteps,
+        isStepVisible,
+      }}
+    >
+      {children}
+      <PresentationHint
+        hasMoreSteps={hasMoreSteps}
+        isLastSlide={isLastSlide}
+        currentStep={currentStep}
+        maxSteps={maxSteps}
+      />
+    </PresentationContext.Provider>
+  );
+}
+
+function PresentationHint({
+  hasMoreSteps,
+  isLastSlide,
+  currentStep,
+  maxSteps,
+}: {
+  hasMoreSteps: boolean;
+  isLastSlide: boolean;
+  currentStep: number;
+  maxSteps: number;
+}) {
+  const [visible, setVisible] = useState(false);
+  const [pulsing, setPulsing] = useState(false);
+  const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const interactionCount = useRef(0);
+
+  // Show hint after a short delay on load
+  useEffect(() => {
+    const t = setTimeout(() => setVisible(true), 2000);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Track interactions — hide hint briefly after user acts, pulse if idle
+  useEffect(() => {
+    const resetIdle = () => {
+      interactionCount.current++;
+      setPulsing(false);
+
+      // After user has interacted a few times, keep hint subtle
+      if (idleTimer.current) clearTimeout(idleTimer.current);
+      idleTimer.current = setTimeout(() => {
+        setPulsing(true);
+      }, 5000);
+    };
+
+    window.addEventListener("keydown", resetIdle);
+    window.addEventListener("click", resetIdle);
+    window.addEventListener("scroll", resetIdle);
+
+    // Start the initial idle timer
+    idleTimer.current = setTimeout(() => setPulsing(true), 5000);
+
+    return () => {
+      window.removeEventListener("keydown", resetIdle);
+      window.removeEventListener("click", resetIdle);
+      window.removeEventListener("scroll", resetIdle);
+      if (idleTimer.current) clearTimeout(idleTimer.current);
+    };
+  }, []);
+
+  // Don't show on the very last slide
+  if (isLastSlide && !hasMoreSteps) return null;
+
+  const label = hasMoreSteps ? "Space to reveal" : "Space for next slide";
+
+  return (
+    <div
+      className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-700 ${
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+      }`}
+    >
+      <div
+        className={`flex items-center gap-3 px-5 py-2.5 bg-black/[0.06] backdrop-blur-sm rounded-full transition-all duration-500 ${
+          pulsing ? "animate-pulse" : ""
+        }`}
+      >
+        {/* Keyboard icon */}
+        <kbd className="inline-flex items-center justify-center w-[52px] h-[24px] bg-white border border-black/10 rounded text-[10px] font-mono font-medium text-black/40 shadow-[0_1px_0_1px_rgba(0,0,0,0.05)]">
+          SPACE
+        </kbd>
+        <span className="text-[11px] font-mono uppercase tracking-[0.08em] text-black/30">
+          {label}
+        </span>
+        <ChevronRight size={12} className="text-black/20" />
+
+        {/* Step counter pill */}
+        {maxSteps > 0 && (
+          <span className="text-[9px] font-mono text-black/20 border-l border-black/8 pl-3 ml-1">
+            {currentStep}/{maxSteps}
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/Nav.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { useState, useEffect } from "react";
+export function Nav() {
+  const [current, setCurrent] = useState(0);
+  const total = 10;
+
+  useEffect(() => {
+    const sections = document.querySelectorAll("section");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = Array.from(sections).indexOf(entry.target as HTMLElement);
+            if (idx >= 0) setCurrent(idx);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <>
+      {/* Slide nav dots */}
+      <nav className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-2">
+        {Array.from({ length: total }).map((_, i) => (
+          <button
+            key={i}
+            onClick={() => {
+              const sections = document.querySelectorAll("section");
+              sections[i]?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className={`transition-all duration-300 rounded-full ${
+              i === current
+                ? "w-2 h-6 bg-black"
+                : "w-2 h-2 bg-black/20 hover:bg-black/40"
+            }`}
+            aria-label={`Slide ${i + 1}`}
+          />
+        ))}
+        <span className="text-[9px] font-mono text-black/30 mt-2">
+          {current + 1}/{total}
+        </span>
+      </nav>
+    </>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/ProblemToday.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef, useEffect } from "react";
+import { usePresentationStep } from "./PresentationController";
+import { Slide } from "./Slide";
+
+const steps = [
+  {
+    label: "End Client",
+    emoji: "🏢",
+    detail: "Identifies need, issues RFP, evaluates vendors",
+  },
+  {
+    label: "Sales & Scoping",
+    emoji: "💼",
+    detail: "Discovery calls, needs analysis, proposal writing, SOW negotiation",
+  },
+  {
+    label: "Solutions Architecture",
+    emoji: "🏗️",
+    detail: "Schema analysis, gap assessment, AS-IS → TO-BE mapping, BRD creation",
+  },
+  {
+    label: "Resource & Team Build",
+    emoji: "👥",
+    detail: "Find offshore/onshore devs, onboard, ramp up on client systems",
+  },
+  {
+    label: "Implementation & Config",
+    emoji: "⚙️",
+    detail: "Data migration, custom development, integrations, UAT, bug fixing",
+  },
+  {
+    label: "Go-Live & Handover",
+    emoji: "🚀",
+    detail: "Cutover planning, validation, training, hypercare, documentation",
+  },
+];
+
+export function ProblemToday() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const { setMaxSteps, resetSteps, isStepVisible } = usePresentationStep();
+
+  useEffect(() => {
+    if (inView) {
+      setMaxSteps(steps.length + 1); // +1 for the timeline bar
+      resetSteps();
+    }
+  }, [inView, setMaxSteps, resetSteps]);
+
+  const allStepsVisible = isStepVisible(steps.length + 1);
+
+  return (
+    <Slide ref={ref} bg="bg-white" className="flex flex-col justify-center px-[120px]">
+      <div className="w-full">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="mb-12"
+        >
+          <p className="text-[18px] font-mono uppercase tracking-[0.2em] text-black/40 mb-3">
+            The Problem
+          </p>
+          <h2 className="text-[56px] font-semibold tracking-[-0.03em] mb-0">
+            How Migrations Work Today
+          </h2>
+          <div className="w-[120px] h-[2px] bg-black/10 mt-4" />
+        </motion.div>
+
+        <div className="relative space-y-[-1px]">
+          {steps.map((step, i) => (
+            <div
+              key={step.label}
+              className="relative flex items-center"
+              style={{ paddingLeft: `${i * 10}%` }}
+            >
+              {i > 0 && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: isStepVisible(i + 1) ? 1 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute -top-2 bg-black/10"
+                  style={{
+                    left: `calc(${i * 10}% + 32px)`,
+                    width: "1px",
+                    height: "8px",
+                  }}
+                />
+              )}
+
+              <motion.div
+                initial={{ opacity: 0, x: -10, y: 8 }}
+                animate={
+                  isStepVisible(i + 1)
+                    ? { opacity: 1, x: 0, y: 0 }
+                    : { opacity: 0, x: -10, y: 8 }
+                }
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="flex-1 max-w-[700px]"
+              >
+                <div className="border border-black/10 bg-white flex items-center">
+                  <div className="w-14 shrink-0 flex items-center justify-center border-r border-black/8 self-stretch bg-black/[0.02]">
+                    <span className="text-[14px] font-mono font-bold text-black/20">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3 px-4 py-3.5 flex-1 min-w-0">
+                    <span className="text-[24px] shrink-0">{step.emoji}</span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[20px] font-semibold tracking-[-0.01em] text-black leading-tight">
+                        {step.label}
+                      </p>
+                      <p className="text-[15px] text-black/35 leading-snug">
+                        {step.detail}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          ))}
+        </div>
+
+        {/* Timeline bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={allStepsVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5 }}
+          className="mt-10"
+        >
+          <div className="relative h-[6px] bg-black/[0.06] w-full">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={allStepsVisible ? { width: "100%" } : {}}
+              transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+              className="absolute inset-y-0 left-0 bg-black/30"
+            />
+          </div>
+          <div className="flex justify-between mt-3">
+            <p className="text-[14px] font-mono text-black/25">Month 0</p>
+            <p className="text-[20px] font-mono font-bold text-black/60 tracking-[-0.02em]">
+              2 – 6+ months typical
+            </p>
+            <p className="text-[14px] font-mono text-black/25">Month 6+</p>
+          </div>
+        </motion.div>
+      </div>
+    </Slide>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/Solution.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+import { Slide } from "./Slide";
+
+export function Solution() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <Slide ref={ref} bg="bg-white" className="flex items-center justify-center">
+      <div className="max-w-[1600px] mx-auto text-center">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6 }}
+          className="text-[22px] font-mono uppercase tracking-[0.25em] text-black/30 mb-8"
+        >
+          Introducing
+        </motion.p>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.15 }}
+          className="text-[120px] font-semibold tracking-[-0.04em] leading-[0.9] text-black mb-10"
+        >
+          Source
+        </motion.h2>
+
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={inView ? { scaleX: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="w-[120px] h-[2px] bg-black/10 mx-auto mb-12"
+        />
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="text-[40px] text-black/50 leading-relaxed max-w-[1100px] mx-auto font-medium"
+        >
+          An AI engine that automates <span className="text-black">80% of ERP migrations</span> —
+          <br />
+          so your consultancy wins more deals, moves faster,
+          <br />
+          and <span className="text-black">makes more money.</span>
+        </motion.p>
+      </div>
+    </Slide>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/AiReplacesChain.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef, useEffect } from "react";
+import {
+  Handshake,
+  BadgeDollarSign,
+  MessageSquareText,
+  ClipboardCheck,
+  ScanSearch,
+  BrainCircuit,
+  Lightbulb,
+  Network,
+  FileText,
+  Route,
+  Wrench,
+  ShieldCheck,
+  CheckCircle2,
+  Rocket,
+  type LucideIcon,
+} from "lucide-react";
+import { Slide } from "./Slide";
+import { usePresentationStep } from "./PresentationController";
+
+const engineCapabilities: { label: string; icon: LucideIcon }[] = [
+  { label: "System scanning", icon: ScanSearch },
+  { label: "Business logic inference", icon: BrainCircuit },
+  { label: "Strategy generation", icon: Lightbulb },
+  { label: "Data mapping & discovery", icon: Network },
+  { label: "BRD generation", icon: FileText },
+  { label: "Migration plan", icon: Route },
+  { label: "Implementation & config", icon: Wrench },
+  { label: "Testing & QA", icon: ShieldCheck },
+  { label: "Validation & proof", icon: CheckCircle2 },
+  { label: "Go-live execution", icon: Rocket },
+];
+
+const oldChainSteps = [
+  { label: "End Client", emoji: "🏢" },
+  { label: "Sales", emoji: "💼" },
+  { label: "Solutions Architect", emoji: "🏗️", crossedOut: true },
+  { label: "Offshoring", emoji: "👥", crossedOut: true },
+  { label: "Migration Complete", emoji: "🚀" },
+];
+
+const consultantRoles = [
+  { label: "Relationship", icon: Handshake },
+  { label: "Sales & scoping", icon: BadgeDollarSign },
+  { label: "Provides context", icon: MessageSquareText },
+  { label: "Reviews outputs", icon: ClipboardCheck },
+];
+
+// Steps: 1=header, 2-6=before chain (5 items, crossouts animate on next click), 7=after+client, 8=consultant, 9=engine, 10=live, 11=timeline
+const TOTAL_STEPS = 11;
+
+export function AiReplacesChain() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const { setMaxSteps, resetSteps, isStepVisible } = usePresentationStep();
+
+  useEffect(() => {
+    if (inView) {
+      setMaxSteps(TOTAL_STEPS);
+      resetSteps();
+    }
+  }, [inView, setMaxSteps, resetSteps]);
+
+  return (
+    <Slide
+      ref={ref}
+      bg="bg-white"
+      className="flex flex-col justify-center px-[120px]"
+    >
+      <div className="w-full">
+        {/* Step 1: Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isStepVisible(1) ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="mb-10"
+        >
+          <p className="text-[18px] font-mono uppercase tracking-[0.2em] text-black/40 mb-3">
+            The Solution
+          </p>
+          <h2 className="text-[56px] font-semibold tracking-[-0.03em]">
+            Source AI Replaces the Delivery Chain
+          </h2>
+        </motion.div>
+
+        {/* Steps 2-6: BEFORE — each chain step appears, crossouts happen on next click */}
+        <div className="mb-8">
+          {/* "Before" label appears with first chain step */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={isStepVisible(2) ? { opacity: 1 } : {}}
+            transition={{ duration: 0.3 }}
+            className="text-[14px] font-mono uppercase tracking-[0.15em] text-black/30 mb-4"
+          >
+            Before
+          </motion.p>
+
+          <div className="flex items-center gap-3">
+            {oldChainSteps.map((step, i) => {
+              const stepNum = 2 + i; // steps 2,3,4,5,6
+              const isVisible = isStepVisible(stepNum);
+              // Cross out only after the "After" row appears (step 7)
+              const isCrossed = step.crossedOut && isStepVisible(7);
+
+              return (
+                <div key={step.label} className="flex items-center gap-3">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                    animate={
+                      isVisible
+                        ? {
+                            opacity: isCrossed ? 0.3 : 1,
+                            scale: isCrossed ? 0.95 : 1,
+                            y: 0,
+                          }
+                        : {}
+                    }
+                    transition={{ duration: 0.4 }}
+                    className="border border-black/20 bg-black/[0.02] px-6 py-4 min-w-[180px] relative"
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      <span className="text-[20px]">{step.emoji}</span>
+                      <p
+                        className={`text-[15px] text-center transition-all duration-300 ${
+                          isCrossed
+                            ? "line-through decoration-red-400 decoration-2 text-black/20"
+                            : "text-black/40"
+                        }`}
+                      >
+                        {step.label}
+                      </p>
+                    </div>
+                  </motion.div>
+
+                  {i < 4 && (
+                    <motion.span
+                      initial={{ opacity: 0 }}
+                      animate={
+                        isVisible
+                          ? { opacity: isCrossed ? 0.05 : 0.15 }
+                          : {}
+                      }
+                      transition={{ duration: 0.3 }}
+                      className="text-black/15 text-[26px]"
+                    >
+                      →
+                    </motion.span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Steps 7-11: AFTER */}
+        <div>
+          {/* Step 7: After label */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={isStepVisible(7) ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.3 }}
+            className="mb-4"
+          >
+            <p className="text-[14px] font-mono uppercase tracking-[0.15em] text-black/30">
+              After
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-[0.8fr_auto_1.2fr_auto_2.5fr_auto_0.8fr] gap-4 items-stretch">
+            {/* Step 7: End Client */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={
+                isStepVisible(7) ? { opacity: 1, scale: 1, y: 0 } : {}
+              }
+              transition={{ duration: 0.4 }}
+              className="border border-black/10 p-6 flex flex-col justify-center"
+            >
+              <p className="text-[14px] font-mono uppercase tracking-[0.1em] text-black/40 mb-3">
+                End Client
+              </p>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/quickbooks-logo.svg"
+                alt="QuickBooks"
+                className="h-[48px] w-auto max-w-full"
+              />
+            </motion.div>
+
+            {/* Step 8: Arrow */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={isStepVisible(8) ? { opacity: 1 } : {}}
+              transition={{ duration: 0.3 }}
+              className="flex items-center text-black/20 text-[24px]"
+            >
+              →
+            </motion.div>
+
+            {/* Step 8: Consultant */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={
+                isStepVisible(8) ? { opacity: 1, scale: 1, y: 0 } : {}
+              }
+              transition={{ duration: 0.4 }}
+              className="border-2 border-black/20 bg-black/[0.02] p-6 flex flex-col justify-center"
+            >
+              <p className="text-[15px] font-mono font-bold uppercase tracking-[0.1em] text-black/60 mb-5">
+                Your Consultant
+              </p>
+              <div className="space-y-4">
+                {consultantRoles.map((role, i) => (
+                  <motion.div
+                    key={role.label}
+                    initial={{ opacity: 0 }}
+                    animate={isStepVisible(8) ? { opacity: 1 } : {}}
+                    transition={{ duration: 0.3, delay: 0.1 + i * 0.08 }}
+                    className="flex items-center gap-3"
+                  >
+                    <role.icon
+                      size={20}
+                      className="text-black/30 shrink-0"
+                    />
+                    <p className="text-[17px] text-black/50 leading-snug">
+                      {role.label}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Step 9: Arrow */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={isStepVisible(9) ? { opacity: 1 } : {}}
+              transition={{ duration: 0.3 }}
+              className="flex items-center text-black/20 text-[24px]"
+            >
+              →
+            </motion.div>
+
+            {/* Step 9: Source AI Engine */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={
+                isStepVisible(9) ? { opacity: 1, scale: 1, y: 0 } : {}
+              }
+              transition={{ duration: 0.5 }}
+              className="bg-black p-6"
+            >
+              <div className="flex items-center justify-between mb-5">
+                <p className="text-[15px] font-mono font-medium uppercase tracking-[0.1em] text-white">
+                  Source AI Engine
+                </p>
+                <span className="text-[13px] font-mono uppercase tracking-[0.1em] text-black bg-white px-4 py-2 font-bold">
+                  Sub 21 Days
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-x-8 gap-y-3.5">
+                {engineCapabilities.map((cap, i) => (
+                  <motion.div
+                    key={cap.label}
+                    initial={{ opacity: 0 }}
+                    animate={isStepVisible(9) ? { opacity: 1 } : {}}
+                    transition={{ delay: 0.1 + i * 0.05 }}
+                    className="flex items-center gap-3 whitespace-nowrap"
+                  >
+                    <cap.icon size={15} className="text-white/35 shrink-0" />
+                    <span className="text-[16px] font-medium text-white">{cap.label}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Step 10: Arrow */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={isStepVisible(10) ? { opacity: 1 } : {}}
+              transition={{ duration: 0.3 }}
+              className="flex items-center text-black/20 text-[24px]"
+            >
+              →
+            </motion.div>
+
+            {/* Step 10: Live System */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={
+                isStepVisible(10) ? { opacity: 1, scale: 1, y: 0 } : {}
+              }
+              transition={{ duration: 0.4 }}
+              className="border border-black/10 p-6 flex flex-col justify-center"
+            >
+              <p className="text-[14px] font-mono uppercase tracking-[0.1em] text-black/40 mb-3">
+                Live System
+              </p>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/netsuite-logo.svg"
+                alt="NetSuite"
+                className="h-[48px] w-auto max-w-full"
+              />
+            </motion.div>
+          </div>
+
+          {/* Step 11: Timeline comparison */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isStepVisible(11) ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5 }}
+            className="mt-10 pt-6 border-t border-black/10 space-y-3"
+          >
+            <div className="flex items-center gap-5">
+              <p className="text-[16px] font-mono uppercase tracking-[0.12em] text-black/30 w-[140px] shrink-0 text-right">
+                Without
+              </p>
+              <div className="flex-1 relative h-6">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={isStepVisible(11) ? { width: "100%" } : {}}
+                  transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+                  className="absolute inset-y-0 left-0 flex items-center"
+                >
+                  <div className="h-[10px] bg-black/20 w-full" />
+                </motion.div>
+              </div>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={isStepVisible(11) ? { opacity: 1 } : {}}
+                transition={{ duration: 0.3, delay: 0.6 }}
+                className="text-[18px] font-mono text-black/30 w-[150px] shrink-0"
+              >
+                3–6+ months
+              </motion.p>
+            </div>
+
+            <div className="flex items-center gap-5">
+              <p className="text-[16px] font-mono uppercase tracking-[0.12em] text-black w-[140px] shrink-0 text-right font-medium">
+                With Source
+              </p>
+              <div className="flex-1 relative h-6">
+                <div className="absolute inset-y-0 left-0 right-0 flex items-center">
+                  <div className="h-[10px] bg-black/[0.04] w-full" />
+                </div>
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={isStepVisible(11) ? { width: "8%" } : {}}
+                  transition={{
+                    duration: 0.6,
+                    delay: 0.4,
+                    ease: "easeOut",
+                  }}
+                  className="absolute inset-y-0 left-0 flex items-center"
+                >
+                  <div className="h-[10px] bg-black w-full" />
+                </motion.div>
+              </div>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={isStepVisible(11) ? { opacity: 1 } : {}}
+                transition={{ duration: 0.3, delay: 0.8 }}
+                className="text-[18px] font-mono text-black font-bold w-[150px] shrink-0"
+              >
+                Sub 21 days
+              </motion.p>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </Slide>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/WhoDoesWhat.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { motion, useInView } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import {
+  User,
+  Building2,
+  Check,
+  FileText,
+  Search,
+  MessageSquare,
+  ClipboardCheck,
+  Rocket,
+  ShieldCheck,
+  HeartHandshake,
+  Sparkles,
+  Lightbulb,
+  Settings,
+  Database,
+  Route,
+  type LucideIcon,
+} from "lucide-react";
+import { Slide } from "./Slide";
+
+// ─── Data ────────────────────────────────────────────────────────────────────
+
+type FlowStep = {
+  owner: "consultant" | "source" | "customer";
+  label: string;
+  icon: LucideIcon | null;
+  emoji?: string;
+};
+
+const flowSteps: FlowStep[] = [
+  { owner: "consultant", label: "Client Call & Notes", icon: FileText },
+  { owner: "source", label: "Connect & Scan", icon: Search },
+  { owner: "source", label: "AI Questionnaire", icon: MessageSquare },
+  { owner: "source", label: "Draft BRD", icon: FileText },
+  { owner: "consultant", label: "Consultant Review", icon: ClipboardCheck },
+  { owner: "customer", label: "Customer Sign-Off", icon: Check },
+  { owner: "source", label: "AI Migration", icon: Rocket },
+  { owner: "source", label: "Testing & QA", icon: ShieldCheck },
+  { owner: "consultant", label: "Go-Live & Handover", icon: HeartHandshake },
+  { owner: "customer", label: "Happy Customer", icon: null, emoji: "🎉" },
+];
+
+const sourceItems: { label: string; icon: LucideIcon }[] = [
+  { label: "System scanning & analysis", icon: Search },
+  { label: "Business logic inference", icon: Lightbulb },
+  { label: "BRD generation", icon: ClipboardCheck },
+  { label: "Migration planning", icon: Route },
+  { label: "Implementation & config", icon: Settings },
+  { label: "Testing & validation", icon: ShieldCheck },
+];
+
+const consultantItems: { label: string; icon: LucideIcon }[] = [
+  { label: "Provides initial context", icon: FileText },
+  { label: "Reviews Source AI outputs", icon: ClipboardCheck },
+  { label: "Delivers questions to end user", icon: MessageSquare },
+  { label: "Confirms BRD with end user", icon: Check },
+  { label: "Signs off on migration plan", icon: Check },
+];
+
+const endUserItems: { label: string; icon: LucideIcon }[] = [
+  { label: "Answers questionnaires", icon: MessageSquare },
+  { label: "Confirms business requirements", icon: Check },
+  { label: "Signs off on TO-BE state", icon: Check },
+  { label: "Accepts final migration", icon: Check },
+];
+
+// Row layout: 5 + 5
+const flowRow1 = flowSteps.slice(0, 5);
+const flowRow2 = flowSteps.slice(5);
+
+// ─── Main component ───────────────────────────────────────────────────────────
+
+export function WhoDoesWhat() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const slideVisible = useInView(ref, { margin: "-40%" });
+  const [activeStep, setActiveStep] = useState(-1);
+
+  // Keyboard navigation — only when slide is visible
+  useEffect(() => {
+    if (!slideVisible) return;
+
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        if (activeStep < flowSteps.length + 2) {
+          e.preventDefault();
+          e.stopPropagation();
+          setActiveStep((prev) => prev + 1);
+        }
+      }
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        if (activeStep > 0) {
+          e.preventDefault();
+          e.stopPropagation();
+          setActiveStep((prev) => prev - 1);
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handler, true);
+    return () => window.removeEventListener("keydown", handler, true);
+  }, [slideVisible, activeStep]);
+
+  // Start at step 0 when slide first enters view
+  useEffect(() => {
+    if (inView && activeStep === -1) {
+      setActiveStep(0);
+    }
+  }, [inView, activeStep]);
+
+  const renderStepRow = (row: typeof flowSteps, rowOffset: number) => (
+    <div className="flex items-stretch gap-3">
+      {row.map((step, i) => {
+        const globalIndex = rowOffset + i;
+        const isVisible = globalIndex <= activeStep;
+        const isActive = globalIndex === activeStep;
+        const isAI = step.owner === "source";
+        const isLast = i === row.length - 1;
+        const isFinalStep = globalIndex === flowSteps.length - 1;
+
+        return (
+          <div key={step.label} className={`flex items-center min-w-0 ${isFinalStep ? "flex-[0.8]" : "flex-1"}`}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.85, y: 10 }}
+              animate={
+                isVisible
+                  ? { opacity: 1, scale: 1, y: 0 }
+                  : { opacity: 0, scale: 0.85, y: 10 }
+              }
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              onClick={() => setActiveStep(globalIndex)}
+              className={`flex-1 min-w-0 px-5 py-6 cursor-pointer transition-colors duration-200 relative ${
+                isActive
+                  ? "bg-black text-white"
+                  : isVisible
+                  ? "bg-white border border-black/15 text-black"
+                  : "bg-transparent border border-transparent"
+              }`}
+            >
+              {/* Role badge */}
+              {!step.emoji && (
+                <span className={`absolute top-2 right-3 text-[9px] font-mono font-bold tracking-[0.08em] ${
+                  isActive
+                    ? "text-white/50"
+                    : isAI ? "text-black/40" : "text-black/25"
+                }`}>
+                  {isAI ? "AI" : "Consultant"}
+                </span>
+              )}
+              {/* Icon + label */}
+              <div className="flex items-center gap-3">
+                {step.emoji ? (
+                  <span className="text-[18px] shrink-0">{step.emoji}</span>
+                ) : step.icon ? (
+                  <step.icon
+                    size={18}
+                    className={`shrink-0 ${
+                      isActive ? "text-white/50" : "text-black/25"
+                    }`}
+                  />
+                ) : null}
+                <p
+                  className={`text-[17px] font-semibold leading-tight ${
+                    isActive ? "text-white" : "text-black"
+                  }`}
+                >
+                  {step.label}
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Arrow connector */}
+            {!isLast && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
+                transition={{ duration: 0.2, delay: 0.1 }}
+                className="shrink-0 px-2 text-[22px] font-bold text-black/20"
+              >
+                →
+              </motion.div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+
+  return (
+    <Slide
+      ref={ref}
+      bg="bg-[#f8f8f8]"
+      className="flex flex-col px-[100px] py-[60px]"
+    >
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.5 }}
+        className="mb-6"
+      >
+        <p className="text-[14px] font-mono uppercase tracking-[0.2em] text-black/30 mb-2">
+          Responsibility Matrix
+        </p>
+        <h2 className="text-[48px] font-semibold tracking-[-0.03em] text-black mb-2">
+          Who Does What
+        </h2>
+        <p className="text-[22px] text-black/45 leading-relaxed max-w-[900px]">
+          <span className="font-semibold text-black">Source AI</span> does the
+          technical execution end-to-end.{" "}
+          <span className="font-semibold text-black">The consultant</span> keeps
+          the client relationship and commercial ownership.
+        </p>
+      </motion.div>
+
+      {/* Workflow label */}
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.3, delay: 0.2 }}
+        className="text-[12px] font-mono uppercase tracking-[0.18em] text-black/25 mb-3"
+      >
+        Workflow
+      </motion.p>
+
+      {/* Workflow rows — 5+5 */}
+      <div className="flex flex-col gap-3 mb-0">
+        {renderStepRow(flowRow1, 0)}
+        {renderStepRow(flowRow2, 5)}
+      </div>
+
+      {/* Horizontal separator — only after all steps revealed */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={activeStep >= flowSteps.length ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 0.3 }}
+        className="border-t border-black/10 my-6"
+      />
+
+      {/* Responsibility cards — appear one by one */}
+      <div className="flex-1 grid grid-cols-[1.2fr_1fr_1fr] gap-[4px] min-h-0">
+        {/* Source AI */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={activeStep >= flowSteps.length ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="bg-black text-white px-8 py-6 flex flex-col"
+        >
+          <div className="flex items-center gap-3 mb-1">
+            <p className="text-[22px] font-bold tracking-[-0.02em]">Source AI</p>
+          </div>
+          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-white/25 mb-5">
+            Handled Autonomously &mdash; 85% of the work
+          </p>
+          <div className="space-y-5 flex-1">
+            {sourceItems.map((item, j) => (
+              <div key={j} className="flex items-center gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-white/40 shrink-0" />
+                <span className="text-[18px] font-medium text-white leading-snug">
+                  {item.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Consultant */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={activeStep >= flowSteps.length + 1 ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="bg-white border border-black/10 px-8 py-6 flex flex-col"
+        >
+          <div className="flex items-center gap-2.5 mb-1">
+            <User size={18} className="text-black/30" />
+            <p className="text-[20px] font-bold tracking-[-0.01em] text-black">
+              Consultant
+            </p>
+          </div>
+          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-5">
+            Review &amp; Confirm
+          </p>
+          <div className="space-y-5">
+            {consultantItems.map((item, j) => (
+              <div key={j} className="flex items-center gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-black/30 shrink-0" />
+                <span className="text-[18px] text-black/70 leading-snug">
+                  {item.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* End User */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={activeStep >= flowSteps.length + 2 ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="bg-white border border-black/10 px-8 py-6 flex flex-col"
+        >
+          <div className="flex items-center gap-2.5 mb-1">
+            <Building2 size={18} className="text-black/30" />
+            <p className="text-[20px] font-bold tracking-[-0.01em] text-black">
+              End User
+            </p>
+          </div>
+          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-5">
+            Answer &amp; Approve
+          </p>
+          <div className="space-y-5">
+            {endUserItems.map((item, j) => (
+              <div key={j} className="flex items-center gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-black/30 shrink-0" />
+                <span className="text-[18px] text-black/70 leading-snug">
+                  {item.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </Slide>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/CaseStudy.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import {
+  Clock,
+  DollarSign,
+  TrendingDown,
+  Quote,
+  Building2,
+  Sparkles,
+  User,
+  type LucideIcon,
+} from "lucide-react";
+import { Slide } from "./Slide";
+
+const heroMetrics = [
+  { value: "13", unit: "days", label: "Migration Time", icon: Clock },
+  { value: "€11K", unit: "", label: "Total Cost", icon: DollarSign },
+  { value: "67%", unit: "", label: "Cost Savings", icon: TrendingDown },
+];
+
+const timelinePhases: { name: string; days: number; color: string; ai: boolean }[] = [
+  { name: "Scan", days: 1, color: "bg-black/60", ai: true },
+  { name: "Analysis", days: 2, color: "bg-black/45", ai: true },
+  { name: "BRD", days: 2, color: "bg-black/35", ai: true },
+  { name: "Config", days: 4, color: "bg-black", ai: true },
+  { name: "Migration & QA", days: 3, color: "bg-black/60", ai: true },
+  { name: "Go-live", days: 1, color: "bg-black", ai: false },
+];
+
+const totalDays = timelinePhases.reduce((sum, p) => sum + p.days, 0);
+
+const beforeAfter = [
+  { label: "Month-end Close", before: "12 days", after: "3 days" },
+  { label: "Inventory Sync", before: "Manual / daily", after: "Real-time" },
+  { label: "Channel Visibility", before: "Spreadsheets", after: "Unified dashboard" },
+  { label: "Intl. Support", before: "Not possible", after: "Multi-currency ready" },
+  { label: "Reporting", before: "48hr manual exports", after: "Live dashboards" },
+  { label: "Audit Trail", before: "Fragmented logs", after: "Fully automated" },
+];
+
+const T = {
+  header: 0.1,
+  metricsStart: 0.3,
+  metricsGap: 0.1,
+  timelineLabel: 0.65,
+  timelineBar: 0.75,
+  bottomRow: 1.0,
+  beforeAfterStart: 1.1,
+  beforeAfterGap: 0.06,
+  profile: 1.0,
+};
+
+export function CaseStudy() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <Slide
+      ref={ref}
+      bg="bg-[#f8f8f8]"
+      className="flex flex-col px-[100px] py-[60px]"
+    >
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.5, delay: T.header }}
+        className="mb-8 flex items-end justify-between"
+      >
+        <div>
+          <p className="text-[14px] font-mono uppercase tracking-[0.2em] text-black/30 mb-3">
+            Partner Case Study
+          </p>
+          <h2 className="text-[48px] font-semibold tracking-[-0.03em] text-black mb-2">
+            QuickBooks → NetSuite
+          </h2>
+          <p className="text-[20px] text-black/40">
+            Wild Tech used Source AI to deliver a mid-market migration in 13
+            days — not 4 months.
+          </p>
+        </div>
+        {/* Migration type visual */}
+        <div className="flex items-center gap-5 shrink-0 ml-10 mb-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/quickbooks-logo.svg" alt="QuickBooks" className="h-[36px] w-auto" />
+          <span className="text-[24px] text-black/20">→</span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/netsuite-logo.svg" alt="NetSuite" className="h-[36px] w-auto" />
+          <div className="w-[1px] h-10 bg-black/10 ml-2" />
+          <div className="flex flex-col gap-1">
+            <span className="text-[11px] font-mono uppercase tracking-[0.1em] text-black/70">Mid-market retail</span>
+            <span className="text-[11px] font-mono uppercase tracking-[0.1em] text-black/70">~120 employees</span>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Hero Metric Cards — 3 cards */}
+      <div className="grid grid-cols-3 gap-5 mb-8">
+        {heroMetrics.map((metric, i) => (
+          <motion.div
+            key={metric.label}
+            initial={{ opacity: 0, y: 15, scale: 0.96 }}
+            animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+            transition={{
+              duration: 0.4,
+              delay: T.metricsStart + i * T.metricsGap,
+              ease: "easeOut",
+            }}
+            className="bg-white border border-black/8 p-6 flex flex-col"
+          >
+            <div className="flex items-baseline gap-2 mb-1">
+              <span className="text-[52px] font-semibold tracking-[-0.04em] leading-none text-black">
+                {metric.value}
+              </span>
+              {metric.unit && (
+                <span className="text-[20px] font-light text-black/35">
+                  {metric.unit}
+                </span>
+              )}
+            </div>
+            <span className="text-[13px] font-mono uppercase tracking-[0.12em] text-black/30">
+              {metric.label}
+            </span>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* 13-Day Timeline Bar */}
+      <div className="mb-8">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.3, delay: T.timelineLabel }}
+          className="text-[15px] font-mono uppercase tracking-[0.18em] text-black/25 mb-3"
+        >
+          13-Day Timeline
+        </motion.p>
+        <div className="flex h-[72px] gap-[2px]">
+          {timelinePhases.map((phase, i) => (
+            <motion.div
+              key={phase.name}
+              initial={{ scaleX: 0 }}
+              animate={inView ? { scaleX: 1 } : {}}
+              transition={{
+                duration: 0.35,
+                delay: T.timelineBar + i * 0.05,
+                ease: "easeOut",
+              }}
+              style={{
+                width: `${(phase.days / totalDays) * 100}%`,
+                transformOrigin: "left",
+              }}
+              className={`${phase.color} flex flex-col items-center justify-center text-white gap-1`}
+            >
+              <span className="text-[15px] font-bold leading-none">
+                {phase.name}
+              </span>
+              <span className="text-[12px] font-mono font-medium text-white/50">
+                {phase.days}d
+              </span>
+              <span className={`text-[9px] font-mono uppercase tracking-[0.1em] mt-0.5 ${phase.ai ? "font-bold text-white/80" : "text-white/40"}`}>
+                {phase.ai ? "AI" : "You"}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Separator */}
+      <div className="border-t border-black/10 my-2" />
+
+      {/* Bottom Row — fills remaining height */}
+      <div className="flex-1 grid grid-cols-[1fr_1fr] gap-8 min-h-0">
+        {/* Left: End Client Outcomes */}
+        <div className="flex flex-col justify-center">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.3, delay: T.bottomRow }}
+            className="text-[13px] font-mono uppercase tracking-[0.15em] text-black/25 mb-4"
+          >
+            End Client Outcomes
+          </motion.p>
+
+          <div className="grid grid-cols-[1.3fr_1fr_1.2fr] gap-3 mb-2 px-1">
+            <span />
+            <span className="text-[12px] font-mono uppercase tracking-[0.1em] text-black/25">
+              Before
+            </span>
+            <span className="text-[12px] font-mono uppercase tracking-[0.1em] text-black/25">
+              After
+            </span>
+          </div>
+
+          <div className="space-y-0">
+            {beforeAfter.map((row, j) => (
+              <motion.div
+                key={row.label}
+                initial={{ opacity: 0, x: -6 }}
+                animate={inView ? { opacity: 1, x: 0 } : {}}
+                transition={{
+                  duration: 0.25,
+                  delay: T.beforeAfterStart + j * T.beforeAfterGap,
+                }}
+                className="grid grid-cols-[1.3fr_1fr_1.2fr] gap-3 py-3 border-b border-black/6 px-1"
+              >
+                <span className="text-[16px] font-medium text-black/60">
+                  {row.label}
+                </span>
+                <span className="text-[16px] text-black/25 line-through decoration-black/15">
+                  {row.before}
+                </span>
+                <span className="text-[16px] text-black/70 font-medium">
+                  {row.after}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Right: Altius Profile + Quote */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.55, delay: T.profile }}
+          className="bg-black relative overflow-hidden flex flex-col"
+        >
+          {/* Decorative grid pattern */}
+          <div
+            className="absolute inset-0 opacity-[0.08] pointer-events-none"
+            style={{
+              backgroundImage:
+                "linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)",
+              backgroundSize: "48px 48px",
+            }}
+          />
+
+          {/* Content */}
+          <div className="relative z-10 flex flex-col h-full p-8">
+            {/* Compact partner identity */}
+            <div className="flex items-center gap-3 mb-4 pb-4 border-b border-white/15">
+              <div className="w-10 h-10 border border-white/25 flex items-center justify-center shrink-0">
+                <Building2 size={18} className="text-white/40" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[20px] font-bold text-white tracking-[-0.02em]">
+                  Wild Tech
+                </p>
+                <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-white/30">
+                  NetSuite Solution Provider &middot; Australia
+                </p>
+              </div>
+            </div>
+
+            {/* Quote */}
+            <div className="flex flex-col flex-1 justify-center">
+              <Quote size={20} className="text-white/20 mb-4 scale-x-[-1]" />
+              <p className="text-[18px] text-white font-medium leading-relaxed mb-6 italic">
+                &ldquo;We quoted €14K fixed-price and delivered in under three
+                weeks. Our old model would have been €35K over four months with
+                an offshore team. Source handled the technical execution — we
+                kept the client relationship and made 50%+ margins.&rdquo;
+              </p>
+              <div>
+                <p className="text-[15px] font-semibold text-white/70">
+                  Managing Director
+                </p>
+                <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-white/25 mt-1">
+                  Wild Tech
+                </p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </Slide>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/SupportedSystems.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+import { ArrowRight, ArrowLeftRight } from "lucide-react";
+import { Slide } from "./Slide";
+
+const migrationPaths = [
+  {
+    left: { name: "QuickBooks", logo: "/quickbooks-logo.svg", height: "h-[40px]" },
+    right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[48px]" },
+    bidirectional: true,
+    connectedTools: ["+ Shopify", "+ HubSpot", "+ Stripe", "+ 100s more"],
+  },
+  {
+    left: { name: "Xero", logo: "/xero-logo.svg", height: "h-[36px]" },
+    right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[48px]" },
+    bidirectional: false,
+    connectedTools: ["+ Stripe", "+ PayPal", "+ 100s more"],
+  },
+  {
+    left: { name: "QuickBooks", logo: "/quickbooks-logo.svg", height: "h-[40px]" },
+    right: { name: "Dynamics 365", logo: "/dynamics365-logo.svg", height: "h-[60px]" },
+    bidirectional: false,
+    connectedTools: ["+ Salesforce", "+ SharePoint", "+ 100s more"],
+  },
+];
+
+const comingSoon = [
+  "MYOB",
+  "Acumatica",
+  "Freshbooks",
+  "Zoho Books",
+  "DEAR Systems",
+  "Reckon",
+  "Wave",
+  "Custom / Legacy ERPs",
+];
+
+export function SupportedSystems() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <Slide
+      ref={ref}
+      bg="bg-[#f8f8f8]"
+      className="flex flex-col px-[120px] py-[70px]"
+    >
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6 }}
+        className="mb-10"
+      >
+        <p className="text-[16px] font-mono uppercase tracking-[0.2em] text-black/30 mb-3">
+          Supported Systems
+        </p>
+        <h2 className="text-[56px] font-semibold tracking-[-0.03em] text-black mb-3">
+          AI Supported Migrations
+        </h2>
+        <p className="text-[20px] text-black/45 max-w-[900px] leading-relaxed">
+          Source is capable across these paths today, along with 100s of integrations attached to them.
+        </p>
+      </motion.div>
+
+      {/* Live migration path cards — stretch to fill */}
+      <div className="flex-1 grid grid-cols-3 gap-5 mb-8 min-h-0">
+        {migrationPaths.map((path, i) => (
+          <motion.div
+            key={`${path.left.name}-${path.right.name}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.2 + i * 0.1 }}
+            className="bg-white border border-black/10 flex flex-col"
+          >
+            {/* Logos with arrow */}
+            <div className="flex items-center justify-center gap-6 flex-1 px-8 py-4">
+              <div className="flex flex-col items-center flex-1">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={path.left.logo}
+                  alt={path.left.name}
+                  className={`${path.left.height} w-auto max-w-[180px] object-contain`}
+                />
+              </div>
+
+              <div className="shrink-0">
+                {path.bidirectional ? (
+                  <ArrowLeftRight size={36} strokeWidth={1.5} className="text-black/25" />
+                ) : (
+                  <ArrowRight size={36} strokeWidth={1.5} className="text-black/25" />
+                )}
+              </div>
+
+              <div className="flex flex-col items-center flex-1">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={path.right.logo}
+                  alt={path.right.name}
+                  className={`${path.right.height} w-auto max-w-[180px] object-contain`}
+                />
+              </div>
+            </div>
+
+            {/* Integrations bar */}
+            {path.connectedTools && (
+              <div className="border-t border-black/8 bg-black/[0.03] px-8 py-4 flex flex-wrap items-center gap-2">
+                <span className="text-[10px] font-mono uppercase tracking-[0.1em] text-black/30 mr-1">
+                  Integrations
+                </span>
+                {path.connectedTools.map((tool) => (
+                  <span
+                    key={tool}
+                    className="text-[10px] font-mono text-black font-bold bg-white border border-black/15 px-2.5 py-1"
+                  >
+                    {tool}
+                  </span>
+                ))}
+              </div>
+            )}
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Separator */}
+      <div className="border-t border-black/10 my-2" />
+
+      {/* Coming Soon — white bg for future logos */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ delay: 0.5 }}
+        className="bg-white border border-black/10 p-8"
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-10">
+            <div>
+              <p className="text-[12px] font-mono uppercase tracking-[0.12em] text-black/30 mb-3">
+                Coming Soon
+              </p>
+              <div className="flex items-center gap-4">
+                <span className="text-[36px] font-semibold tracking-[-0.03em] leading-none text-black">
+                  Anything →
+                </span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/netsuite-logo.svg" alt="NetSuite" className="h-[48px] w-auto" />
+              </div>
+            </div>
+
+            <div className="w-[1px] h-16 bg-black/10" />
+
+            <div className="flex items-center gap-3 flex-wrap">
+              {comingSoon.map((name, i) => (
+                <motion.span
+                  key={name}
+                  initial={{ opacity: 0 }}
+                  animate={inView ? { opacity: 1 } : {}}
+                  transition={{ delay: 0.7 + i * 0.06 }}
+                  className="text-[14px] font-mono text-black/50 bg-black/[0.04] border border-black/10 px-4 py-2"
+                >
+                  {name}
+                </motion.span>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </motion.div>
+    </Slide>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/WhyPartner.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef, useEffect } from "react";
+import { usePresentationStep } from "./PresentationController";
+import { Slide } from "./Slide";
+
+const reasons = [
+  {
+    title: "Make More Money",
+    stat: "50%+",
+    statLabel: "project margins",
+    description:
+      "AI execution eliminates offshore teams and reduces delivery cost dramatically",
+  },
+  {
+    title: "Happier Customers",
+    stat: "Sub 21",
+    statLabel: "day migrations",
+    description:
+      "Days not months for migrations — faster delivery with validated artifacts",
+  },
+  {
+    title: "Fixed-Price Deals",
+    stat: "Fixed",
+    statLabel: "price delivery",
+    description: "Source enables you to win fixed-price deals with predictable AI execution costs",
+  },
+  {
+    title: "Scale Without Hiring",
+    stat: "0",
+    statLabel: "new hires needed",
+    description: "Grow your migration practice without recruiting offshore teams",
+  },
+  {
+    title: "Win More Deals",
+    stat: "WIN",
+    statLabel: "on price every time",
+    description: "Quote $8K–$15K while competitors quote $30K–$40K — and still keep 50%+ margins",
+  },
+  {
+    title: "White Label Delivery",
+    stat: "Your",
+    statLabel: "brand, not ours",
+    description:
+      "Client-facing questionnaires and reports ship under your logo, domain, and colours",
+  },
+];
+
+export function WhyPartner() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const { setMaxSteps, resetSteps, isStepVisible } = usePresentationStep();
+
+  useEffect(() => {
+    if (inView) {
+      setMaxSteps(reasons.length);
+      resetSteps();
+    }
+  }, [inView, setMaxSteps, resetSteps]);
+
+  return (
+    <Slide
+      ref={ref}
+      bg="bg-white"
+      className="flex flex-col justify-center px-[120px]"
+    >
+      <div className="w-full">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="mb-8"
+        >
+          <p className="text-[14px] font-mono uppercase tracking-[0.2em] text-black/30 mb-3">
+            The Partnership
+          </p>
+          <h2 className="text-[52px] font-semibold tracking-[-0.03em] mb-3">
+            Why Partner with Source AI
+          </h2>
+          <p className="text-[20px] text-black/45 max-w-[900px] leading-relaxed">
+            Source AI doesn&apos;t replace your consultancy — it makes every
+            engagement more profitable, faster, and more scalable.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-3 gap-6">
+          {reasons.map((reason, i) => (
+            <motion.div
+              key={reason.title}
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={
+                isStepVisible(i + 1)
+                  ? { opacity: 1, scale: 1, y: 0 }
+                  : { opacity: 0, scale: 0.8, y: 20 }
+              }
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="border border-black/10 p-8 hover:border-black/25 transition-colors flex flex-col justify-center min-h-[200px]"
+            >
+              <p className="text-[48px] font-bold tracking-[-0.03em] text-black leading-none mb-1">
+                {reason.stat}
+              </p>
+              <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/30 mb-4">
+                {reason.statLabel}
+              </p>
+              <p className="text-[20px] font-semibold text-black mb-2">
+                {reason.title}
+              </p>
+              <p className="text-[15px] text-black/50 leading-relaxed">
+                {reason.description}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </Slide>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/Pricing.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+import { Slide } from "./Slide";
+
+const comparisonRows = [
+  {
+    label: "Timeline",
+    traditional: "6–12+ months",
+    source: "Sub 21 days",
+  },
+  {
+    label: "Typical Cost to Client",
+    traditional: "$30K–$40K",
+    source: "$8K–$15K*",
+  },
+  {
+    label: "BRD Revisions",
+    traditional: "3–5 cycles, weeks of delay",
+    source: "AI-generated, instant updates",
+  },
+  {
+    label: "Scope Creep Risk",
+    traditional: "High — discovered mid-build",
+    source: "Low — AI system scan",
+  },
+  {
+    label: "Offshore Team Ramp-up",
+    traditional: "2–6 weeks onboarding",
+    source: "No team needed",
+  },
+  {
+    label: "Client Satisfaction",
+    traditional: "Frustrated by delays & overruns",
+    source: "Fast, transparent, fewer surprises",
+  },
+  {
+    label: "Pricing Model",
+    traditional: "T&M — unpredictable bills",
+    source: "Fixed price — locked quote upfront",
+  },
+];
+
+export function Pricing() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <Slide
+      ref={ref}
+      bg="bg-[#f8f8f8]"
+      className="flex flex-col justify-center px-[120px]"
+    >
+      <div className="w-full">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="mb-8"
+        >
+          <p className="text-[16px] font-mono uppercase tracking-[0.2em] text-black/30 mb-3">
+            Pricing
+          </p>
+          <h2 className="text-[56px] font-semibold tracking-[-0.03em] text-black mb-3">
+            Simple Revenue Share
+          </h2>
+          <p className="text-[20px] text-black/45 leading-relaxed">
+            Source has transparent and flexible pricing, looking for partners.
+          </p>
+        </motion.div>
+
+        {/* Comparison table */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.15 }}
+          className="bg-white border border-black/15 mb-6"
+        >
+          <div className="grid grid-cols-[1.2fr_1fr_1fr] border-b border-black/15">
+            <div className="px-5 py-3">
+              <p className="text-[13px] font-mono uppercase tracking-[0.1em] text-black/30">
+                &nbsp;
+              </p>
+            </div>
+            <div className="px-5 py-3 border-l border-black/8">
+              <p className="text-[13px] font-mono uppercase tracking-[0.12em] text-black/35 font-medium">
+                Traditional
+              </p>
+            </div>
+            <div className="px-5 py-3 border-l border-black/8 bg-black/[0.03]">
+              <p className="text-[13px] font-mono uppercase tracking-[0.12em] text-black/70 font-medium">
+                With Source AI
+              </p>
+            </div>
+          </div>
+
+          {comparisonRows.map((row, i) => (
+            <motion.div
+              key={row.label}
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              transition={{ delay: 0.3 + i * 0.06 }}
+              className="grid grid-cols-[1.2fr_1fr_1fr] border-b border-black/8 last:border-b-0"
+            >
+              <div className="px-5 py-3">
+                <p className="text-[16px] font-semibold text-black/80">
+                  {row.label}
+                </p>
+              </div>
+              <div className="px-5 py-3 border-l border-black/8">
+                <p className="text-[16px] text-black/30 line-through decoration-black/15">
+                  {row.traditional}
+                </p>
+              </div>
+              <div className="px-5 py-3 border-l border-black/8 bg-black/[0.03]">
+                <p className="text-[16px] text-black font-semibold">
+                  {row.source}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Separator */}
+        <div className="border-t border-black/10 my-2" />
+
+        {/* Revenue split breakdown */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.25 }}
+          className="bg-black text-white p-8 flex items-center justify-between"
+        >
+          <div className="flex items-center gap-10">
+            <div>
+              <p className="text-[48px] font-bold tracking-[-0.04em] leading-none">
+                FREE
+              </p>
+              <p className="text-[12px] font-mono uppercase tracking-[0.1em] text-white/30 mt-2">
+                First migration
+              </p>
+            </div>
+            <div className="w-[1px] h-16 bg-white/10" />
+            <div>
+              <p className="text-[24px] font-semibold tracking-[-0.02em] mb-2">
+                Your first migration is free.
+              </p>
+              <p className="text-[16px] text-white/45 leading-relaxed max-w-[500px]">
+                Your first migration is on us — no cost, no commitment.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Footnote */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.35 }}
+          className="mt-4 text-[12px] text-black/25 leading-relaxed"
+        >
+          * Indicative pricing based on a standard mid-market migration. Final quote provided after system scan.
+        </motion.p>
+      </div>
+    </Slide>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/Team.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef, useState } from "react";
+import { MapPin } from "lucide-react";
+import { Slide } from "./Slide";
+
+const coreTeam = [
+  {
+    name: "Liam Fuller",
+    role: "CEO",
+    detail: "Built Source's autonomous migration engine. AI infrastructure & multi-agent systems.",
+    image: "/team/liam.jpg",
+  },
+  {
+    name: "Yoan Gabison",
+    role: "CTO",
+    detail: "10+ years in NetSuite & ERP. Full-stack AI architect who designed Source's core platform.",
+    image: "/team/yoan.jpg",
+  },
+  {
+    name: "Shane Fuller",
+    role: "Founding Engineer",
+    detail: "Former Cybersecurity IT Director. Enterprise security, infrastructure & compliance.",
+    image: "/team/shane.jpg",
+  },
+  {
+    name: "Brian Kelleher",
+    role: "AI Engineer",
+    detail: "ML pipelines & data migration. Builds the models that power Source's automation.",
+    image: "/team/brian.jpg",
+  },
+  {
+    name: "Jiri Pucs",
+    role: "AI Engineer",
+    detail: "Backend systems, API architecture & integration pipelines.",
+    image: "/team/jiri.jpg",
+  },
+];
+
+const consultants = [
+  {
+    name: "Sean Gillespie",
+    role: "Senior Consultant",
+    detail: "ERP strategy & client delivery.",
+    image: "/team/sean.jpg",
+  },
+  {
+    name: "Matthew Rodgers",
+    role: "Senior Consultant",
+    detail: "ERP implementation & enterprise transformation.",
+    image: "/team/matthew.jpg",
+  },
+  {
+    name: "Bryan McCutchan",
+    role: "Consultant",
+    detail: "ERP migration & systems integration.",
+    image: "/team/bryan.jpg",
+  },
+];
+
+function Avatar({
+  name,
+  image,
+  size = "md",
+}: {
+  name: string;
+  image: string | null;
+  size?: "md" | "sm";
+}) {
+  const [failed, setFailed] = useState(false);
+  const initials = name
+    .split(" ")
+    .map((n) => n[0])
+    .join("");
+  const dims = size === "md" ? "w-16 h-16" : "w-12 h-12";
+  const textSize = size === "md" ? "text-[18px]" : "text-[14px]";
+
+  if (!image || failed) {
+    return (
+      <div
+        className={`${dims} rounded-full bg-black/5 flex items-center justify-center shrink-0`}
+      >
+        <span className={`${textSize} font-semibold text-black/30`}>
+          {initials}
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={`${dims} rounded-full overflow-hidden shrink-0 bg-black/5`}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={image}
+        alt={name}
+        className="w-full h-full object-cover"
+        onError={() => setFailed(true)}
+      />
+    </div>
+  );
+}
+
+export function Team() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <Slide
+      ref={ref}
+      bg="bg-white"
+      className="flex flex-col justify-center px-[120px]"
+    >
+      <div className="w-full">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="mb-10"
+        >
+          <p className="text-[18px] font-mono uppercase tracking-[0.2em] text-black/30 mb-4">
+            The Team
+          </p>
+          <h2 className="text-[72px] font-semibold tracking-[-0.03em] text-black mb-2">
+            Built by AI engineers.
+          </h2>
+          <p className="text-[22px] text-black/40 max-w-[800px] leading-relaxed">
+            A team with deep ERP domain expertise and production AI systems experience.
+          </p>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ delay: 0.2 }}
+            className="flex items-center gap-3 text-black/40"
+          >
+            <MapPin size={20} />
+            <p className="text-[20px] font-mono">San Francisco, CA</p>
+          </motion.div>
+        </motion.div>
+
+        {/* Core Team */}
+        <div className="mb-10">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ delay: 0.25 }}
+            className="text-[14px] font-mono uppercase tracking-[0.15em] text-black/25 mb-5"
+          >
+            Core Team
+          </motion.p>
+          {/* Leadership row */}
+          <div className="grid grid-cols-2 gap-5 mb-5 max-w-[800px]">
+            {coreTeam.slice(0, 2).map((member, i) => (
+              <motion.div
+                key={member.name}
+                initial={{ opacity: 0, y: 15 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.4, delay: 0.3 + i * 0.08 }}
+                className="border-2 border-black/15 p-7 flex items-center gap-5"
+              >
+                <Avatar name={member.name} image={member.image} />
+                <div>
+                  <p className="text-[22px] font-semibold text-black mb-0.5">
+                    {member.name}
+                  </p>
+                  <p className="text-[13px] font-mono uppercase tracking-[0.1em] text-black/40 mb-2">
+                    {member.role}
+                  </p>
+                  <p className="text-[15px] text-black/40 leading-snug">
+                    {member.detail}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          {/* Engineers row */}
+          <div className="grid grid-cols-3 gap-5">
+            {coreTeam.slice(2).map((member, i) => (
+              <motion.div
+                key={member.name}
+                initial={{ opacity: 0, y: 15 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.4, delay: 0.46 + i * 0.08 }}
+                className="border border-black/10 p-6 flex items-center gap-4"
+              >
+                <Avatar name={member.name} image={member.image} />
+                <div>
+                  <p className="text-[18px] font-semibold text-black mb-0.5">
+                    {member.name}
+                  </p>
+                  <p className="text-[12px] font-mono uppercase tracking-[0.1em] text-black/40 mb-1.5">
+                    {member.role}
+                  </p>
+                  <p className="text-[14px] text-black/35 leading-snug">
+                    {member.detail}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Consultants */}
+        <div>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ delay: 0.6 }}
+            className="text-[14px] font-mono uppercase tracking-[0.15em] text-black/25 mb-5"
+          >
+            Consultants
+          </motion.p>
+          <div className="grid grid-cols-3 gap-5">
+            {consultants.map((member, i) => (
+              <motion.div
+                key={member.name}
+                initial={{ opacity: 0, y: 15 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.4, delay: 0.65 + i * 0.08 }}
+                className="border border-black/8 p-5 flex items-center gap-4"
+              >
+                <Avatar name={member.name} image={member.image} size="sm" />
+                <div>
+                  <p className="text-[18px] font-semibold text-black mb-0.5">
+                    {member.name}
+                  </p>
+                  <p className="text-[13px] font-mono uppercase tracking-[0.1em] text-black/40">
+                    {member.role}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Anonymous extended team */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.4, delay: 0.9 }}
+            className="mt-6 flex items-center gap-5"
+          >
+            <div className="flex -space-x-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="w-10 h-10 rounded-full bg-black/[0.06] border-2 border-white flex items-center justify-center"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    className="text-black/20"
+                  >
+                    <circle cx="8" cy="6" r="3" fill="currentColor" />
+                    <path
+                      d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </div>
+              ))}
+              <div className="w-10 h-10 rounded-full bg-black/[0.06] border-2 border-white flex items-center justify-center">
+                <span className="text-[11px] font-semibold text-black/30">
+                  10+
+                </span>
+              </div>
+            </div>
+            <p className="text-[15px] text-black/35 font-mono">
+              Additional internal expertise consultants
+            </p>
+          </motion.div>
+        </div>
+      </div>
+    </Slide>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/Cta.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+import { Slide } from "./Slide";
+
+export function Cta() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <Slide ref={ref} id="contact" bg="bg-black" className="flex items-center justify-center">
+      <div className="max-w-[1400px] mx-auto text-center flex flex-col items-center">
+        {/* Source logo — white */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={inView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.5 }}
+          className="mb-14"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/source-logo.svg"
+            alt="Source AI"
+            className="w-[80px] h-[80px] invert opacity-100"
+          />
+        </motion.div>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.15 }}
+          className="text-[68px] font-semibold tracking-[-0.03em] leading-snug text-white"
+        >
+          Source is <span className="italic">NOT</span> a tool.
+          <br />
+          It changes consulting in the age of AI.
+        </motion.h2>
+      </div>
+    </Slide>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/Demo.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+import { ExternalLink } from "lucide-react";
+import { Slide } from "./Slide";
+
+export function Demo() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <Slide ref={ref} bg="bg-white" className="flex items-center justify-center">
+      <div className="text-center flex flex-col items-center">
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="text-[72px] font-normal font-[family-name:var(--font-display)] tracking-[0.01em] text-black mb-10"
+        >
+          See Source in action{/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/source-logo.svg"
+            alt=""
+            className="inline-block w-[28px] h-[28px] ml-1 -mb-[2px]"
+            style={{ verticalAlign: "baseline" }}
+          />
+        </motion.h2>
+
+        <motion.a
+          href="http://35.233.101.128:3002/"
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, y: 15 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="inline-flex items-center gap-3 bg-black text-white px-8 py-4 text-[13px] font-mono uppercase tracking-[0.1em] font-medium hover:bg-black/90 transition-colors"
+        >
+          <ExternalLink size={16} />
+          Launch Live Demo
+        </motion.a>
+      </div>
+    </Slide>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/DemoVideo.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef, useState } from "react";
+import { Play, ExternalLink } from "lucide-react";
+import { Slide } from "./Slide";
+
+export function DemoVideo() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handlePlay = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  return (
+    <Slide
+      ref={ref}
+      bg="bg-black"
+      className="flex flex-col items-center justify-center px-[80px]"
+    >
+      <div className="w-full flex flex-col items-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-8"
+        >
+          <p className="text-[14px] font-mono uppercase tracking-[0.2em] text-white/30 mb-3">
+            Live Demo
+          </p>
+          <h2 className="text-[48px] font-semibold tracking-[-0.03em] text-white">
+            See Source AI in Action
+          </h2>
+        </motion.div>
+
+        {/* Video player */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.97 }}
+          animate={inView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="w-full max-w-[1400px] relative cursor-pointer group"
+          onClick={handlePlay}
+        >
+          <div className="relative w-full aspect-video bg-black/50 border border-white/10 overflow-hidden">
+            <video
+              ref={videoRef}
+              src="/source-demo.mp4"
+              className="w-full h-full object-contain"
+              playsInline
+              onEnded={() => setIsPlaying(false)}
+              onPlay={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
+            />
+
+            {/* Play overlay — fades when playing */}
+            <div
+              className={`absolute inset-0 flex items-center justify-center bg-black/40 transition-opacity duration-300 ${
+                isPlaying ? "opacity-0 pointer-events-none" : "opacity-100"
+              }`}
+            >
+              <div className="w-20 h-20 rounded-full border-2 border-white/30 flex items-center justify-center group-hover:border-white/60 group-hover:scale-105 transition-all duration-200">
+                <Play size={32} className="text-white/60 ml-1 group-hover:text-white transition-colors" />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-center gap-6 mt-6">
+            <p className="text-[13px] font-mono text-white/25">
+              QuickBooks scan → business logic inference → NetSuite migration — under 21 days
+            </p>
+            <a
+              href="http://35.233.101.128:3002/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="flex items-center gap-2 bg-white text-black px-5 py-2.5 text-[11px] font-mono uppercase tracking-[0.08em] font-medium hover:bg-white/90 transition-colors shrink-0"
+            >
+              <ExternalLink size={13} />
+              Try Live Demo
+            </a>
+          </div>
+        </motion.div>
+      </div>
+    </Slide>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/WhiteLabel.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+
+const formQuestions = [
+  {
+    id: 1,
+    area: "Chart of Accounts",
+    question:
+      "The legacy QuickBooks instance contains 847 accounts across 12 sub-levels. How should nested account hierarchies be mapped to NetSuite\u2019s 6-level structure?",
+    options: [
+      "Flatten to 6 levels using concatenated naming (e.g., 1000-100-10)",
+      "Preserve top 6 levels, merge lower levels into leaf accounts",
+      "Create custom segments in NetSuite to retain full depth",
+      "Rebuild hierarchy from scratch using NetSuite best practices",
+    ],
+    selected: 1,
+    aiRec: 1,
+    confidence: 87,
+  },
+  {
+    id: 2,
+    area: "Customer Records",
+    question:
+      "Detected 3,214 customer records with 412 duplicates (12.8% overlap). Multiple records share Tax IDs but differ in billing addresses. What deduplication strategy?",
+    options: [
+      "Merge by Tax ID, retain most recent billing address",
+      "Merge by Tax ID, create multiple address books per customer",
+      "Flag duplicates for manual review before migration",
+      "Migrate all as-is, deduplicate post-migration in NetSuite",
+    ],
+    selected: null,
+    aiRec: 1,
+    confidence: 72,
+  },
+];
+
+const howItWorks = [
+  {
+    step: "1",
+    title: "Source AI generates questions",
+    detail: "Based on system scan findings, AI creates targeted multi-choice questions specific to the migration.",
+  },
+  {
+    step: "2",
+    title: "Consultant sends a link",
+    detail: "A branded URL is shared with the end client. No software to install — just a browser link.",
+  },
+  {
+    step: "3",
+    title: "Client answers in browser",
+    detail: "The questionnaire appears under your brand. Client selects options and AI pre-fills recommendations.",
+  },
+  {
+    step: "4",
+    title: "Answers feed back to Source AI",
+    detail: "Responses automatically update the BRD, migration plan, and implementation config.",
+  },
+];
+
+const brandFeatures = [
+  "Your logo on every page",
+  "Your domain in the URL",
+  "Your colour scheme applied",
+  "Your consultants as authors",
+  "No Source AI branding visible",
+];
+
+export function WhiteLabel() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  // The URL that gets "typed" into the address bar
+  const url = "review.acme-consulting.com/migration/quickbooks-netsuite";
+
+  return (
+    <section ref={ref} className="h-screen flex flex-col justify-center px-6 bg-white">
+      <div className="max-w-6xl mx-auto w-full">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="mb-8"
+        >
+          <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-black/40 mb-3">
+            Your Brand
+          </p>
+          <h2 className="text-4xl md:text-5xl font-semibold tracking-[-0.03em]">
+            White Label Delivery
+          </h2>
+        </motion.div>
+
+        <div className="grid grid-cols-[300px_1fr] gap-8 items-start">
+          {/* Left: How it works + brand features */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            {/* How it works steps */}
+            <p className="text-[9px] font-mono uppercase tracking-[0.15em] text-black/30 mb-4">
+              How the questionnaire works
+            </p>
+            <div className="space-y-4 mb-8">
+              {howItWorks.map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={inView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ delay: 0.3 + i * 0.08 }}
+                  className="flex gap-3"
+                >
+                  <div className="w-5 h-5 border border-black/15 flex items-center justify-center shrink-0 mt-0.5">
+                    <span className="text-[9px] font-mono font-bold text-black/40">{item.step}</span>
+                  </div>
+                  <div>
+                    <p className="text-[12px] font-semibold text-black/75 leading-snug">
+                      {item.title}
+                    </p>
+                    <p className="text-[10px] text-black/35 leading-relaxed mt-0.5">
+                      {item.detail}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Brand features checklist */}
+            <div className="border-t border-black/8 pt-5">
+              <p className="text-[9px] font-mono uppercase tracking-[0.15em] text-black/30 mb-3">
+                White label includes
+              </p>
+              <div className="space-y-2">
+                {brandFeatures.map((feature, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0 }}
+                    animate={inView ? { opacity: 1 } : {}}
+                    transition={{ delay: 0.6 + i * 0.04 }}
+                    className="flex items-center gap-2"
+                  >
+                    <div className="w-3.5 h-3.5 bg-black flex items-center justify-center shrink-0">
+                      <span className="text-[7px] text-white font-bold">&#10003;</span>
+                    </div>
+                    <span className="text-[11px] text-black/50">{feature}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Right: Browser with questionnaire */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="overflow-hidden border border-black/15"
+            style={{
+              boxShadow: "0 2px 8px rgba(0,0,0,0.06), 0 12px 40px rgba(0,0,0,0.08)",
+            }}
+          >
+            {/* Browser chrome */}
+            <div className="bg-[#e8e8e8] border-b border-black/10">
+              {/* Title bar with traffic lights */}
+              <div className="flex items-center gap-2 px-4 pt-3 pb-2">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+                </div>
+                <div className="flex-1 flex justify-center">
+                  <div className="text-[9px] font-mono text-black/30 truncate">
+                    Acme Consulting — Migration Review
+                  </div>
+                </div>
+              </div>
+              {/* Address bar with typing animation */}
+              <div className="mx-3 mb-2.5 bg-white border border-black/10 px-3 py-1.5 flex items-center gap-2">
+                <svg className="w-3 h-3 text-green-600/60 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                <div className="flex-1 overflow-hidden">
+                  <motion.span
+                    className="text-[10px] font-mono text-black/50 inline-block whitespace-nowrap"
+                    initial={{ width: 0 }}
+                    animate={inView ? { width: "auto" } : {}}
+                    transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
+                    style={{ overflow: "hidden", display: "inline-block" }}
+                  >
+                    {url}
+                  </motion.span>
+                  <motion.span
+                    className="inline-block w-[1px] h-3 bg-black/40 ml-0.5 align-middle"
+                    animate={{ opacity: [1, 0, 1] }}
+                    transition={{ duration: 1, repeat: 3, delay: 0.8 }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Page content fades in after URL is typed */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              transition={{ delay: 2.3, duration: 0.5 }}
+            >
+              {/* Form header */}
+              <div className="bg-[#1a1a1a] px-6 pt-5 pb-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-6 h-6 bg-white/20 flex items-center justify-center">
+                      <span className="text-[8px] font-bold text-white/70">AC</span>
+                    </div>
+                    <span className="text-[9px] font-mono uppercase tracking-[0.12em] text-white/40">
+                      Acme Consulting
+                    </span>
+                  </div>
+                  <span className="text-[8px] font-mono text-white/20">
+                    Phase 1 of 3
+                  </span>
+                </div>
+                <h3 className="text-[17px] font-light text-white tracking-[-0.01em]">
+                  QuickBooks &rarr; NetSuite Migration Review
+                </h3>
+                <p className="text-[10px] text-white/30 mt-1">
+                  Data Migration &middot; 6 questions &middot; Generated from system scan
+                </p>
+              </div>
+
+              {/* Progress bar */}
+              <div className="h-[3px] bg-black/5">
+                <div className="h-full bg-[#1a1a1a] w-[17%]" />
+              </div>
+
+              {/* Form body */}
+              <div className="bg-[#f8f8f8] px-6 py-4 space-y-4 max-h-[340px] overflow-hidden">
+                {formQuestions.map((q, qi) => (
+                  <motion.div
+                    key={q.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ delay: 2.5 + qi * 0.15 }}
+                    className={`bg-white border ${
+                      qi === 0 ? "border-l-[3px] border-l-[#1a1a1a] border-t border-r border-b border-t-black/[0.06] border-r-black/[0.06] border-b-black/[0.06]" : "border-black/[0.06]"
+                    } p-5`}
+                  >
+                    <p className="text-[12px] text-black/80 leading-snug mb-3">
+                      {q.question}
+                      <span className="text-red-400 ml-0.5">*</span>
+                    </p>
+
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-[8px] font-mono uppercase tracking-[0.1em] text-black/30 border border-black/8 px-1.5 py-0.5">
+                        {q.area}
+                      </span>
+                      <span className="text-[8px] font-mono text-black/15">
+                        {q.confidence}% confidence
+                      </span>
+                    </div>
+
+                    <div className="space-y-0">
+                      {q.options.map((opt, oi) => (
+                        <div
+                          key={oi}
+                          className={`flex items-start gap-3 py-2 px-2 ${
+                            q.selected === oi ? "bg-black/[0.02]" : ""
+                          }`}
+                        >
+                          <div className="mt-0.5 shrink-0">
+                            <div
+                              className={`w-[16px] h-[16px] rounded-full border-2 flex items-center justify-center ${
+                                q.selected === oi
+                                  ? "border-[#1a1a1a]"
+                                  : "border-black/15"
+                              }`}
+                            >
+                              {q.selected === oi && (
+                                <div className="w-[8px] h-[8px] rounded-full bg-[#1a1a1a]" />
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className={`text-[11px] leading-snug ${
+                              q.selected === oi ? "text-black/80" : "text-black/55"
+                            }`}>
+                              {opt}
+                            </p>
+                            {oi === q.aiRec && (
+                              <span className="text-[7px] font-mono uppercase tracking-[0.1em] text-black/15 mt-0.5 inline-block">
+                                &larr; AI Recommendation
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                ))}
+
+                <div className="h-8 bg-gradient-to-t from-[#f8f8f8] to-transparent -mt-8 relative z-10 pointer-events-none" />
+              </div>
+
+              {/* Form footer */}
+              <div className="bg-[#f8f8f8] border-t border-black/5 px-6 py-3 flex items-center justify-between">
+                <span className="text-[9px] font-mono text-black/20">
+                  1 of 6 answered &middot; Generated by Source AI
+                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[9px] font-mono uppercase tracking-[0.08em] text-black/20 px-3 py-1.5 border border-black/8">
+                    Back
+                  </span>
+                  <span className="text-[9px] font-mono uppercase tracking-[0.08em] text-white bg-[#1a1a1a] px-3 py-1.5">
+                    Next
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/Partners.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+import { Award, Globe, Users, ShieldCheck } from "lucide-react";
+import { Slide } from "./Slide";
+
+const partners = [
+  {
+    name: "Wild Tech",
+    tagline: "NetSuite Solution Provider",
+    description:
+      "Specialist NetSuite consulting and implementation partner delivering cloud ERP solutions for growing businesses. Focused on streamlining operations and driving digital transformation.",
+    highlights: [
+      { icon: Award, text: "NetSuite Solution Provider Partner" },
+      { icon: ShieldCheck, text: "End-to-end ERP implementation" },
+      { icon: Users, text: "Cloud ERP & business transformation specialists" },
+    ],
+    url: "wildtech.com.au",
+  },
+  {
+    name: "Bring IT",
+    tagline: "Global NetSuite Alliance Partner",
+    description:
+      "Award-winning global ERP consulting provider with 300+ cloud ERP experts across North America, Europe, and Latin America. Recognized by NetSuite with the ERP Expert Badge.",
+    highlights: [
+      { icon: Globe, text: "300+ ERP experts across 3 continents" },
+      { icon: Award, text: "NetSuite ERP Expert Badge" },
+      { icon: Users, text: "Strategic partner of Oracle NetSuite, Avalara & Celigo" },
+    ],
+    url: "bringitps.com",
+  },
+];
+
+export function Partners() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <Slide
+      ref={ref}
+      bg="bg-white"
+      className="flex flex-col justify-center px-[120px]"
+    >
+      <div className="w-full">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="mb-12"
+        >
+          <p className="text-[18px] font-mono uppercase tracking-[0.2em] text-black/30 mb-4">
+            Our Partners
+          </p>
+          <h2 className="text-[72px] font-semibold tracking-[-0.03em] text-black mb-4">
+            Trusted by leading consultancies.
+          </h2>
+          <p className="text-[22px] text-black/40 max-w-[900px] leading-relaxed">
+            Source AI partners with top-tier NetSuite Alliance Partners to
+            deliver faster, more profitable migrations.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-2 gap-8">
+          {partners.map((partner, i) => (
+            <motion.div
+              key={partner.name}
+              initial={{ opacity: 0, y: 25 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.2 + i * 0.15 }}
+              className="border border-black/10 p-10"
+            >
+              <div className="flex items-start justify-between mb-6">
+                <div>
+                  <h3 className="text-[36px] font-bold text-black tracking-[-0.02em]">
+                    {partner.name}
+                  </h3>
+                  <p className="text-[14px] font-mono uppercase tracking-[0.1em] text-black/30 mt-1">
+                    {partner.tagline}
+                  </p>
+                </div>
+                <p className="text-[12px] font-mono text-black/20 mt-2">
+                  {partner.url}
+                </p>
+              </div>
+
+              <p className="text-[17px] text-black/45 leading-relaxed mb-8">
+                {partner.description}
+              </p>
+
+              <div className="space-y-4">
+                {partner.highlights.map((h, j) => (
+                  <motion.div
+                    key={j}
+                    initial={{ opacity: 0 }}
+                    animate={inView ? { opacity: 1 } : {}}
+                    transition={{ duration: 0.3, delay: 0.4 + i * 0.15 + j * 0.08 }}
+                    className="flex items-center gap-3"
+                  >
+                    <h.icon size={18} className="text-black/25 shrink-0" />
+                    <p className="text-[15px] text-black/50">{h.text}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </Slide>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/WhoWeWorkWith.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+import {
+  Mountain,
+  ShoppingCart,
+  Users,
+  DollarSign,
+  Database,
+  ArrowRight,
+  AlertTriangle,
+} from "lucide-react";
+import { Slide } from "./Slide";
+
+const painPoints = [
+  "Manual inventory sync across 3 sales channels",
+  "Month-end close takes 12+ days",
+  "No real-time visibility into wholesale margins",
+  "Custom integrations breaking on every QB update",
+  "Cannot support international expansion",
+];
+
+const companyDetails = [
+  { label: "Industry", value: "Outdoor Retail / E-commerce / Wholesale", icon: ShoppingCart },
+  { label: "Employees", value: "~120 across 4 locations", icon: Users },
+  { label: "Revenue", value: "$28M ARR", icon: DollarSign },
+  { label: "Legacy System", value: "QuickBooks Enterprise", icon: Database },
+  { label: "Target System", value: "NetSuite", icon: ArrowRight },
+];
+
+const T = {
+  hero: 0,
+  title: 0.3,
+  details: 0.5,
+  detailGap: 0.08,
+  painLabel: 1.0,
+  painStart: 1.1,
+  painGap: 0.06,
+};
+
+export function WhoWeWorkWith() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <Slide
+      ref={ref}
+      bg="bg-[#f8f8f8]"
+      className="flex flex-col px-[80px] py-[60px]"
+    >
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.5, delay: T.hero }}
+        className="mb-10"
+      >
+        <p className="text-[14px] font-mono uppercase tracking-[0.2em] text-black/30 mb-2">
+          Who We Work With
+        </p>
+        <h2 className="text-[48px] font-semibold tracking-[-0.03em] text-black">
+          Built for mid-market migrations.
+        </h2>
+      </motion.div>
+
+      {/* Main content — hero visual left, details right */}
+      <div className="flex-1 grid grid-cols-[1.1fr_0.9fr] gap-12 items-start">
+        {/* LEFT: Hero Visual Card */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.97 }}
+          animate={inView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.7, delay: T.hero, ease: "easeOut" }}
+          className="relative overflow-hidden bg-black h-[680px]"
+        >
+          {/* Decorative background pattern */}
+          <div className="absolute inset-0">
+            {/* Mountain/outdoor gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/40 via-black to-stone-900/30" />
+            {/* Topographic-style lines */}
+            <svg
+              className="absolute inset-0 w-full h-full opacity-[0.06]"
+              viewBox="0 0 600 700"
+              fill="none"
+            >
+              {Array.from({ length: 12 }).map((_, i) => (
+                <ellipse
+                  key={i}
+                  cx={300 + (i % 3) * 20}
+                  cy={350}
+                  rx={80 + i * 35}
+                  ry={60 + i * 30}
+                  stroke="white"
+                  strokeWidth="1"
+                />
+              ))}
+            </svg>
+            {/* Grid overlay */}
+            <div
+              className="absolute inset-0 opacity-[0.03]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)",
+                backgroundSize: "60px 60px",
+              }}
+            />
+          </div>
+
+          {/* Company identity */}
+          <div className="relative z-10 flex flex-col h-full p-12">
+            <div className="flex-1 flex flex-col justify-center items-center text-center">
+              {/* Logo mark */}
+              <div className="w-24 h-24 border-2 border-white/20 flex items-center justify-center mb-8">
+                <Mountain size={48} className="text-white/60" />
+              </div>
+              <h3 className="text-[56px] font-bold text-white tracking-[-0.03em] mb-2">
+                Meridian
+              </h3>
+              <p className="text-[28px] font-light text-white/50 tracking-[0.15em] uppercase">
+                Outdoors
+              </p>
+              <div className="mt-8 flex items-center gap-4">
+                <span className="text-[11px] font-mono uppercase tracking-[0.12em] text-white/25 px-3 py-1.5 border border-white/10">
+                  Retail
+                </span>
+                <span className="text-[11px] font-mono uppercase tracking-[0.12em] text-white/25 px-3 py-1.5 border border-white/10">
+                  E-commerce
+                </span>
+                <span className="text-[11px] font-mono uppercase tracking-[0.12em] text-white/25 px-3 py-1.5 border border-white/10">
+                  Wholesale
+                </span>
+              </div>
+            </div>
+
+            {/* Bottom bar */}
+            <div className="border-t border-white/10 pt-5 flex items-center justify-between">
+              <p className="text-[11px] font-mono text-white/20 uppercase tracking-[0.1em]">
+                Representative Client Profile
+              </p>
+              <p className="text-[11px] font-mono text-white/20">
+                QuickBooks → NetSuite
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* RIGHT: Company Details */}
+        <div className="flex flex-col gap-8">
+          {/* Company name + subtitle */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: T.title }}
+          >
+            <h3 className="text-[36px] font-bold text-black tracking-[-0.02em] mb-1">
+              Meridian Outdoors
+            </h3>
+            <p className="text-[16px] text-black/40 leading-relaxed">
+              Mid-market outdoor retail brand with DTC e-commerce,
+              wholesale distribution, and 4 physical retail locations.
+            </p>
+          </motion.div>
+
+          {/* Detail rows */}
+          <div className="space-y-0">
+            {companyDetails.map((detail, i) => (
+              <motion.div
+                key={detail.label}
+                initial={{ opacity: 0, x: -10 }}
+                animate={inView ? { opacity: 1, x: 0 } : {}}
+                transition={{
+                  duration: 0.35,
+                  delay: T.details + i * T.detailGap,
+                }}
+                className="flex items-center gap-4 py-4 border-b border-black/6"
+              >
+                <detail.icon size={16} className="text-black/20 shrink-0" />
+                <span className="text-[11px] font-mono uppercase tracking-[0.1em] text-black/30 w-[120px] shrink-0">
+                  {detail.label}
+                </span>
+                <span className="text-[15px] text-black/70 font-medium">
+                  {detail.value}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Pain points */}
+          <div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.3, delay: T.painLabel }}
+              className="flex items-center gap-2 mb-4"
+            >
+              <AlertTriangle size={14} className="text-black/25" />
+              <p className="text-[10px] font-mono uppercase tracking-[0.15em] text-black/30">
+                Key Pain Points
+              </p>
+            </motion.div>
+            <div className="space-y-2.5">
+              {painPoints.map((point, j) => (
+                <motion.div
+                  key={j}
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={inView ? { opacity: 1, x: 0 } : {}}
+                  transition={{
+                    duration: 0.25,
+                    delay: T.painStart + j * T.painGap,
+                  }}
+                  className="flex items-start gap-3"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-black/15 shrink-0 mt-[7px]" />
+                  <span className="text-[14px] text-black/50 leading-snug">
+                    {point}
+                  </span>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </Slide>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/Frustration.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+import { Slide } from "./Slide";
+
+export function Frustration() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <Slide ref={ref} bg="bg-black" className="flex items-center justify-center">
+      <div className="max-w-[1400px] mx-auto text-center">
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="text-[100px] font-semibold tracking-[-0.03em] leading-tight text-white mb-10"
+        >
+          Customers are frustrated.
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="text-[36px] text-white/50 leading-relaxed"
+        >
+          Migrations take too long.
+          <br />
+          Revisions upon revisions.
+        </motion.p>
+      </div>
+    </Slide>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/Hero.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { motion } from "framer-motion";
+import { Slide } from "./Slide";
+
+const stages = ["DISCOVERY", "SYSTEM SCAN", "STRATEGY", "BRD", "MIGRATION"];
+
+export function Hero() {
+  return (
+    <Slide bg="bg-black" className="flex items-center justify-center">
+      <div className="text-center max-w-[1500px] mx-auto">
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-[20px] font-mono uppercase tracking-[0.2em] text-white/40 mb-12"
+        >
+          The Migration Engine for Consultants
+        </motion.p>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.1 }}
+          className="text-[180px] font-semibold tracking-[-0.04em] leading-[0.9] text-white mb-14"
+        >
+          SOURCE AI
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="text-[28px] text-white/50 max-w-[900px] mx-auto leading-relaxed mb-20"
+        >
+          From transcript to live system — Source AI handles discovery, scanning,
+          strategy, BRD generation, and migration execution.{" "}
+          <span className="text-white font-medium">
+            The consultant stays on relationships and sign-off.
+          </span>
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="flex items-center justify-center gap-0"
+        >
+          {stages.map((stage, i) => (
+            <div key={stage} className="flex items-center">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.6 + i * 0.1 }}
+                className="px-8 py-4 border border-white/10 text-[16px] font-mono font-medium uppercase tracking-[0.1em] text-white/40 hover:text-white hover:border-white/30 transition-all duration-200"
+              >
+                {stage}
+              </motion.div>
+              {i < stages.length - 1 && (
+                <div className="w-10 h-px bg-white/10" />
+              )}
+            </div>
+          ))}
+        </motion.div>
+      </div>
+    </Slide>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/Platform.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+
+const capabilities = [
+  { num: "01", title: "SYSTEM SCANNING", description: "Connects to QBO, NetSuite, MySQL — reads everything" },
+  { num: "02", title: "BUSINESS LOGIC INFERENCE", description: "Understands what's happening vs. what was described" },
+  { num: "03", title: "STRATEGY GENERATION", description: "Pain points, workflows, improvement opportunities" },
+  { num: "04", title: "QUESTIONNAIRE ENGINE", description: "Generates targeted questions for consultant → end user" },
+  { num: "05", title: "BRD GENERATION", description: "Full AS-IS → TO-BE document with hard questions" },
+  { num: "06", title: "MIGRATION EXECUTION", description: "Plan, implementation, configuration, data migration" },
+];
+
+const badges = [
+  { value: "100%", label: "Auditable" },
+  { value: "0", label: "Manual Mapping" },
+  { value: "Full", label: "Lineage" },
+  { value: "Auto", label: "Validation" },
+];
+
+export function Platform() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <section ref={ref} className="h-screen flex flex-col justify-center px-6 bg-black">
+      <div className="max-w-6xl mx-auto w-full">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-4"
+        >
+          <p className="text-[11px] font-mono uppercase tracking-[0.2em] text-white/30 mb-3">
+            Source AI
+          </p>
+          <h2 className="text-4xl md:text-5xl font-semibold tracking-[-0.03em] text-white mb-3">
+            Migration Intelligence Platform
+          </h2>
+          <p className="text-white/40 text-sm max-w-2xl mx-auto leading-relaxed">
+            Connects directly to your client&apos;s system, reads the structure, infers
+            business logic, and generates everything needed — strategy, BRD,
+            migration plan, and the migration itself.
+          </p>
+        </motion.div>
+
+        {/* Capabilities grid */}
+        <div className="grid grid-cols-3 gap-px bg-white/5 mt-10 mb-10">
+          {capabilities.map((cap, i) => (
+            <motion.div
+              key={cap.num}
+              initial={{ opacity: 0, y: 15 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.4, delay: 0.2 + i * 0.06 }}
+              className="bg-black p-6 group hover:bg-white/[0.03] transition-colors"
+            >
+              <span className="text-[24px] font-extralight text-white/8 group-hover:text-white/15 transition-colors">
+                {cap.num}
+              </span>
+              <p className="text-[10px] font-mono font-medium uppercase tracking-[0.08em] text-white mt-3 mb-1.5">
+                {cap.title}
+              </p>
+              <p className="text-[12px] text-white/40 leading-relaxed">
+                {cap.description}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Badge strip */}
+        <div className="grid grid-cols-4 gap-px bg-white/5">
+          {badges.map((badge, i) => (
+            <motion.div
+              key={badge.label}
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.4, delay: 0.6 + i * 0.08 }}
+              className="bg-black p-5 text-center"
+            >
+              <p className="text-2xl font-light tracking-[-0.03em] text-white mb-0.5">
+                {badge.value}
+              </p>
+              <p className="text-[9px] font-mono uppercase tracking-[0.1em] text-white/30">
+                {badge.label}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/components/Workflow.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+"use client";
+
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+
+const steps = [
+  {
+    num: "01",
+    title: "DISCOVERY",
+    owner: "SOURCE AI",
+    description:
+      "Transcript + document intake. Builds a profile: systems, goals, employees, growth, pain points.",
+  },
+  {
+    num: "02",
+    title: "INITIAL SYSTEM SCAN",
+    owner: "SOURCE AI",
+    description:
+      "Confirms access (e.g. QBO). Generic understanding + context from consultant. Backs up or challenges what the customer said.",
+  },
+  {
+    num: "03",
+    title: "DEEP RESCAN",
+    owner: "SOURCE AI",
+    description:
+      "Establishes ground truth. Infers business logic, identifies what's actually happening in the data vs. what was described.",
+  },
+  {
+    num: "04",
+    title: "STRATEGY & PAIN POINTS",
+    owner: "SOURCE AI",
+    description:
+      "Identifies pain points, business workflows, and improvement opportunities. Generates strategic recommendations.",
+  },
+  {
+    num: "05",
+    title: "QUESTIONNAIRES",
+    owner: "AI → CONSULTANT → USER",
+    description:
+      "Source AI generates targeted questions. Consultant delivers to end user. Practical decisions: what changes, what stays.",
+  },
+  {
+    num: "06",
+    title: "BRD GENERATION",
+    owner: "SOURCE AI",
+    description:
+      "Full Business Requirements Document. AS-IS documented. Hard questions generated. Edited BRD confirms AS-IS → TO-BE.",
+  },
+  {
+    num: "07",
+    title: "MIGRATION EXECUTION",
+    owner: "SOURCE AI",
+    description:
+      "Implementation plan generated. Source executes: implementation, configuration, data migration. Done.",
+  },
+];
+
+export function Workflow() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <section ref={ref} className="h-screen flex flex-col justify-center px-6 bg-white">
+      <div className="max-w-5xl mx-auto w-full">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="mb-8"
+        >
+          <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-black/40 mb-3">
+            The Process
+          </p>
+          <h2 className="text-4xl md:text-5xl font-semibold tracking-[-0.03em]">
+            The Source AI Workflow
+          </h2>
+        </motion.div>
+
+        <div className="space-y-0">
+          {steps.map((step, i) => (
+            <motion.div
+              key={step.num}
+              initial={{ opacity: 0, y: 10 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.4, delay: 0.15 + i * 0.06 }}
+              className="border-t border-black/5 py-4 grid grid-cols-[50px_160px_1fr] gap-4 items-baseline group hover:bg-black/[0.01] transition-colors px-2"
+            >
+              <span className="text-[28px] font-extralight text-black/10 group-hover:text-black/25 transition-colors">
+                {step.num}
+              </span>
+              <div>
+                <p className="text-[10px] font-mono font-medium uppercase tracking-[0.05em]">
+                  {step.title}
+                </p>
+                <p className="text-[9px] font-mono uppercase tracking-[0.08em] text-black/30">
+                  {step.owner}
+                </p>
+              </div>
+              <p className="text-[12px] text-black/60 leading-relaxed">
+                {step.description}
+              </p>
+            </motion.div>
+          ))}
+          <div className="border-t border-black/5" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILE: src/app/onepager/page.tsx
+// ═══════════════════════════════════════════════════════════════════════════
+
+export default function OnePager() {
+  return (
+    <div className="w-[794px] h-[1123px] mx-auto bg-white print:bg-white overflow-hidden">
+      <style>{`
+        @media print {
+          @page { size: A4 portrait; margin: 0; }
+          body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+      `}</style>
+
+      <div className="px-10 py-7 h-full flex flex-col">
+
+        {/* ═══ HEADER ═══ */}
+        <div className="flex items-start justify-between mb-4">
+          <div>
+            <h1 className="text-[26px] font-bold tracking-[-0.03em] text-black leading-none mb-1">
+              Source AI
+            </h1>
+            <p className="text-[10px] text-black/50 leading-relaxed max-w-[400px]">
+              An AI engine that automates <span className="font-semibold text-black">80% of ERP migrations</span> — so your consultancy wins more deals, moves faster, and makes more money.
+            </p>
+          </div>
+          <p className="text-[8px] font-mono uppercase tracking-[0.15em] text-black/25 mt-1">Partner Overview</p>
+        </div>
+
+        {/* ═══ THE PROBLEM → THE SOLUTION ═══ */}
+        <div className="grid grid-cols-2 gap-3 mb-3">
+          {/* Problem */}
+          <div className="border border-black/10 px-4 py-3">
+            <p className="text-[6px] font-mono uppercase tracking-[0.15em] text-black/30 mb-1">The Problem</p>
+            <p className="text-[11px] font-bold text-black mb-1.5">How Migrations Work Today</p>
+            <div className="flex flex-wrap gap-1 mb-2">
+              {["End Client", "Sales & Scoping", "Solutions Architecture", "Resource & Team Build", "Implementation", "Go-Live"].map((s, i) => (
+                <span key={s} className="text-[7px] bg-black/[0.04] border border-black/8 px-1.5 py-0.5 text-black/60">
+                  {i + 1}. {s}
+                </span>
+              ))}
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="flex-1 h-[3px] bg-black/10 relative">
+                <div className="absolute inset-y-0 left-0 w-full bg-black/25" />
+              </div>
+              <p className="text-[8px] font-mono font-bold text-black/50 whitespace-nowrap">2–6+ months</p>
+            </div>
+          </div>
+
+          {/* Solution */}
+          <div className="bg-black text-white px-4 py-3">
+            <p className="text-[6px] font-mono uppercase tracking-[0.15em] text-white/30 mb-1">The Solution</p>
+            <p className="text-[11px] font-bold text-white mb-1.5">Source AI Replaces the Delivery Chain</p>
+            <div className="flex items-center gap-1.5 mb-2">
+              {["End Client", "Your Consultant", "Source AI Engine", "Live System"].map((s, i, arr) => (
+                <div key={s} className="flex items-center gap-1.5">
+                  <span className="text-[7px] font-medium text-white/80 bg-white/10 px-1.5 py-0.5">{s}</span>
+                  {i < arr.length - 1 && <span className="text-[8px] text-white/25">→</span>}
+                </div>
+              ))}
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="flex-1 h-[3px] bg-white/10 relative">
+                <div className="absolute inset-y-0 left-0 bg-white/60" style={{ width: '15%' }} />
+              </div>
+              <p className="text-[8px] font-mono font-bold text-white/70 whitespace-nowrap">Sub 21 days</p>
+            </div>
+          </div>
+        </div>
+
+        {/* ═══ WORKFLOW ═══ */}
+        <div className="mb-3">
+          <p className="text-[6px] font-mono uppercase tracking-[0.15em] text-black/30 mb-1.5">
+            10-Step Workflow
+          </p>
+          <div className="flex flex-col gap-1">
+            {[
+              [
+                { label: "Client Call & Notes", ai: false },
+                { label: "Connect & Scan", ai: true },
+                { label: "AI Questionnaire", ai: true },
+                { label: "Draft BRD", ai: true },
+                { label: "Consultant Review", ai: false },
+              ],
+              [
+                { label: "Customer Sign-Off", ai: false },
+                { label: "AI Migration", ai: true },
+                { label: "Testing & QA", ai: true },
+                { label: "Go-Live & Handover", ai: false },
+                { label: "🎉 Happy Customer", ai: false, final: true },
+              ],
+            ].map((row, ri) => (
+              <div key={ri} className="flex items-center gap-0.5">
+                {row.map((step, i, arr) => (
+                  <div key={step.label} className={`flex items-center min-w-0 ${"final" in step ? "flex-[0.7]" : "flex-1"}`}>
+                    <div className={`flex-1 px-2 py-1.5 relative ${
+                      "final" in step ? "bg-black text-white" : "bg-white border border-black/10"
+                    }`}>
+                      {step.ai && <span className="absolute top-0.5 right-1 text-[5px] font-mono font-bold text-black/15">AI</span>}
+                      <p className={`text-[7px] font-semibold leading-tight ${"final" in step ? "text-white" : "text-black"}`}>{step.label}</p>
+                    </div>
+                    {i < arr.length - 1 && <span className="shrink-0 px-0.5 text-[8px] text-black/15">→</span>}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ═══ RESPONSIBILITY MATRIX ═══ */}
+        <div className="grid grid-cols-[1.3fr_1fr_1fr] gap-1 mb-3">
+          <div className="bg-black text-white px-3.5 py-2.5">
+            <p className="text-[10px] font-bold mb-0.5">Source AI</p>
+            <p className="text-[5px] font-mono uppercase tracking-[0.1em] text-white/25 mb-2">Autonomous — 85% of the work</p>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+              {["System scanning & analysis", "Business logic inference", "BRD generation", "Migration planning", "Implementation & config", "Testing & validation"].map((item) => (
+                <div key={item} className="flex items-center gap-1">
+                  <div className="w-0.5 h-0.5 rounded-full bg-white/40 shrink-0" />
+                  <span className="text-[7px] font-medium text-white">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="border border-black/10 px-3.5 py-2.5">
+            <p className="text-[10px] font-bold text-black mb-0.5">Consultant</p>
+            <p className="text-[5px] font-mono uppercase tracking-[0.1em] text-black/25 mb-2">Review & Confirm</p>
+            <div className="space-y-1">
+              {["Provides initial context", "Reviews AI outputs", "Delivers questions to end user", "Confirms BRD", "Signs off on migration plan"].map((item) => (
+                <div key={item} className="flex items-center gap-1">
+                  <div className="w-0.5 h-0.5 rounded-full bg-black/25 shrink-0" />
+                  <span className="text-[7px] text-black/60">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="border border-black/10 px-3.5 py-2.5">
+            <p className="text-[10px] font-bold text-black mb-0.5">End User</p>
+            <p className="text-[5px] font-mono uppercase tracking-[0.1em] text-black/25 mb-2">Answer & Approve</p>
+            <div className="space-y-1">
+              {["Answers questionnaires", "Confirms requirements", "Signs off on TO-BE state", "Accepts final migration"].map((item) => (
+                <div key={item} className="flex items-center gap-1">
+                  <div className="w-0.5 h-0.5 rounded-full bg-black/25 shrink-0" />
+                  <span className="text-[7px] text-black/60">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ═══ SEPARATOR ═══ */}
+        <div className="border-t border-black/8 mb-3" />
+
+        {/* ═══ CASE STUDY + WHY PARTNER ═══ */}
+        <div className="grid grid-cols-[1fr_1.1fr] gap-4 mb-3">
+
+          {/* Case Study */}
+          <div>
+            <p className="text-[6px] font-mono uppercase tracking-[0.15em] text-black/30 mb-1.5">
+              Case Study — Wild Tech
+            </p>
+            <div className="border border-black/10 px-3.5 py-3 mb-2">
+              <p className="text-[8px] font-semibold text-black mb-2">
+                QuickBooks → NetSuite · Mid-market retail · ~120 employees
+              </p>
+              <div className="grid grid-cols-3 gap-2 mb-2.5">
+                {[
+                  { val: "13", unit: "days", label: "Migration" },
+                  { val: "€11K", unit: "", label: "Total Cost" },
+                  { val: "67%", unit: "", label: "Savings" },
+                ].map((m) => (
+                  <div key={m.label}>
+                    <p className="text-[18px] font-bold tracking-[-0.03em] text-black leading-none">
+                      {m.val}<span className="text-[10px] font-light text-black/30">{m.unit ? ` ${m.unit}` : ""}</span>
+                    </p>
+                    <p className="text-[5px] font-mono uppercase tracking-[0.1em] text-black/30">{m.label}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="bg-black/[0.03] border-t border-black/8 -mx-3.5 -mb-3 px-3.5 py-2.5">
+                <p className="text-[7px] text-black/45 italic leading-relaxed">
+                  &ldquo;We quoted €14K fixed-price and delivered in under three weeks. Our old model would have been €35K over four months. Source handled the technical execution — we kept the client relationship and made 50%+ margins.&rdquo;
+                </p>
+                <p className="text-[6px] font-semibold text-black/35 mt-1">— Managing Director, Wild Tech</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Why Partner */}
+          <div>
+            <p className="text-[6px] font-mono uppercase tracking-[0.15em] text-black/30 mb-1.5">
+              Why Partner
+            </p>
+            <div className="grid grid-cols-3 gap-1.5">
+              {[
+                { stat: "50%+", label: "Margins", desc: "AI eliminates offshore cost" },
+                { stat: "Sub 21", label: "Days", desc: "Not months for delivery" },
+                { stat: "Fixed", label: "Price", desc: "Predictable execution costs" },
+                { stat: "0", label: "Hires", desc: "Scale without recruiting" },
+                { stat: "WIN", label: "On Price", desc: "$8K–$15K vs $30K–$40K" },
+                { stat: "Your", label: "Brand", desc: "White-label delivery" },
+              ].map((item) => (
+                <div key={item.stat} className="border border-black/10 px-2 py-2">
+                  <p className="text-[14px] font-bold tracking-[-0.02em] text-black leading-none mb-0.5">
+                    {item.stat}
+                  </p>
+                  <p className="text-[5px] font-mono uppercase tracking-[0.08em] text-black/25 mb-1">
+                    {item.label}
+                  </p>
+                  <p className="text-[6.5px] text-black/45 leading-snug">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ═══ SUPPORTED SYSTEMS + PRICING ═══ */}
+        <div className="grid grid-cols-[1fr_1.1fr] gap-4 mb-3">
+
+          {/* Supported Systems */}
+          <div>
+            <p className="text-[6px] font-mono uppercase tracking-[0.15em] text-black/30 mb-1.5">
+              AI Supported Migrations
+            </p>
+            <div className="space-y-1 mb-1.5">
+              {[
+                { from: "QuickBooks", to: "NetSuite", bi: true },
+                { from: "Xero", to: "NetSuite", bi: false },
+                { from: "QuickBooks", to: "Dynamics 365", bi: false },
+              ].map((path) => (
+                <div key={`${path.from}-${path.to}`} className="flex items-center gap-2 border border-black/8 px-2.5 py-1.5">
+                  <span className="text-[8px] font-semibold text-black">{path.from}</span>
+                  <span className="text-[8px] text-black/20">{path.bi ? "↔" : "→"}</span>
+                  <span className="text-[8px] font-semibold text-black">{path.to}</span>
+                  <span className="text-[6px] text-black/25 ml-auto">+ 100s integrations</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-[6px] text-black/30">
+              Coming soon: MYOB, Acumatica, Freshbooks, Zoho Books, DEAR, Reckon, Wave, Custom ERPs
+            </p>
+          </div>
+
+          {/* Pricing */}
+          <div>
+            <p className="text-[6px] font-mono uppercase tracking-[0.15em] text-black/30 mb-1.5">
+              Pricing — Simple Revenue Share
+            </p>
+            <div className="border border-black/10 mb-1.5">
+              <div className="grid grid-cols-[1.2fr_1fr_1fr] border-b border-black/8">
+                <div className="px-2 py-1" />
+                <div className="px-2 py-1 border-l border-black/8">
+                  <p className="text-[5px] font-mono uppercase tracking-[0.08em] text-black/30 font-medium">Traditional</p>
+                </div>
+                <div className="px-2 py-1 border-l border-black/8 bg-black/[0.03]">
+                  <p className="text-[5px] font-mono uppercase tracking-[0.08em] text-black/60 font-medium">With Source</p>
+                </div>
+              </div>
+              {[
+                { label: "Timeline", old: "6–12+ months", src: "Sub 21 days" },
+                { label: "Cost", old: "$30K–$40K", src: "$8K–$15K" },
+                { label: "BRD", old: "3–5 cycles", src: "AI-generated" },
+                { label: "Scope Creep", old: "High", src: "Low — AI scan" },
+                { label: "Model", old: "T&M", src: "Fixed price" },
+              ].map((row) => (
+                <div key={row.label} className="grid grid-cols-[1.2fr_1fr_1fr] border-b border-black/[0.05] last:border-b-0">
+                  <div className="px-2 py-1"><p className="text-[7px] font-semibold text-black/70">{row.label}</p></div>
+                  <div className="px-2 py-1 border-l border-black/8"><p className="text-[7px] text-black/25 line-through">{row.old}</p></div>
+                  <div className="px-2 py-1 border-l border-black/8 bg-black/[0.03]"><p className="text-[7px] text-black font-semibold">{row.src}</p></div>
+                </div>
+              ))}
+            </div>
+            <div className="bg-black text-white px-3 py-2 flex items-center gap-3">
+              <p className="text-[14px] font-bold leading-none">FREE</p>
+              <div>
+                <p className="text-[8px] font-semibold">Your first migration is free.</p>
+                <p className="text-[6px] text-white/40">No cost, no commitment.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ═══ TEAM + FOOTER ═══ */}
+        <div className="mt-auto border-t border-black/8 pt-2.5 flex items-center justify-between">
+          <div>
+            <p className="text-[6px] font-mono uppercase tracking-[0.15em] text-black/25 mb-1">The Team</p>
+            <div className="flex items-center gap-3">
+              {[
+                { name: "Liam Fuller", role: "CEO" },
+                { name: "Yoan Gabison", role: "CTO" },
+                { name: "Shane Fuller", role: "Founding Eng" },
+                { name: "Brian Kelleher", role: "AI Eng" },
+                { name: "Jiri Pucs", role: "AI Eng" },
+              ].map((m) => (
+                <div key={m.name} className="flex items-center gap-1">
+                  <div className="w-4 h-4 rounded-full bg-black/[0.06] flex items-center justify-center">
+                    <span className="text-[5px] font-semibold text-black/25">
+                      {m.name.split(" ").map(n => n[0]).join("")}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="text-[6px] font-semibold text-black leading-none">{m.name}</p>
+                    <p className="text-[5px] text-black/30">{m.role}</p>
+                  </div>
+                </div>
+              ))}
+              <span className="text-[6px] text-black/25">+ 3 consultants, 10+ extended</span>
+            </div>
+          </div>
+          <div className="text-right">
+            <p className="text-[7px] font-semibold text-black">sourceai.dev</p>
+            <p className="text-[5px] text-black/25">Confidential</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
