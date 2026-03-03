@@ -90,7 +90,7 @@ function WebsitePreview() {
       {/* Stats bar */}
       <div className="grid grid-cols-3 divide-x divide-black/8 border-t border-black/8">
         {[
-          { val: "$8K–$15K", label: "Fixed price" },
+          { val: "$10K", label: "Fixed price" },
           { val: "10 Days", label: "Go-live" },
           { val: "80%", label: "AI-automated" },
         ].map((s) => (
