@@ -7,9 +7,6 @@ import {
   Building2,
   ArrowLeft,
   Globe,
-  Linkedin,
-  FileText,
-  Presentation,
 } from "lucide-react";
 import { Slide } from "./Slide";
 
@@ -34,178 +31,85 @@ const solutionSteps = [
 ];
 
 // ---------------------------------------------------------------------------
-// Compact mockup components
+// Website preview — polished landing page mockup
 // ---------------------------------------------------------------------------
 
-function WebsiteMini() {
+function WebsitePreview() {
   return (
     <div className="flex flex-col h-full border border-black/10 overflow-hidden bg-white">
-      {/* Browser chrome bar */}
-      <div className="flex items-center gap-1 px-2 py-1.5 border-b border-black/08 bg-[#f5f5f5]">
-        <span className="w-2 h-2 rounded-full bg-black/15" />
-        <span className="w-2 h-2 rounded-full bg-black/15" />
-        <span className="w-2 h-2 rounded-full bg-black/15" />
-        <span className="ml-2 flex-1 bg-white border border-black/10 rounded-sm h-3" />
+      {/* Browser chrome */}
+      <div className="flex items-center gap-1.5 px-4 py-2.5 border-b border-black/8 bg-[#f5f5f5]">
+        <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+        <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
+        <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+        <div className="ml-4 flex-1 bg-white border border-black/10 px-3 py-1 flex items-center gap-2">
+          <svg className="w-3 h-3 text-black/20 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          <span className="text-[10px] font-mono text-black/35">yourfirm.com/netsuite-migration</span>
+        </div>
       </div>
+
+      {/* Nav bar */}
+      <div className="flex items-center justify-between px-6 py-3 border-b border-black/6">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 bg-black/10 flex items-center justify-center">
+            <span className="text-[7px] font-bold text-black/40">YF</span>
+          </div>
+          <span className="text-[11px] font-semibold text-black/70">Your Firm</span>
+        </div>
+        <div className="flex items-center gap-5">
+          <span className="text-[9px] text-black/30 font-mono uppercase tracking-[0.06em]">Services</span>
+          <span className="text-[9px] text-black/30 font-mono uppercase tracking-[0.06em]">About</span>
+          <span className="text-[9px] text-black/30 font-mono uppercase tracking-[0.06em]">Contact</span>
+        </div>
+      </div>
+
       {/* Hero section */}
-      <div className="bg-black flex-1 flex flex-col items-center justify-center px-4 py-5 gap-2">
-        <p className="text-white text-[10px] font-semibold tracking-[-0.01em] text-center leading-tight">
-          QuickBooks &rarr; NetSuite in 10 Days
+      <div className="bg-black flex-1 flex flex-col justify-center px-8 py-8">
+        <p className="text-[9px] font-mono uppercase tracking-[0.15em] text-white/30 mb-3">
+          ERP Migration
         </p>
-        <p className="text-white/45 text-[8px] font-mono uppercase tracking-[0.08em] text-center">
-          Fixed price. Fully automated.
+        <p className="text-[22px] font-semibold tracking-[-0.03em] text-white leading-tight mb-1">
+          QuickBooks to NetSuite
         </p>
-        <button className="mt-1 bg-white text-black text-[8px] font-mono uppercase tracking-[0.08em] px-3 py-1">
-          Get Started
-        </button>
+        <p className="text-[22px] font-semibold tracking-[-0.03em] text-white leading-tight mb-3">
+          in 10 Days.
+        </p>
+        <p className="text-[11px] text-white/40 leading-relaxed max-w-[320px] mb-5">
+          Fixed price. Fully automated. AI handles migration, config, and testing &mdash; your team stays focused on clients.
+        </p>
+        <div className="flex items-center gap-3">
+          <div className="bg-white px-4 py-2">
+            <span className="text-[9px] font-semibold text-black uppercase tracking-[0.06em]">Get a Quote</span>
+          </div>
+          <span className="text-[9px] text-white/30 font-mono uppercase tracking-[0.06em]">Learn More &rarr;</span>
+        </div>
       </div>
-      {/* Stat row */}
-      <div className="grid grid-cols-3 divide-x divide-black/08 border-t border-black/08">
+
+      {/* Stats bar */}
+      <div className="grid grid-cols-3 divide-x divide-black/8 border-t border-black/8">
         {[
-          { val: "$10K", label: "Fixed" },
+          { val: "$8K–$15K", label: "Fixed price" },
           { val: "10 Days", label: "Go-live" },
-          { val: "80%", label: "AI" },
+          { val: "80%", label: "AI-automated" },
         ].map((s) => (
-          <div key={s.label} className="flex flex-col items-center py-2 px-1">
-            <span className="text-[9px] font-bold tracking-[-0.01em]">{s.val}</span>
-            <span className="text-[7px] font-mono uppercase tracking-[0.08em] text-black/35">
+          <div key={s.label} className="flex flex-col items-center py-3">
+            <span className="text-[13px] font-bold tracking-[-0.01em] text-black">{s.val}</span>
+            <span className="text-[8px] font-mono uppercase tracking-[0.08em] text-black/30 mt-0.5">
               {s.label}
             </span>
           </div>
         ))}
       </div>
-    </div>
-  );
-}
 
-function LinkedInMini() {
-  return (
-    <div className="flex flex-col h-full bg-[#f3f2ef] border border-black/10 overflow-hidden">
-      {/* Header */}
-      <div className="bg-white border-b border-black/06 px-3 py-2 flex items-center gap-2">
-        <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center shrink-0">
-          <span className="text-white text-[7px] font-bold">YF</span>
-        </div>
-        <div className="flex flex-col leading-none">
-          <span className="text-[8px] font-semibold text-black">Your Firm</span>
-          <span className="text-[7px] text-black/40 font-mono uppercase tracking-[0.04em]">
-            ERP Consulting &middot; 2h
-          </span>
-        </div>
-      </div>
-      {/* Post body */}
-      <div className="px-3 py-2 flex-1">
-        <p className="text-[8px] text-black/65 leading-relaxed">
-          We just migrated a $2M retailer from QuickBooks to NetSuite in{" "}
-          <span className="font-semibold text-black">8 days</span>. AI handled
-          the heavy lifting &mdash; our team focused on what mattered.
-        </p>
-        {/* Article card preview */}
-        <div className="mt-2 border border-black/10 bg-white px-2 py-1.5">
-          <p className="text-[7px] font-semibold text-black leading-tight">
-            How We Cut ERP Implementation Time by 80%
-          </p>
-          <p className="text-[6px] text-black/35 font-mono uppercase tracking-[0.06em] mt-0.5">
-            yourfirm.com
-          </p>
-        </div>
-      </div>
-      {/* Engagement row */}
-      <div className="bg-white border-t border-black/08 px-3 py-1.5 flex gap-3">
-        <span className="text-[7px] text-black/40 font-mono">47 likes</span>
-        <span className="text-[7px] text-black/40 font-mono">12 comments</span>
-      </div>
-    </div>
-  );
-}
-
-function CaseStudyMini() {
-  return (
-    <div className="flex flex-col h-full bg-white border border-black/10 overflow-hidden">
-      {/* Header band */}
-      <div className="bg-[#f5f5f5] border-b border-black/08 px-3 py-2 flex items-center gap-2">
-        <div className="w-5 h-5 bg-black/10 flex items-center justify-center">
-          <span className="text-[6px] font-bold text-black/40">YF</span>
-        </div>
-        <span className="text-[7px] font-mono uppercase tracking-[0.12em] text-black/35">
-          Case Study
-        </span>
-      </div>
-      {/* Title */}
-      <div className="px-3 pt-3 pb-2">
-        <p className="text-[8px] font-semibold text-black leading-tight tracking-[-0.01em]">
-          Acme Retail: QuickBooks to NetSuite in 8 Days
-        </p>
-      </div>
-      {/* Stat row */}
-      <div className="grid grid-cols-3 divide-x divide-black/08 border-y border-black/08 mx-3">
-        {[
-          { val: "8", label: "Days" },
-          { val: "$10K", label: "Cost" },
-          { val: "3.2K", label: "Records" },
-        ].map((s) => (
-          <div key={s.label} className="flex flex-col items-center py-1.5">
-            <span className="text-[9px] font-bold tracking-[-0.01em]">{s.val}</span>
-            <span className="text-[6px] font-mono uppercase tracking-[0.08em] text-black/35">
-              {s.label}
-            </span>
-          </div>
-        ))}
-      </div>
-      {/* Content lines */}
-      <div className="px-3 pt-2 pb-3 flex flex-col gap-1.5 flex-1">
-        {[70, 55, 65, 40].map((w, i) => (
-          <div
-            key={i}
-            className="h-1.5 bg-black/08 rounded-sm"
-            style={{ width: `${w}%` }}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function SalesDeckMini() {
-  return (
-    <div className="flex flex-col h-full bg-black border border-white/10 overflow-hidden">
-      {/* Slide dot row */}
-      <div className="flex gap-1 px-3 pt-2.5 pb-1">
-        {[0, 1, 2, 3].map((i) => (
-          <div
-            key={i}
-            className={`h-0.5 flex-1 ${i === 1 ? "bg-white/60" : "bg-white/15"}`}
-          />
-        ))}
-      </div>
-      {/* Slide content */}
-      <div className="flex-1 flex flex-col justify-center px-4 py-3">
-        <p className="text-[7px] font-mono uppercase tracking-[0.12em] text-white/35 mb-1.5">
-          The Offer
-        </p>
-        <p className="text-[13px] font-bold tracking-[-0.02em] text-white leading-tight">
-          $10K. 10 Days. Done.
-        </p>
-        <p className="text-[8px] text-white/45 mt-1.5 leading-relaxed">
-          Fixed price. AI-powered. No surprises.
-        </p>
-      </div>
-      {/* Stat row */}
-      <div className="grid grid-cols-3 divide-x divide-white/10 border-t border-white/10">
-        {[
-          { val: "$10K", label: "Fixed" },
-          { val: "10d", label: "Timeline" },
-          { val: "80%", label: "AI" },
-        ].map((s) => (
-          <div key={s.label} className="flex flex-col items-center py-2">
-            <span className="text-[9px] font-bold text-white tracking-[-0.01em]">
-              {s.val}
-            </span>
-            <span className="text-[6px] font-mono uppercase tracking-[0.08em] text-white/35">
-              {s.label}
-            </span>
-          </div>
-        ))}
+      {/* Trust row */}
+      <div className="flex items-center justify-center gap-6 py-2.5 border-t border-black/6 bg-black/[0.02]">
+        <span className="text-[8px] text-black/25 font-mono uppercase tracking-[0.08em]">AI-validated migration</span>
+        <span className="text-[8px] text-black/15">&middot;</span>
+        <span className="text-[8px] text-black/25 font-mono uppercase tracking-[0.08em]">Fixed price guarantee</span>
+        <span className="text-[8px] text-black/15">&middot;</span>
+        <span className="text-[8px] text-black/25 font-mono uppercase tracking-[0.08em]">No scope creep</span>
       </div>
     </div>
   );
@@ -214,13 +118,6 @@ function SalesDeckMini() {
 // ---------------------------------------------------------------------------
 // Go-to-Market Panel
 // ---------------------------------------------------------------------------
-
-const mockups = [
-  { label: "Website", icon: Globe, component: WebsiteMini },
-  { label: "LinkedIn", icon: Linkedin, component: LinkedInMini },
-  { label: "Case Study", icon: FileText, component: CaseStudyMini },
-  { label: "Sales Deck", icon: Presentation, component: SalesDeckMini },
-];
 
 interface GoToMarketPanelProps {
   direction: "left" | "right";
@@ -239,43 +136,41 @@ function GoToMarketPanel({ direction }: GoToMarketPanelProps) {
       className="bg-white border border-black/10 p-8 flex flex-col h-full"
     >
       {/* Panel header */}
-      <div className="mb-6">
+      <div className="mb-5">
         <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/30 mb-2">
           Go to Market
         </p>
-        <h3 className="text-[20px] font-semibold tracking-[-0.02em] mb-1.5">
-          Market it your way.
+        <h3 className="text-[22px] font-semibold tracking-[-0.02em] mb-1.5">
+          Your website. Your brand.
         </h3>
-        <p className="text-[14px] text-black/45 leading-relaxed">
-          Use our white-label assets — or build your own. Source gives you a
-          full marketing kit to start selling immediately.
+        <p className="text-[14px] text-black/40 leading-relaxed">
+          Source gives you a full marketing kit. Launch a landing page under your domain and start selling immediately.
         </p>
       </div>
 
-      {/* 2x2 mockup grid */}
-      <div className="grid grid-cols-2 gap-4 flex-1">
-        {mockups.map(({ label, icon: Icon, component: MockupComponent }, i) => (
-          <motion.div
-            key={label}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 + i * 0.08, duration: 0.35, ease: "easeOut" }}
-            className="flex flex-col gap-2"
-          >
-            {/* Mockup container ~140-160px tall */}
-            <div className="h-[148px]">
-              <MockupComponent />
-            </div>
-            {/* Label row */}
-            <div className="flex items-center gap-1.5">
-              <Icon size={12} strokeWidth={1.75} className="text-black/35" />
-              <span className="text-[10px] font-mono uppercase tracking-[0.10em] text-black/40">
-                {label}
-              </span>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+      {/* Website preview — fills remaining space */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.4, ease: "easeOut" }}
+        className="flex-1"
+        style={{ boxShadow: "0 4px 20px -4px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.04)" }}
+      >
+        <WebsitePreview />
+      </motion.div>
+
+      {/* Footer note */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5 }}
+        className="flex items-center gap-2 mt-4"
+      >
+        <Globe size={13} strokeWidth={1.75} className="text-black/25 shrink-0" />
+        <p className="text-[11px] text-black/30">
+          Ships under your domain. Source never appears in client-facing content.
+        </p>
+      </motion.div>
     </motion.div>
   );
 }
@@ -438,13 +333,13 @@ export function HowWePartner() {
                   {/* Callout */}
                   <div className="border-t border-black/10 pt-6">
                     <p className="text-[28px] font-bold tracking-[-0.02em] text-black mb-1">
-                      $2K&ndash;$5K
+                      $5K
                     </p>
                     <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/30 mb-3">
-                      Kickback per referral
+                      Referral kickback
                     </p>
                     <p className="text-[15px] text-black/50 leading-relaxed">
-                      Keep the customer for all post-go-live work
+                      Plus a negotiated % of the NetSuite license fee
                     </p>
                   </div>
 
