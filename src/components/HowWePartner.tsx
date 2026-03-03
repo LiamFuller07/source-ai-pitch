@@ -536,6 +536,9 @@ export function HowWePartner() {
                     <p className="text-[15px] text-black/50 leading-relaxed">
                       Scale your practice without offshore teams
                     </p>
+                    <p className="text-[13px] text-black/35 mt-3">
+                      Plus a % of the NetSuite license fee on every deal you close.
+                    </p>
                   </div>
 
                   {/* That's me button — only when nothing selected */}

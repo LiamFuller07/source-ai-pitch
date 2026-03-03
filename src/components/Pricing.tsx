@@ -133,7 +133,6 @@ export function Pricing() {
           transition={{ delay: 0.25 }}
           className="bg-black text-white p-8 flex items-center justify-between"
         >
-          {/* Left: Free first migration */}
           <div className="flex items-center gap-10">
             <div>
               <p className="text-[48px] font-bold tracking-[-0.04em] leading-none">
@@ -150,33 +149,6 @@ export function Pricing() {
               </p>
               <p className="text-[16px] text-white/45 leading-relaxed max-w-[500px]">
                 Your first migration is on us — no cost, no commitment.
-              </p>
-            </div>
-          </div>
-
-          {/* Right: Before/After pricing */}
-          <div className="flex items-center gap-8">
-            <div className="text-right">
-              <p className="text-[10px] font-mono uppercase tracking-[0.12em] text-white/30 mb-1">
-                Before Source
-              </p>
-              <p className="text-[28px] font-bold tracking-[-0.03em] leading-none text-white/30 line-through decoration-white/15">
-                $30K–$40K
-              </p>
-              <p className="text-[11px] text-white/20 mt-1">
-                6–12+ months
-              </p>
-            </div>
-            <div className="text-[20px] text-white/20">→</div>
-            <div className="text-right">
-              <p className="text-[10px] font-mono uppercase tracking-[0.12em] text-white/50 mb-1">
-                After Source
-              </p>
-              <p className="text-[28px] font-bold tracking-[-0.03em] leading-none text-white">
-                $8K–$15K
-              </p>
-              <p className="text-[11px] text-white/45 mt-1">
-                Under 21 days
               </p>
             </div>
           </div>
