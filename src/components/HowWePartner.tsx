@@ -71,7 +71,7 @@ function WebsitePreview() {
           ERP Migration
         </p>
         <p className="text-[22px] font-semibold tracking-[-0.03em] text-white leading-tight mb-1">
-          QuickBooks to NetSuite
+          $10K NetSuite Migrations
         </p>
         <p className="text-[22px] font-semibold tracking-[-0.03em] text-white leading-tight mb-3">
           in 10 Days.
@@ -333,7 +333,7 @@ export function HowWePartner() {
                   {/* Callout */}
                   <div className="border-t border-black/10 pt-6">
                     <p className="text-[28px] font-bold tracking-[-0.02em] text-black mb-1">
-                      $5K
+                      $4K+
                     </p>
                     <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/30 mb-3">
                       Referral kickback
