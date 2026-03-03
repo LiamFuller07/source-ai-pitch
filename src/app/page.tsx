@@ -9,6 +9,8 @@ import { WhoDoesWhat } from "@/components/WhoDoesWhat";
 import { DemoVideo } from "@/components/DemoVideo";
 import { WhiteLabel } from "@/components/WhiteLabel";
 import { WhyPartner } from "@/components/WhyPartner";
+import { TenKMigrations } from "@/components/TenKMigrations";
+import { HowWePartner } from "@/components/HowWePartner";
 import { Pricing } from "@/components/Pricing";
 import { Partners } from "@/components/Partners";
 import { CaseStudy } from "@/components/CaseStudy";
@@ -31,6 +33,8 @@ export default function Home() {
         {/* <CaseStudy /> */}
         <SupportedSystems />
         <WhyPartner />
+        <TenKMigrations />
+        <HowWePartner />
         <Pricing />
         <Team />
         <Cta />

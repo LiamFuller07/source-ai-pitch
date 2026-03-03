@@ -6,7 +6,7 @@ import { useRef, useState } from "react";
 import { MapPin } from "lucide-react";
 import { Slide } from "./Slide";
 
-const coreTeam = [
+const leadership = [
   {
     name: "Liam Fuller",
     role: "CEO",
@@ -19,6 +19,15 @@ const coreTeam = [
     detail: "10+ years in NetSuite & ERP. Full-stack AI architect who designed Source's core platform.",
     image: "/team/yoan.jpg",
   },
+  {
+    name: "Sean Gillespie",
+    role: "Head of Consulting",
+    detail: "ERP strategy & go-to-market. Leads partner delivery, client success & marketing execution.",
+    image: "/team/sean.jpg",
+  },
+];
+
+const engineers = [
   {
     name: "Shane Fuller",
     role: "Founding Engineer",
@@ -40,12 +49,6 @@ const coreTeam = [
 ];
 
 const consultants = [
-  {
-    name: "Sean Gillespie",
-    role: "Senior Consultant",
-    detail: "ERP strategy & client delivery.",
-    image: "/team/sean.jpg",
-  },
   {
     name: "Matthew Rodgers",
     role: "Senior Consultant",
@@ -141,19 +144,18 @@ export function Team() {
           </motion.div>
         </motion.div>
 
-        {/* Core Team */}
-        <div className="mb-10">
+        {/* Leadership */}
+        <div className="mb-8">
           <motion.p
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ delay: 0.25 }}
             className="text-[14px] font-mono uppercase tracking-[0.15em] text-black/25 mb-5"
           >
-            Core Team
+            Leadership
           </motion.p>
-          {/* Leadership row */}
-          <div className="grid grid-cols-2 gap-5 mb-5 max-w-[800px]">
-            {coreTeam.slice(0, 2).map((member, i) => (
+          <div className="grid grid-cols-3 gap-5">
+            {leadership.map((member, i) => (
               <motion.div
                 key={member.name}
                 initial={{ opacity: 0, y: 15 }}
@@ -176,14 +178,25 @@ export function Team() {
               </motion.div>
             ))}
           </div>
-          {/* Engineers row */}
+        </div>
+
+        {/* Engineers */}
+        <div className="mb-8">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ delay: 0.5 }}
+            className="text-[14px] font-mono uppercase tracking-[0.15em] text-black/25 mb-5"
+          >
+            Engineering
+          </motion.p>
           <div className="grid grid-cols-3 gap-5">
-            {coreTeam.slice(2).map((member, i) => (
+            {engineers.map((member, i) => (
               <motion.div
                 key={member.name}
                 initial={{ opacity: 0, y: 15 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.4, delay: 0.46 + i * 0.08 }}
+                transition={{ duration: 0.4, delay: 0.55 + i * 0.08 }}
                 className="border border-black/10 p-6 flex items-center gap-4"
               >
                 <Avatar name={member.name} image={member.image} />
@@ -208,18 +221,18 @@ export function Team() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.6 }}
+            transition={{ delay: 0.7 }}
             className="text-[14px] font-mono uppercase tracking-[0.15em] text-black/25 mb-5"
           >
             Consultants
           </motion.p>
-          <div className="grid grid-cols-3 gap-5">
+          <div className="flex items-center gap-5">
             {consultants.map((member, i) => (
               <motion.div
                 key={member.name}
                 initial={{ opacity: 0, y: 15 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.4, delay: 0.65 + i * 0.08 }}
+                transition={{ duration: 0.4, delay: 0.75 + i * 0.08 }}
                 className="border border-black/8 p-5 flex items-center gap-4"
               >
                 <Avatar name={member.name} image={member.image} size="sm" />
@@ -233,46 +246,46 @@ export function Team() {
                 </div>
               </motion.div>
             ))}
-          </div>
 
-          {/* Anonymous extended team */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.4, delay: 0.9 }}
-            className="mt-6 flex items-center gap-5"
-          >
-            <div className="flex -space-x-3">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="w-10 h-10 rounded-full bg-black/[0.06] border-2 border-white flex items-center justify-center"
-                >
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    className="text-black/20"
+            {/* Anonymous extended team */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.4, delay: 0.9 }}
+              className="flex items-center gap-5"
+            >
+              <div className="flex -space-x-3">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="w-10 h-10 rounded-full bg-black/[0.06] border-2 border-white flex items-center justify-center"
                   >
-                    <circle cx="8" cy="6" r="3" fill="currentColor" />
-                    <path
-                      d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"
-                      fill="currentColor"
-                    />
-                  </svg>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      className="text-black/20"
+                    >
+                      <circle cx="8" cy="6" r="3" fill="currentColor" />
+                      <path
+                        d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </div>
+                ))}
+                <div className="w-10 h-10 rounded-full bg-black/[0.06] border-2 border-white flex items-center justify-center">
+                  <span className="text-[11px] font-semibold text-black/30">
+                    10+
+                  </span>
                 </div>
-              ))}
-              <div className="w-10 h-10 rounded-full bg-black/[0.06] border-2 border-white flex items-center justify-center">
-                <span className="text-[11px] font-semibold text-black/30">
-                  10+
-                </span>
               </div>
-            </div>
-            <p className="text-[15px] text-black/35 font-mono">
-              Additional internal expertise consultants
-            </p>
-          </motion.div>
+              <p className="text-[15px] text-black/35 font-mono">
+                Additional internal expertise consultants
+              </p>
+            </motion.div>
+          </div>
         </div>
       </div>
     </Slide>

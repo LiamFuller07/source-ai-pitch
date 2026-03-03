@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 export function Nav() {
   const [current, setCurrent] = useState(0);
-  const total = 10;
+  const total = 12;
 
   useEffect(() => {
     const sections = document.querySelectorAll("section");
