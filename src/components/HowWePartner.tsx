@@ -34,60 +34,66 @@ const solutionSteps = [
 // Website preview — polished landing page mockup
 // ---------------------------------------------------------------------------
 
-function WebsitePreview() {
+function BrowserChrome({ url }: { url: string }) {
+  return (
+    <div className="flex items-center gap-1.5 px-4 py-2.5 border-b border-black/8 bg-[#f5f5f5]">
+      <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+      <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
+      <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+      <div className="ml-4 flex-1 bg-white border border-black/10 px-3 py-1 flex items-center gap-2">
+        <svg className="w-3 h-3 text-black/20 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+        <span className="text-[10px] font-mono text-black/35">{url}</span>
+      </div>
+    </div>
+  );
+}
+
+function NavBar() {
+  return (
+    <div className="flex items-center justify-between px-6 py-3 border-b border-black/6">
+      <div className="flex items-center gap-2">
+        <div className="w-6 h-6 bg-black/10 flex items-center justify-center">
+          <span className="text-[7px] font-bold text-black/40">YF</span>
+        </div>
+        <span className="text-[11px] font-semibold text-black/70">Your Firm</span>
+      </div>
+      <div className="flex items-center gap-5">
+        <span className="text-[9px] text-black/30 font-mono uppercase tracking-[0.06em]">Services</span>
+        <span className="text-[9px] text-black/30 font-mono uppercase tracking-[0.06em]">About</span>
+        <span className="text-[9px] text-black/30 font-mono uppercase tracking-[0.06em]">Contact</span>
+      </div>
+    </div>
+  );
+}
+
+{/* Alliance: QB → NS specific landing page */}
+function AllianceWebsite() {
   return (
     <div className="flex flex-col h-full border border-black/10 overflow-hidden bg-white">
-      {/* Browser chrome */}
-      <div className="flex items-center gap-1.5 px-4 py-2.5 border-b border-black/8 bg-[#f5f5f5]">
-        <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
-        <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
-        <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
-        <div className="ml-4 flex-1 bg-white border border-black/10 px-3 py-1 flex items-center gap-2">
-          <svg className="w-3 h-3 text-black/20 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-          </svg>
-          <span className="text-[10px] font-mono text-black/35">yourfirm.com/netsuite-migration</span>
-        </div>
-      </div>
-
-      {/* Nav bar */}
-      <div className="flex items-center justify-between px-6 py-3 border-b border-black/6">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-black/10 flex items-center justify-center">
-            <span className="text-[7px] font-bold text-black/40">YF</span>
-          </div>
-          <span className="text-[11px] font-semibold text-black/70">Your Firm</span>
-        </div>
-        <div className="flex items-center gap-5">
-          <span className="text-[9px] text-black/30 font-mono uppercase tracking-[0.06em]">Services</span>
-          <span className="text-[9px] text-black/30 font-mono uppercase tracking-[0.06em]">About</span>
-          <span className="text-[9px] text-black/30 font-mono uppercase tracking-[0.06em]">Contact</span>
-        </div>
-      </div>
-
-      {/* Hero section */}
+      <BrowserChrome url="yourfirm.com/netsuite-migration" />
+      <NavBar />
       <div className="bg-black flex-1 flex flex-col justify-center px-8 py-8">
         <p className="text-[9px] font-mono uppercase tracking-[0.15em] text-white/30 mb-3">
-          ERP Migration
+          QuickBooks to NetSuite
         </p>
         <p className="text-[22px] font-semibold tracking-[-0.03em] text-white leading-tight mb-1">
-          $10K NetSuite Migrations
+          $10K. 10 Days.
         </p>
         <p className="text-[22px] font-semibold tracking-[-0.03em] text-white leading-tight mb-3">
-          in 10 Days.
+          Done.
         </p>
         <p className="text-[11px] text-white/40 leading-relaxed max-w-[320px] mb-5">
-          Fixed price. Fully automated. AI handles migration, config, and testing &mdash; your team stays focused on clients.
+          Migrate from QuickBooks to NetSuite for a fixed $10K. AI handles migration, config, and testing. Live in 10 days.
         </p>
         <div className="flex items-center gap-3">
           <div className="bg-white px-4 py-2">
-            <span className="text-[9px] font-semibold text-black uppercase tracking-[0.06em]">Get a Quote</span>
+            <span className="text-[9px] font-semibold text-black uppercase tracking-[0.06em]">Get Started</span>
           </div>
           <span className="text-[9px] text-white/30 font-mono uppercase tracking-[0.06em]">Learn More &rarr;</span>
         </div>
       </div>
-
-      {/* Stats bar */}
       <div className="grid grid-cols-3 divide-x divide-black/8 border-t border-black/8">
         {[
           { val: "$10K", label: "Fixed price" },
@@ -96,20 +102,68 @@ function WebsitePreview() {
         ].map((s) => (
           <div key={s.label} className="flex flex-col items-center py-3">
             <span className="text-[13px] font-bold tracking-[-0.01em] text-black">{s.val}</span>
-            <span className="text-[8px] font-mono uppercase tracking-[0.08em] text-black/30 mt-0.5">
-              {s.label}
-            </span>
+            <span className="text-[8px] font-mono uppercase tracking-[0.08em] text-black/30 mt-0.5">{s.label}</span>
           </div>
         ))}
       </div>
-
-      {/* Trust row */}
       <div className="flex items-center justify-center gap-6 py-2.5 border-t border-black/6 bg-black/[0.02]">
-        <span className="text-[8px] text-black/25 font-mono uppercase tracking-[0.08em]">AI-validated migration</span>
+        <span className="text-[8px] text-black/25 font-mono uppercase tracking-[0.08em]">AI-validated</span>
         <span className="text-[8px] text-black/15">&middot;</span>
         <span className="text-[8px] text-black/25 font-mono uppercase tracking-[0.08em]">Fixed price guarantee</span>
         <span className="text-[8px] text-black/15">&middot;</span>
         <span className="text-[8px] text-black/25 font-mono uppercase tracking-[0.08em]">No scope creep</span>
+      </div>
+    </div>
+  );
+}
+
+{/* Solution Provider: Consultancy website — broader ERP services */}
+function SolutionWebsite() {
+  return (
+    <div className="flex flex-col h-full border border-black/10 overflow-hidden bg-white">
+      <BrowserChrome url="yourfirm.com" />
+      <NavBar />
+      {/* Consultancy hero — white bg, professional feel */}
+      <div className="flex-1 flex flex-col justify-center px-8 py-8 border-b border-black/6">
+        <p className="text-[9px] font-mono uppercase tracking-[0.15em] text-black/25 mb-3">
+          AI-Native ERP Consulting
+        </p>
+        <p className="text-[22px] font-semibold tracking-[-0.03em] text-black leading-tight mb-1">
+          Fixed-Price ERP
+        </p>
+        <p className="text-[22px] font-semibold tracking-[-0.03em] text-black leading-tight mb-3">
+          Migrations.
+        </p>
+        <p className="text-[11px] text-black/40 leading-relaxed max-w-[340px] mb-5">
+          We deliver NetSuite implementations at fixed cost. 80% of the work is AI-automated &mdash; your project ships in weeks, not months.
+        </p>
+        <div className="flex items-center gap-3">
+          <div className="bg-black px-4 py-2">
+            <span className="text-[9px] font-semibold text-white uppercase tracking-[0.06em]">Talk to Us</span>
+          </div>
+          <span className="text-[9px] text-black/30 font-mono uppercase tracking-[0.06em]">Our Services &rarr;</span>
+        </div>
+      </div>
+      {/* Service cards row */}
+      <div className="grid grid-cols-3 divide-x divide-black/6">
+        {[
+          { title: "Implementation", desc: "Full NetSuite setup" },
+          { title: "Data Migration", desc: "Any source system" },
+          { title: "Go-Live Support", desc: "Hands-on launch" },
+        ].map((s) => (
+          <div key={s.title} className="px-4 py-3">
+            <p className="text-[10px] font-semibold text-black mb-0.5">{s.title}</p>
+            <p className="text-[8px] text-black/30">{s.desc}</p>
+          </div>
+        ))}
+      </div>
+      {/* Trust row */}
+      <div className="flex items-center justify-center gap-6 py-2.5 border-t border-black/6 bg-black/[0.02]">
+        <span className="text-[8px] text-black/25 font-mono uppercase tracking-[0.08em]">80% AI-automated</span>
+        <span className="text-[8px] text-black/15">&middot;</span>
+        <span className="text-[8px] text-black/25 font-mono uppercase tracking-[0.08em]">Fixed price</span>
+        <span className="text-[8px] text-black/15">&middot;</span>
+        <span className="text-[8px] text-black/25 font-mono uppercase tracking-[0.08em]">Weeks, not months</span>
       </div>
     </div>
   );
@@ -121,10 +175,12 @@ function WebsitePreview() {
 
 interface GoToMarketPanelProps {
   direction: "left" | "right";
+  model: "alliance" | "solution";
 }
 
-function GoToMarketPanel({ direction }: GoToMarketPanelProps) {
+function GoToMarketPanel({ direction, model }: GoToMarketPanelProps) {
   const xEntry = direction === "left" ? -60 : 60;
+  const isAlliance = model === "alliance";
 
   return (
     <motion.div
@@ -141,10 +197,12 @@ function GoToMarketPanel({ direction }: GoToMarketPanelProps) {
           Go to Market
         </p>
         <h3 className="text-[22px] font-semibold tracking-[-0.02em] mb-1.5">
-          Your website. Your brand.
+          {isAlliance ? "Sell the $10K migration." : "Your website. Your brand."}
         </h3>
         <p className="text-[14px] text-black/40 leading-relaxed">
-          Source gives you a full marketing kit. Launch a landing page under your domain and start selling immediately.
+          {isAlliance
+            ? "Launch a landing page for QuickBooks to NetSuite migrations under your domain."
+            : "Position your firm as an AI-native consultancy. Fixed-price implementations, powered by Source."}
         </p>
       </div>
 
@@ -156,7 +214,7 @@ function GoToMarketPanel({ direction }: GoToMarketPanelProps) {
         className="flex-1"
         style={{ boxShadow: "0 4px 20px -4px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.04)" }}
       >
-        <WebsitePreview />
+        {isAlliance ? <AllianceWebsite /> : <SolutionWebsite />}
       </motion.div>
 
       {/* Footer note */}
@@ -364,7 +422,7 @@ export function HowWePartner() {
 
               {/* GTM panel enters left col when solution is selected */}
               {selected === "solution" && (
-                <GoToMarketPanel key="gtm-left" direction="left" />
+                <GoToMarketPanel key="gtm-left" direction="left" model="solution" />
               )}
             </AnimatePresence>
           </div>
@@ -457,7 +515,7 @@ export function HowWePartner() {
 
               {/* GTM panel enters right col when alliance is selected */}
               {selected === "alliance" && (
-                <GoToMarketPanel key="gtm-right" direction="right" />
+                <GoToMarketPanel key="gtm-right" direction="right" model="alliance" />
               )}
             </AnimatePresence>
           </div>
