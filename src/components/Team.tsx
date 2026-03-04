@@ -154,14 +154,14 @@ export function Team() {
           >
             Leadership
           </motion.p>
-          <div className="grid grid-cols-3 gap-5">
+          <div className="grid grid-cols-[1fr_1fr_0.85fr] gap-5">
             {leadership.map((member, i) => (
               <motion.div
                 key={member.name}
                 initial={{ opacity: 0, y: 15 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.4, delay: 0.3 + i * 0.08 }}
-                className="border-2 border-black/15 p-7 flex items-center gap-5"
+                className={`border-2 border-black/15 flex items-center gap-5 ${i === 2 ? "p-5" : "p-7"}`}
               >
                 <Avatar name={member.name} image={member.image} />
                 <div>

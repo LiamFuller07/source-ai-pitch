@@ -74,26 +74,47 @@ function AllianceWebsite() {
     <div className="flex flex-col h-full border border-black/10 overflow-hidden bg-white">
       <BrowserChrome url="yourfirm.com/netsuite-migration" />
       <NavBar />
-      <div className="bg-black flex-1 flex flex-col justify-center px-8 py-8">
-        <p className="text-[9px] font-mono uppercase tracking-[0.15em] text-white/30 mb-3">
-          QuickBooks to NetSuite
-        </p>
-        <p className="text-[22px] font-semibold tracking-[-0.03em] text-white leading-tight mb-1">
-          $10K. 10 Days.
-        </p>
-        <p className="text-[22px] font-semibold tracking-[-0.03em] text-white leading-tight mb-3">
-          Done.
-        </p>
-        <p className="text-[11px] text-white/40 leading-relaxed max-w-[320px] mb-5">
-          Migrate from QuickBooks to NetSuite for a fixed $10K. AI handles migration, config, and testing. Live in 10 days.
-        </p>
-        <div className="flex items-center gap-3">
-          <div className="bg-white px-4 py-2">
-            <span className="text-[9px] font-semibold text-black uppercase tracking-[0.06em]">Get Started</span>
+      {/* Hero — deep navy gradient with geometric pattern overlay */}
+      <div
+        className="flex-1 relative overflow-hidden flex flex-col justify-center px-8 py-8"
+        style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0c4a6e 100%)" }}
+      >
+        {/* Geometric grid overlay */}
+        <svg className="absolute inset-0 w-full h-full opacity-[0.06]" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
+        {/* Accent glow */}
+        <div className="absolute top-[-30%] right-[-10%] w-[200px] h-[200px] rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(56,189,248,0.4) 0%, transparent 70%)" }} />
+        <div className="absolute bottom-[-20%] left-[10%] w-[150px] h-[150px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, rgba(99,102,241,0.4) 0%, transparent 70%)" }} />
+
+        {/* Content */}
+        <div className="relative z-10">
+          <p className="text-[9px] font-mono uppercase tracking-[0.15em] text-sky-300/50 mb-3">
+            QuickBooks &rarr; NetSuite
+          </p>
+          <p className="text-[22px] font-semibold tracking-[-0.03em] text-white leading-tight mb-1">
+            $10K. 10 Days.
+          </p>
+          <p className="text-[22px] font-semibold tracking-[-0.03em] text-white leading-tight mb-3">
+            Done.
+          </p>
+          <p className="text-[11px] text-white/45 leading-relaxed max-w-[320px] mb-5">
+            Migrate from QuickBooks to NetSuite for a fixed $10K. AI handles migration, config, and testing. Live in 10 days.
+          </p>
+          <div className="flex items-center gap-3">
+            <div className="bg-white px-4 py-2">
+              <span className="text-[9px] font-semibold text-[#0f172a] uppercase tracking-[0.06em]">Get Started</span>
+            </div>
+            <span className="text-[9px] text-white/35 font-mono uppercase tracking-[0.06em]">Learn More &rarr;</span>
           </div>
-          <span className="text-[9px] text-white/30 font-mono uppercase tracking-[0.06em]">Learn More &rarr;</span>
         </div>
       </div>
+      {/* Stats */}
       <div className="grid grid-cols-3 divide-x divide-black/8 border-t border-black/8">
         {[
           { val: "$10K", label: "Fixed price" },
