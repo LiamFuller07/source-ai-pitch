@@ -48,21 +48,21 @@ const stages = ["Scope", "Discovery", "Scan", "Deliver", "Review"];
 
 function ScopeCard() {
   return (
-    <div className="bg-white rounded-[14px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_20px_-4px_rgba(0,0,0,0.06)] px-4 py-3.5">
-      <div className="flex items-center justify-between mb-3 pb-2.5 border-b border-black/[0.06]">
-        <span className="text-[13px] font-medium text-black">Partner SOW</span>
-        <span className="text-[9px] font-mono tracking-[0.12em] text-black/35">DRAFT</span>
+    <div className="bg-white rounded-[16px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_24px_-4px_rgba(0,0,0,0.07)] px-6 py-5 min-h-[220px]">
+      <div className="flex items-center justify-between mb-4 pb-3 border-b border-black/[0.06]">
+        <span className="text-[15px] font-medium text-black">Partner SOW</span>
+        <span className="text-[10px] font-mono tracking-[0.12em] text-black/35">DRAFT</span>
       </div>
-      <div className="text-[10px] font-mono uppercase tracking-[0.12em] text-black/40 mb-1.5">
+      <div className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/40 mb-2">
         Target ERP
       </div>
-      <div className="bg-black text-white text-[12px] font-medium px-3 py-1.5 rounded-md mb-2">
+      <div className="bg-black text-white text-[14px] font-medium px-3.5 py-2 rounded-md mb-3">
         NetSuite OneWorld
       </div>
-      <div className="text-[10px] font-mono uppercase tracking-[0.12em] text-black/40 mb-1.5">
+      <div className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/40 mb-2">
         Source Quote
       </div>
-      <div className="bg-black text-white text-[12px] font-medium px-3 py-1.5 rounded-md">
+      <div className="bg-black text-white text-[14px] font-medium px-3.5 py-2 rounded-md">
         $12,500 · fixed
       </div>
     </div>
@@ -76,27 +76,27 @@ function DiscoveryCard() {
     { name: "IT lead · Priya", state: "amber" },
   ];
   return (
-    <div className="bg-white rounded-[14px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_20px_-4px_rgba(0,0,0,0.06)] px-4 py-3.5">
-      <div className="flex items-center gap-1.5 mb-3">
-        <Mic size={12} className="text-black/40" strokeWidth={1.75} />
-        <span className="text-[10px] font-mono uppercase tracking-[0.12em] text-black/40">
+    <div className="bg-white rounded-[16px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_24px_-4px_rgba(0,0,0,0.07)] px-6 py-5 min-h-[220px]">
+      <div className="flex items-center gap-2 mb-4">
+        <Mic size={14} className="text-black/40" strokeWidth={1.75} />
+        <span className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/40">
           Transcripts · 3
         </span>
       </div>
-      <div className="space-y-2">
+      <div className="space-y-2.5">
         {items.map((it) => (
-          <div key={it.name} className="flex items-center gap-2">
+          <div key={it.name} className="flex items-center gap-2.5">
             <span
-              className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+              className={`w-2 h-2 rounded-full shrink-0 ${
                 it.state === "emerald" ? "bg-emerald-500" : "bg-amber-500"
               }`}
             />
-            <span className="text-[12px] text-black/75">{it.name}</span>
+            <span className="text-[14px] text-black/80">{it.name}</span>
           </div>
         ))}
       </div>
-      <div className="mt-3 pt-2.5 border-t border-black/[0.06]">
-        <span className="text-[11px] text-black/50">
+      <div className="mt-4 pt-3 border-t border-black/[0.06]">
+        <span className="text-[12px] text-black/55 leading-relaxed">
           Source AI summarised &amp; extracted requirements
         </span>
       </div>
@@ -112,17 +112,17 @@ function ScanCard() {
     ["Integrations", "4"],
   ];
   return (
-    <div className="bg-white rounded-[14px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_20px_-4px_rgba(0,0,0,0.06)] px-4 py-3.5">
-      <div className="flex items-center justify-between mb-3">
+    <div className="bg-white rounded-[16px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_24px_-4px_rgba(0,0,0,0.07)] px-6 py-5 min-h-[220px]">
+      <div className="flex items-center justify-between mb-4 pb-3 border-b border-black/[0.06]">
         <div className="flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-          <span className="text-[13px] font-medium text-black">QuickBooks</span>
+          <span className="w-2 h-2 rounded-full bg-emerald-500" />
+          <span className="text-[15px] font-medium text-black">QuickBooks</span>
         </div>
-        <span className="text-[9px] font-mono tracking-[0.12em] text-black/35">READ-ONLY</span>
+        <span className="text-[10px] font-mono tracking-[0.12em] text-black/35">READ-ONLY</span>
       </div>
-      <div className="space-y-1.5">
+      <div className="space-y-2.5">
         {rows.map(([k, v]) => (
-          <div key={k} className="flex items-center justify-between text-[12px]">
+          <div key={k} className="flex items-center justify-between text-[14px]">
             <span className="text-black/50">{k}</span>
             <span className="text-black font-medium">{v}</span>
           </div>
@@ -134,25 +134,25 @@ function ScanCard() {
 
 function DeliverCard() {
   return (
-    <div className="bg-white rounded-[14px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_20px_-4px_rgba(0,0,0,0.06)] px-4 py-3.5">
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-[13px] font-medium text-black">Deliverables</span>
-        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 text-[9px] font-mono font-bold tracking-[0.08em]">
-          <span className="w-1 h-1 rounded-full bg-emerald-500" />
+    <div className="bg-white rounded-[16px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_24px_-4px_rgba(0,0,0,0.07)] px-6 py-5 min-h-[220px]">
+      <div className="flex items-center justify-between mb-4 pb-3 border-b border-black/[0.06]">
+        <span className="text-[15px] font-medium text-black">Deliverables</span>
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 text-[10px] font-mono font-bold tracking-[0.08em]">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
           READY
         </span>
       </div>
-      <div className="space-y-2">
-        <div className="flex items-center gap-2 text-[12px]">
-          <FileText size={14} className="text-black/40" strokeWidth={1.75} />
+      <div className="space-y-2.5">
+        <div className="flex items-center gap-2.5 text-[14px]">
+          <FileText size={16} className="text-black/40" strokeWidth={1.75} />
           <span className="text-black">BRD.docx</span>
         </div>
-        <div className="flex items-center gap-2 text-[12px]">
-          <FileSpreadsheet size={14} className="text-black/40" strokeWidth={1.75} />
+        <div className="flex items-center gap-2.5 text-[14px]">
+          <FileSpreadsheet size={16} className="text-black/40" strokeWidth={1.75} />
           <span className="text-black">COA Mapping.xlsx</span>
         </div>
-        <div className="flex items-center gap-2 text-[12px]">
-          <Rocket size={14} className="text-black/40" strokeWidth={1.75} />
+        <div className="flex items-center gap-2.5 text-[14px]">
+          <Rocket size={16} className="text-black/40" strokeWidth={1.75} />
           <span className="text-black">NetSuite · implemented</span>
         </div>
       </div>
@@ -162,20 +162,20 @@ function DeliverCard() {
 
 function ReviewCard() {
   return (
-    <div className="bg-white rounded-[14px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_20px_-4px_rgba(0,0,0,0.06)] px-4 py-3.5">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-[12px] text-black">
+    <div className="bg-white rounded-[16px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_24px_-4px_rgba(0,0,0,0.07)] px-6 py-5 min-h-[220px]">
+      <div className="flex items-center justify-between mb-3 pb-3 border-b border-black/[0.06]">
+        <span className="text-[14px] text-black">
           <span className="font-semibold">Source</span> made an edit
         </span>
-        <span className="text-[10px] text-black/30">3:14pm</span>
+        <span className="text-[11px] text-black/30">3:14pm</span>
       </div>
-      <p className="text-[11px] text-black/55 mb-3 leading-snug">
+      <p className="text-[13px] text-black/60 mb-4 leading-relaxed">
         Merged GL 4100 &amp; 4110 in NetSuite subsidiaries.
       </p>
-      <button className="w-full bg-black text-white text-[11px] font-medium py-1.5 rounded-md mb-1.5">
+      <button className="w-full bg-black text-white text-[13px] font-medium py-2 rounded-md mb-2">
         Accept
       </button>
-      <button className="w-full bg-white border border-black/15 text-black/70 text-[11px] font-medium py-1.5 rounded-md">
+      <button className="w-full bg-white border border-black/15 text-black/70 text-[13px] font-medium py-2 rounded-md">
         Reject
       </button>
     </div>
