@@ -43,11 +43,11 @@ export function Solution() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-[40px] text-black/50 leading-relaxed max-w-[1100px] mx-auto font-normal"
         >
-          An AI engine that automates <span className="text-black font-semibold">80% of ERP migrations</span> —
+          An AI engine that automates <span className="text-black font-semibold">80% of ERP implementations</span> —
           <br />
-          so your consultancy wins more deals, moves faster,
+          so firms win more deals, move faster,
           <br />
-          and <span className="text-black font-semibold">makes more money.</span>
+          and <span className="text-black font-semibold">make more money.</span>
         </motion.p>
       </div>
     </Slide>

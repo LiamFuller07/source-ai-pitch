@@ -84,7 +84,7 @@ export function AiReplacesChain() {
             The Solution
           </p>
           <h2 className="text-[56px] font-semibold tracking-[-0.03em]">
-            Source AI Replaces the Delivery Chain
+            Source AI changes the delivery chain
           </h2>
         </motion.div>
 
