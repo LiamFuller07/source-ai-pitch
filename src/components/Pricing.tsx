@@ -16,8 +16,8 @@ const steps = [
   {
     Icon: Scan,
     num: "02",
-    title: "We scan & quote",
-    body: "Source AI reads the scope, runs a system scan, and sends back a fixed price within 24 hours.",
+    title: "Our AI scans & quotes",
+    body: "Source AI reads the SOW, runs a read-only scan of the client's live systems, and returns a fixed price within 24 hours — no scoping calls, no T&M guesswork.",
   },
   {
     Icon: DollarSign,
@@ -107,16 +107,16 @@ export function Pricing() {
                 FREE
               </p>
               <p className="text-[12px] font-mono uppercase tracking-[0.1em] text-white/30 mt-2">
-                First migration
+                Proof of concept
               </p>
             </div>
             <div className="w-[1px] h-16 bg-white/10" />
             <div>
               <p className="text-[24px] font-semibold tracking-[-0.02em] mb-2">
-                Your first migration is free.
+                Your first POC is on us.
               </p>
               <p className="text-[16px] text-white/45 leading-relaxed max-w-[520px]">
-                Send us your first SOW — we&apos;ll scope, price, and deliver it on us. No cost, no commitment.
+                Send us your first SOW — Source AI will scope it, scan the client&apos;s systems, and ship a working proof of concept. No cost, no commitment.
               </p>
             </div>
           </div>
