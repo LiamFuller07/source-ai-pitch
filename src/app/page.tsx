@@ -32,7 +32,7 @@ export default function Home() {
         {/* <CaseStudy /> */}
         <SupportedSystems />
         <WhyPartner />
-        <HowWePartner />
+        {/* <HowWePartner /> — hidden for now */}
         <Pricing />
         <Team />
         <Cta />
