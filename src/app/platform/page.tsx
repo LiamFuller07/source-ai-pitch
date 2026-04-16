@@ -162,7 +162,6 @@ const ERP_LOGOS = [
   { name: "NetSuite", src: "/logos/netsuite.svg", h: 22 },
   { name: "Dynamics 365", src: "/logos/dynamics365.svg", h: 22 },
   { name: "Sage", src: "/logos/sage.svg", h: 18 },
-  { name: "Acumatica", src: "/logos/acumatica.svg", h: 18 },
 ];
 
 const stepContainer: Variants = {
@@ -187,7 +186,7 @@ const stepItem: Variants = {
 function Hero() {
   return (
     <section className="pt-32 pb-24">
-      <div className="max-w-[1280px] mx-auto px-8">
+      <div className="max-w-[1480px] mx-auto px-8">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -266,7 +265,7 @@ function ErpLogo({
 }
 
 const heroCardClass =
-  "bg-white rounded-xl border border-black/[0.06] shadow-[0_1px_2px_rgba(0,0,0,0.04)] p-3 w-[230px] min-h-[240px] text-[11px] flex flex-col";
+  "bg-white rounded-xl border border-black/[0.06] shadow-[0_2px_6px_rgba(15,14,13,0.05)] p-5 w-full min-h-[380px] text-[13px] flex flex-col";
 
 function HeroStepPreview({ index }: { index: number }) {
   switch (index) {
@@ -286,9 +285,17 @@ function HeroStepPreview({ index }: { index: number }) {
               </div>
             </div>
             <div>
-              <div className="text-[9px] uppercase tracking-[0.12em] text-[#0f0e0d]/40 mb-1">Target ERP</div>
-              <div className="rounded border border-black/[0.08] bg-[#fafaf8] px-2 py-1.5 text-[11px] text-[#0f0e0d]">
-                NetSuite OneWorld
+              <div className="text-[10px] uppercase tracking-[0.12em] text-[#0f0e0d]/40 mb-1.5">Target ERP</div>
+              <div className="rounded-md border border-black/[0.08] bg-[#fafaf8] px-2.5 py-2 text-[12px] text-[#0f0e0d] flex items-center gap-2">
+                <Image
+                  src="/logos/netsuite.svg"
+                  alt="NetSuite"
+                  width={60}
+                  height={12}
+                  style={{ height: 12, width: "auto" }}
+                  unoptimized
+                />
+                <span className="text-[#0f0e0d]/60">OneWorld</span>
               </div>
             </div>
             <div>
