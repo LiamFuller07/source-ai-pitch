@@ -3,40 +3,42 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
-import { ArrowRight, ArrowLeftRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Slide } from "./Slide";
 
-const migrationPaths = [
-  {
-    left: { name: "QuickBooks", logo: "/quickbooks-logo.svg", height: "h-[40px]" },
-    right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[48px]" },
-    bidirectional: true,
-    connectedTools: ["+ Shopify", "+ HubSpot", "+ Stripe"],
-  },
-  {
-    left: { name: "Xero", logo: "/xero-logo.svg", height: "h-[36px]" },
-    right: { name: "NetSuite", logo: "/netsuite-logo.svg", height: "h-[48px]" },
-    bidirectional: true,
-    connectedTools: ["+ Stripe", "+ PayPal", "+ Xero"],
-  },
-  {
-    left: { name: "QuickBooks", logo: "/quickbooks-logo.svg", height: "h-[40px]" },
-    right: { name: "Dynamics 365", logo: "/dynamics365-logo.svg", height: "h-[60px]" },
-    bidirectional: true,
-    connectedTools: ["+ Salesforce", "+ SharePoint", "+ Teams"],
-  },
+const targetSystems = [
+  { name: "NetSuite", logo: "/logos/netsuite.svg", height: "h-[52px]" },
+  { name: "SAP", logo: "/logos/sap.svg", height: "h-[44px]" },
+  { name: "Dynamics 365", logo: "/logos/dynamics365.svg", height: "h-[48px]" },
+  { name: "Sage", logo: "/logos/sage.svg", height: "h-[42px]" },
 ];
 
-const comingSoon = [
-  "MYOB",
-  "Acumatica",
-  "Freshbooks",
-  "Zoho Books",
-  "DEAR Systems",
-  "Reckon",
-  "Wave",
-  "Custom / Legacy ERPs",
-];
+const sourceSystems = {
+  "Mid-Market Accounting": [
+    "QuickBooks (all versions)",
+    "Xero",
+    "MYOB / Reckon",
+    "Sage 50 / 100 / 300",
+    "FreshBooks / Wave",
+    "Zoho Books",
+  ],
+  "Legacy ERP": [
+    "Dynamics GP / Great Plains",
+    "Dynamics NAV / Navision",
+    "SAP ECC / R/3",
+    "Oracle E-Business Suite",
+    "Epicor (all versions)",
+    "Infor (all versions)",
+  ],
+  "Anything Else": [
+    "Spreadsheets / Excel",
+    "CSV / flat-file exports",
+    "Custom / in-house systems",
+    "Access databases",
+    "SQL / database exports",
+    "+ any other system",
+  ],
+};
 
 export function SupportedSystems() {
   const ref = useRef(null);
@@ -53,120 +55,104 @@ export function SupportedSystems() {
         initial={{ opacity: 0, y: 30 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6 }}
-        className="mb-10"
+        className="mb-8"
       >
         <p className="text-[16px] font-mono uppercase tracking-[0.2em] text-black/30 mb-3">
-          Supported Systems
+          System Agnostic
         </p>
-        <h2 className="text-[56px] font-semibold tracking-[-0.03em] text-black mb-3">
+        <h2 className="text-[56px] font-semibold tracking-[-0.03em] text-black mb-3 leading-[1.05]">
           AI Supported Migrations
         </h2>
-        <p className="text-[20px] text-black/45 max-w-[900px] leading-relaxed">
-          Source is capable across these paths today, along with 100s of integrations attached to them.
+        <p className="text-[20px] text-black/50 max-w-[1100px] leading-relaxed">
+          <span className="text-black font-medium">Any source system</span> → NetSuite, SAP, Dynamics 365, or Sage.
+          Source handles the big four ERP targets out of the box, plus 100s of attached integrations.
         </p>
       </motion.div>
 
-      {/* Live migration path cards — stretch to fill */}
-      <div className="flex-1 grid grid-cols-3 gap-5 mb-8 min-h-0">
-        {migrationPaths.map((path, i) => (
-          <motion.div
-            key={`${path.left.name}-${path.right.name}`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.2 + i * 0.1 }}
-            className="bg-white border border-black/10 flex flex-col"
-          >
-            {/* Logos with arrow */}
-            <div className="flex items-center justify-center gap-6 flex-1 px-8 py-4">
-              <div className="flex flex-col items-center flex-1">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={path.left.logo}
-                  alt={path.left.name}
-                  className={`${path.left.height} w-auto max-w-[180px] object-contain`}
-                />
-              </div>
+      {/* Target Systems — the Big Four */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="mb-6"
+      >
+        <div className="flex items-center gap-3 mb-3">
+          <p className="text-[12px] font-mono uppercase tracking-[0.15em] text-black/40 font-bold">
+            Target Systems
+          </p>
+          <div className="flex-1 h-px bg-black/10" />
+        </div>
+        <div className="grid grid-cols-4 gap-4">
+          {targetSystems.map((sys, i) => (
+            <motion.div
+              key={sys.name}
+              initial={{ opacity: 0, y: 15 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.3 + i * 0.08 }}
+              className="bg-white border border-black/10 flex items-center justify-center h-[140px] px-6"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={sys.logo}
+                alt={sys.name}
+                className={`${sys.height} w-auto max-w-full object-contain`}
+              />
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
 
-              <div className="shrink-0">
-                {path.bidirectional ? (
-                  <ArrowLeftRight size={36} strokeWidth={1.5} className="text-black/25" />
-                ) : (
-                  <ArrowRight size={36} strokeWidth={1.5} className="text-black/25" />
-                )}
-              </div>
-
-              <div className="flex flex-col items-center flex-1">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={path.right.logo}
-                  alt={path.right.name}
-                  className={`${path.right.height} w-auto max-w-[180px] object-contain`}
-                />
-              </div>
-            </div>
-
-            {/* Integrations bar */}
-            {path.connectedTools && (
-              <div className="border-t border-black/8 bg-black/[0.03] px-8 py-5 flex flex-wrap items-center gap-2.5">
-                <span className="text-[12px] font-mono uppercase tracking-[0.1em] text-black/30 mr-1">
-                  Integrations
-                </span>
-                {path.connectedTools.map((tool) => (
-                  <span
-                    key={tool}
-                    className="text-[13px] font-mono text-black font-bold bg-white border border-black/15 px-3 py-1.5"
-                  >
-                    {tool}
-                  </span>
-                ))}
-              </div>
-            )}
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Separator */}
-      <div className="border-t border-black/10 my-2" />
-
-      {/* Coming Soon — white bg for future logos */}
+      {/* Source Systems — Any System */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ delay: 0.5 }}
-        className="bg-white border border-black/10 p-8"
+        className="bg-white border border-black/10 p-8 flex-1 min-h-0"
       >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-10">
-            <div>
-              <p className="text-[12px] font-mono uppercase tracking-[0.12em] text-black/30 mb-3">
-                Coming Soon
+        <div className="flex items-center gap-4 mb-5">
+          <span className="text-[32px] font-semibold tracking-[-0.02em] text-black leading-none">
+            Anything
+          </span>
+          <ArrowRight size={24} strokeWidth={1.75} className="text-black/30" />
+          <span className="text-[32px] font-semibold tracking-[-0.02em] text-black leading-none">
+            the Big Four
+          </span>
+          <div className="flex-1 h-px bg-black/10" />
+          <span className="text-[12px] font-mono uppercase tracking-[0.12em] text-black/35 font-bold">
+            Source Systems
+          </span>
+        </div>
+
+        <div className="grid grid-cols-3 gap-8">
+          {Object.entries(sourceSystems).map(([category, items], ci) => (
+            <motion.div
+              key={category}
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              transition={{ delay: 0.6 + ci * 0.1 }}
+            >
+              <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/30 font-bold mb-3">
+                {category}
               </p>
-              <div className="flex items-center gap-4">
-                <span className="text-[36px] font-semibold tracking-[-0.03em] leading-none text-black">
-                  Anything →
-                </span>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/netsuite-logo.svg" alt="NetSuite" className="h-[48px] w-auto" />
+              <div className="flex flex-wrap gap-2">
+                {items.map((item) => (
+                  <span
+                    key={item}
+                    className="text-[13px] font-mono text-black/65 bg-black/[0.03] border border-black/10 px-3 py-1.5"
+                  >
+                    {item}
+                  </span>
+                ))}
               </div>
-            </div>
+            </motion.div>
+          ))}
+        </div>
 
-            <div className="w-[1px] h-16 bg-black/10" />
-
-            <div className="flex items-center gap-3 flex-wrap">
-              {comingSoon.map((name, i) => (
-                <motion.span
-                  key={name}
-                  initial={{ opacity: 0 }}
-                  animate={inView ? { opacity: 1 } : {}}
-                  transition={{ delay: 0.7 + i * 0.06 }}
-                  className="text-[14px] font-mono text-black/50 bg-black/[0.04] border border-black/10 px-4 py-2"
-                >
-                  {name}
-                </motion.span>
-              ))}
-            </div>
-          </div>
-
+        <div className="mt-6 pt-5 border-t border-black/10">
+          <p className="text-[14px] text-black/45 leading-relaxed">
+            Source scans via API where available, or works from data exports, reports, and documentation.
+            <span className="text-black/70"> It doesn&apos;t matter what the client is running.</span>
+          </p>
         </div>
       </motion.div>
     </Slide>
