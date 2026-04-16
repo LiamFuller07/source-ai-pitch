@@ -3,8 +3,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import {
-  User,
-  Building2,
   Check,
   FileText,
   Search,
@@ -12,12 +10,8 @@ import {
   ClipboardCheck,
   Rocket,
   ShieldCheck,
-  HeartHandshake,
-  Sparkles,
-  Lightbulb,
-  Settings,
-  Database,
-  Route,
+  FileSpreadsheet,
+  Mic,
   type LucideIcon,
 } from "lucide-react";
 import { Slide } from "./Slide";
@@ -44,33 +38,157 @@ const flowSteps: FlowStep[] = [
   { owner: "customer", label: "Happy Customer", icon: null, emoji: "🎉" },
 ];
 
-const sourceItems: { label: string; icon: LucideIcon }[] = [
-  { label: "System scanning & analysis", icon: Search },
-  { label: "Business logic inference", icon: Lightbulb },
-  { label: "BRD generation", icon: ClipboardCheck },
-  { label: "Migration planning", icon: Route },
-  { label: "Implementation & config", icon: Settings },
-  { label: "Testing & validation", icon: ShieldCheck },
-];
-
-const consultantItems: { label: string; icon: LucideIcon }[] = [
-  { label: "Provides initial context", icon: FileText },
-  { label: "Reviews Source AI outputs", icon: ClipboardCheck },
-  { label: "Delivers questions to end user", icon: MessageSquare },
-  { label: "Confirms BRD with end user", icon: Check },
-  { label: "Signs off on migration plan", icon: Check },
-];
-
-const endUserItems: { label: string; icon: LucideIcon }[] = [
-  { label: "Answers questionnaires", icon: MessageSquare },
-  { label: "Confirms business requirements", icon: Check },
-  { label: "Signs off on TO-BE state", icon: Check },
-  { label: "Accepts final migration", icon: Check },
-];
-
 // Row layout: 5 + 5
 const flowRow1 = flowSteps.slice(0, 5);
 const flowRow2 = flowSteps.slice(5);
+
+const stages = ["Scope", "Discovery", "Scan", "Deliver", "Review"];
+
+// ─── Stage cards ─────────────────────────────────────────────────────────────
+
+function ScopeCard() {
+  return (
+    <div className="bg-white rounded-[14px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_20px_-4px_rgba(0,0,0,0.06)] px-4 py-3.5">
+      <div className="flex items-center justify-between mb-3 pb-2.5 border-b border-black/[0.06]">
+        <span className="text-[13px] font-medium text-black">Partner SOW</span>
+        <span className="text-[9px] font-mono tracking-[0.12em] text-black/35">DRAFT</span>
+      </div>
+      <div className="text-[10px] font-mono uppercase tracking-[0.12em] text-black/40 mb-1.5">
+        Target ERP
+      </div>
+      <div className="bg-black text-white text-[12px] font-medium px-3 py-1.5 rounded-md mb-2">
+        NetSuite OneWorld
+      </div>
+      <div className="text-[10px] font-mono uppercase tracking-[0.12em] text-black/40 mb-1.5">
+        Source Quote
+      </div>
+      <div className="bg-black text-white text-[12px] font-medium px-3 py-1.5 rounded-md">
+        $12,500 · fixed
+      </div>
+    </div>
+  );
+}
+
+function DiscoveryCard() {
+  const items = [
+    { name: "CFO · Jane", state: "emerald" },
+    { name: "Ops lead · Mark", state: "emerald" },
+    { name: "IT lead · Priya", state: "amber" },
+  ];
+  return (
+    <div className="bg-white rounded-[14px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_20px_-4px_rgba(0,0,0,0.06)] px-4 py-3.5">
+      <div className="flex items-center gap-1.5 mb-3">
+        <Mic size={12} className="text-black/40" strokeWidth={1.75} />
+        <span className="text-[10px] font-mono uppercase tracking-[0.12em] text-black/40">
+          Transcripts · 3
+        </span>
+      </div>
+      <div className="space-y-2">
+        {items.map((it) => (
+          <div key={it.name} className="flex items-center gap-2">
+            <span
+              className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                it.state === "emerald" ? "bg-emerald-500" : "bg-amber-500"
+              }`}
+            />
+            <span className="text-[12px] text-black/75">{it.name}</span>
+          </div>
+        ))}
+      </div>
+      <div className="mt-3 pt-2.5 border-t border-black/[0.06]">
+        <span className="text-[11px] text-black/50">
+          Source AI summarised &amp; extracted requirements
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function ScanCard() {
+  const rows = [
+    ["Records", "94,127"],
+    ["GL accounts", "247"],
+    ["Ghost system", "Shopify"],
+    ["Integrations", "4"],
+  ];
+  return (
+    <div className="bg-white rounded-[14px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_20px_-4px_rgba(0,0,0,0.06)] px-4 py-3.5">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+          <span className="text-[13px] font-medium text-black">QuickBooks</span>
+        </div>
+        <span className="text-[9px] font-mono tracking-[0.12em] text-black/35">READ-ONLY</span>
+      </div>
+      <div className="space-y-1.5">
+        {rows.map(([k, v]) => (
+          <div key={k} className="flex items-center justify-between text-[12px]">
+            <span className="text-black/50">{k}</span>
+            <span className="text-black font-medium">{v}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function DeliverCard() {
+  return (
+    <div className="bg-white rounded-[14px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_20px_-4px_rgba(0,0,0,0.06)] px-4 py-3.5">
+      <div className="flex items-center justify-between mb-3">
+        <span className="text-[13px] font-medium text-black">Deliverables</span>
+        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 text-[9px] font-mono font-bold tracking-[0.08em]">
+          <span className="w-1 h-1 rounded-full bg-emerald-500" />
+          READY
+        </span>
+      </div>
+      <div className="space-y-2">
+        <div className="flex items-center gap-2 text-[12px]">
+          <FileText size={14} className="text-black/40" strokeWidth={1.75} />
+          <span className="text-black">BRD.docx</span>
+        </div>
+        <div className="flex items-center gap-2 text-[12px]">
+          <FileSpreadsheet size={14} className="text-black/40" strokeWidth={1.75} />
+          <span className="text-black">COA Mapping.xlsx</span>
+        </div>
+        <div className="flex items-center gap-2 text-[12px]">
+          <Rocket size={14} className="text-black/40" strokeWidth={1.75} />
+          <span className="text-black">NetSuite · implemented</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ReviewCard() {
+  return (
+    <div className="bg-white rounded-[14px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_20px_-4px_rgba(0,0,0,0.06)] px-4 py-3.5">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-[12px] text-black">
+          <span className="font-semibold">Source</span> made an edit
+        </span>
+        <span className="text-[10px] text-black/30">3:14pm</span>
+      </div>
+      <p className="text-[11px] text-black/55 mb-3 leading-snug">
+        Merged GL 4100 &amp; 4110 in NetSuite subsidiaries.
+      </p>
+      <button className="w-full bg-black text-white text-[11px] font-medium py-1.5 rounded-md mb-1.5">
+        Accept
+      </button>
+      <button className="w-full bg-white border border-black/15 text-black/70 text-[11px] font-medium py-1.5 rounded-md">
+        Reject
+      </button>
+    </div>
+  );
+}
+
+const stageCards: Record<string, () => React.ReactNode> = {
+  Scope: ScopeCard,
+  Discovery: DiscoveryCard,
+  Scan: ScanCard,
+  Deliver: DeliverCard,
+  Review: ReviewCard,
+};
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
@@ -80,13 +198,15 @@ export function WhoDoesWhat() {
   const slideVisible = useInView(ref, { margin: "-40%" });
   const [activeStep, setActiveStep] = useState(-1);
 
+  const maxStep = flowSteps.length + stages.length - 1;
+
   // Keyboard navigation — only when slide is visible
   useEffect(() => {
     if (!slideVisible) return;
 
     const handler = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight" || e.key === "ArrowDown") {
-        if (activeStep < flowSteps.length + 2) {
+        if (activeStep < maxStep) {
           e.preventDefault();
           e.stopPropagation();
           setActiveStep((prev) => prev + 1);
@@ -103,7 +223,7 @@ export function WhoDoesWhat() {
 
     window.addEventListener("keydown", handler, true);
     return () => window.removeEventListener("keydown", handler, true);
-  }, [slideVisible, activeStep]);
+  }, [slideVisible, activeStep, maxStep]);
 
   // Start at step 0 when slide first enters view
   useEffect(() => {
@@ -228,101 +348,69 @@ export function WhoDoesWhat() {
       </motion.p>
 
       {/* Workflow rows — 5+5 */}
-      <div className="flex flex-col gap-3 mb-0">
+      <div className="flex flex-col gap-3 mb-6">
         {renderStepRow(flowRow1, 0)}
         {renderStepRow(flowRow2, 5)}
       </div>
 
-      {/* Horizontal separator — only after all steps revealed */}
+      {/* Horizontal separator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={activeStep >= flowSteps.length ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.3 }}
-        className="border-t border-black/10 my-6"
+        className="border-t border-black/10 mb-8"
       />
 
-      {/* Responsibility cards — appear one by one */}
-      <div className="flex-1 grid grid-cols-[1.2fr_1fr_1fr] gap-[4px] min-h-0">
-        {/* Source AI */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={activeStep >= flowSteps.length ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          className="bg-black text-white px-8 py-6 flex flex-col"
-        >
-          <div className="flex items-center gap-3 mb-1">
-            <p className="text-[22px] font-bold tracking-[-0.02em]">Source AI</p>
+      {/* Agentic flow timeline */}
+      <div className="flex-1 min-h-0 flex flex-col">
+        {/* Pill labels on a horizontal line */}
+        <div className="relative mb-5">
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={activeStep >= flowSteps.length ? { scaleX: 1 } : { scaleX: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            style={{ transformOrigin: "left" }}
+            className="absolute top-1/2 left-0 right-0 h-px bg-black/15 -translate-y-1/2"
+          />
+          <div className="relative flex justify-between items-center">
+            {stages.map((label, i) => {
+              const visible = activeStep >= flowSteps.length + i;
+              return (
+                <motion.div
+                  key={label}
+                  initial={{ opacity: 0, scale: 0.85 }}
+                  animate={visible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.85 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                  className={`relative z-10 px-5 py-1.5 rounded-full text-[13px] font-medium transition-colors ${
+                    visible
+                      ? "bg-white border border-black/15 text-black"
+                      : "bg-white/50 border border-black/8 text-black/40"
+                  }`}
+                >
+                  {label}
+                </motion.div>
+              );
+            })}
           </div>
-          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-white/25 mb-5">
-            Handled Autonomously &mdash; 85% of the work
-          </p>
-          <div className="space-y-5 flex-1">
-            {sourceItems.map((item, j) => (
-              <div key={j} className="flex items-center gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-white/40 shrink-0" />
-                <span className="text-[18px] font-medium text-white leading-snug">
-                  {item.label}
-                </span>
-              </div>
-            ))}
-          </div>
-        </motion.div>
+        </div>
 
-        {/* Consultant */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={activeStep >= flowSteps.length + 1 ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          className="bg-white border border-black/10 px-8 py-6 flex flex-col"
-        >
-          <div className="flex items-center gap-2.5 mb-1">
-            <User size={18} className="text-black/30" />
-            <p className="text-[20px] font-bold tracking-[-0.01em] text-black">
-              Consultant
-            </p>
-          </div>
-          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-5">
-            Review &amp; Confirm
-          </p>
-          <div className="space-y-5">
-            {consultantItems.map((item, j) => (
-              <div key={j} className="flex items-center gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-black/30 shrink-0" />
-                <span className="text-[18px] text-black/70 leading-snug">
-                  {item.label}
-                </span>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* End User */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={activeStep >= flowSteps.length + 2 ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          className="bg-white border border-black/10 px-8 py-6 flex flex-col"
-        >
-          <div className="flex items-center gap-2.5 mb-1">
-            <Building2 size={18} className="text-black/30" />
-            <p className="text-[20px] font-bold tracking-[-0.01em] text-black">
-              End User
-            </p>
-          </div>
-          <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/25 mb-5">
-            Answer &amp; Approve
-          </p>
-          <div className="space-y-5">
-            {endUserItems.map((item, j) => (
-              <div key={j} className="flex items-center gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-black/30 shrink-0" />
-                <span className="text-[18px] text-black/70 leading-snug">
-                  {item.label}
-                </span>
-              </div>
-            ))}
-          </div>
-        </motion.div>
+        {/* Stage cards */}
+        <div className="grid grid-cols-5 gap-5 mt-4">
+          {stages.map((label, i) => {
+            const visible = activeStep >= flowSteps.length + i;
+            const Card = stageCards[label];
+            return (
+              <motion.div
+                key={label}
+                initial={{ opacity: 0, y: 20 }}
+                animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
+              >
+                <Card />
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </Slide>
   );
