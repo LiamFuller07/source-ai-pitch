@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Inter } from "next/font/google";
+import { Inter, Instrument_Serif } from "next/font/google";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
 
 const coolvetica = localFont({
@@ -16,6 +17,14 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal", "italic"],
+  display: "swap",
+  variable: "--font-serif",
+});
+
 export const metadata: Metadata = {
   title: "Source AI — The Migration Engine for Consultants",
   description:
@@ -28,11 +37,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${coolvetica.variable} ${inter.variable}`}>
+    <html lang="en" className={`${coolvetica.variable} ${inter.variable} ${instrumentSerif.variable}`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body>{children}</body>
+      <body>
+        <TooltipProvider delayDuration={120}>{children}</TooltipProvider>
+      </body>
     </html>
   );
 }
