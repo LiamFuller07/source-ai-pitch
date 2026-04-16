@@ -21,21 +21,22 @@ import { Slide } from "./Slide";
 type FlowStep = {
   owner: "consultant" | "source" | "customer";
   label: string;
+  sub: string;
   icon: LucideIcon | null;
   emoji?: string;
 };
 
 const flowSteps: FlowStep[] = [
-  { owner: "consultant", label: "Discovery Call", icon: FileText },
-  { owner: "source", label: "AI System Scan", icon: Search },
-  { owner: "source", label: "BRD Draft", icon: FileText },
-  { owner: "source", label: "AI Revisions", icon: MessageSquare },
-  { owner: "source", label: "BRD Final", icon: ClipboardCheck },
-  { owner: "consultant", label: "Consultant Review", icon: ClipboardCheck },
-  { owner: "customer", label: "Customer Sign-Off", icon: Check },
-  { owner: "source", label: "AI Migration", icon: Rocket },
-  { owner: "source", label: "Testing & QA", icon: ShieldCheck },
-  { owner: "customer", label: "Happy Customer", icon: null, emoji: "🎉" },
+  { owner: "consultant", label: "Discovery Call", sub: "Transcript + requirements", icon: FileText },
+  { owner: "source", label: "AI System Scan", sub: "Read-only scan of live ERP", icon: Search },
+  { owner: "source", label: "BRD Draft", sub: "Auto-drafted from scan", icon: FileText },
+  { owner: "source", label: "AI Revisions", sub: "Edits from consultant feedback", icon: MessageSquare },
+  { owner: "source", label: "BRD Final", sub: "Approved spec · ready to sign", icon: ClipboardCheck },
+  { owner: "consultant", label: "Consultant Review", sub: "Sanity-check + client framing", icon: ClipboardCheck },
+  { owner: "customer", label: "Customer Sign-Off", sub: "Fixed-fee scope locked", icon: Check },
+  { owner: "source", label: "AI Migration", sub: "Data + config moved over", icon: Rocket },
+  { owner: "source", label: "Testing & QA", sub: "Parallel run + reconciliation", icon: ShieldCheck },
+  { owner: "customer", label: "Happy Customer", sub: "Go-live · on time · on budget", icon: null, emoji: "🎉" },
 ];
 
 // Row layout: 5 + 5
@@ -233,7 +234,7 @@ export function WhoDoesWhat() {
   }, [inView, activeStep]);
 
   const renderStepRow = (row: typeof flowSteps, rowOffset: number) => (
-    <div className="flex items-stretch gap-3">
+    <div className="flex items-stretch gap-4">
       {row.map((step, i) => {
         const globalIndex = rowOffset + i;
         const isVisible = globalIndex <= activeStep;
@@ -253,43 +254,53 @@ export function WhoDoesWhat() {
               }
               transition={{ duration: 0.35, ease: "easeOut" }}
               onClick={() => setActiveStep(globalIndex)}
-              className={`flex-1 min-w-0 px-5 py-6 cursor-pointer transition-colors duration-200 relative ${
+              className={`flex-1 min-w-0 px-6 py-7 rounded-[10px] cursor-pointer transition-colors duration-200 relative ${
                 isActive
                   ? "bg-black text-white"
                   : isVisible
-                  ? "bg-white border border-black/15 text-black"
+                  ? "bg-white border border-black/10 text-black"
                   : "bg-transparent border border-transparent"
               }`}
             >
               {/* Role badge */}
               {!step.emoji && (
-                <span className={`absolute top-2 right-3 text-[9px] font-mono font-bold tracking-[0.08em] ${
+                <span className={`absolute top-3 right-4 text-[10.5px] font-mono font-bold tracking-[0.10em] ${
                   isActive
                     ? "text-white/50"
-                    : isAI ? "text-black/40" : "text-black/25"
+                    : isAI ? "text-black/40" : "text-black/30"
                 }`}>
                   {isAI ? "AI" : "Consultant"}
                 </span>
               )}
-              {/* Icon + label */}
-              <div className="flex items-center gap-3">
+              {/* Icon + label + subtitle */}
+              <div className="flex items-start gap-3.5">
                 {step.emoji ? (
-                  <span className="text-[18px] shrink-0">{step.emoji}</span>
+                  <span className="text-[22px] shrink-0 leading-none mt-0.5">{step.emoji}</span>
                 ) : step.icon ? (
                   <step.icon
-                    size={18}
-                    className={`shrink-0 ${
-                      isActive ? "text-white/50" : "text-black/25"
+                    size={22}
+                    strokeWidth={1.75}
+                    className={`shrink-0 mt-0.5 ${
+                      isActive ? "text-white/55" : "text-black/30"
                     }`}
                   />
                 ) : null}
-                <p
-                  className={`text-[17px] font-semibold leading-tight ${
-                    isActive ? "text-white" : "text-black"
-                  }`}
-                >
-                  {step.label}
-                </p>
+                <div className="min-w-0">
+                  <p
+                    className={`text-[19px] font-semibold leading-tight tracking-[-0.01em] ${
+                      isActive ? "text-white" : "text-black"
+                    }`}
+                  >
+                    {step.label}
+                  </p>
+                  <p
+                    className={`mt-1.5 text-[13px] leading-snug ${
+                      isActive ? "text-white/60" : "text-black/45"
+                    }`}
+                  >
+                    {step.sub}
+                  </p>
+                </div>
               </div>
             </motion.div>
 
@@ -299,7 +310,7 @@ export function WhoDoesWhat() {
                 initial={{ opacity: 0 }}
                 animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
                 transition={{ duration: 0.2, delay: 0.1 }}
-                className="shrink-0 px-2 text-[22px] font-bold text-black/20"
+                className="shrink-0 px-2.5 text-[26px] font-bold text-black/20"
               >
                 →
               </motion.div>
