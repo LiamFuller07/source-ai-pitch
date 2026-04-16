@@ -35,7 +35,7 @@ const flowSteps: FlowStep[] = [
   { owner: "consultant", label: "Discovery Call", icon: FileText },
   { owner: "source", label: "AI System Scan", icon: Search },
   { owner: "source", label: "BRD Draft", icon: FileText },
-  { owner: "source", label: "AI Questionnaire", icon: MessageSquare },
+  { owner: "source", label: "AI Revisions", icon: MessageSquare },
   { owner: "source", label: "BRD Final", icon: ClipboardCheck },
   { owner: "consultant", label: "Consultant Review", icon: ClipboardCheck },
   { owner: "customer", label: "Customer Sign-Off", icon: Check },

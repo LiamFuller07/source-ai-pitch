@@ -45,6 +45,9 @@ const sourceSystems: Group[] = [
       "Sage 50 / 100 / 300",
       "FreshBooks / Wave",
       "Zoho Books",
+      "Odoo Accounting",
+      "Kashoo / Patriot",
+      "+ many more",
     ],
   },
   {
@@ -55,8 +58,11 @@ const sourceSystems: Group[] = [
       "Dynamics NAV / Navision",
       "SAP ECC / R/3",
       "Oracle E-Business Suite",
+      "JD Edwards / PeopleSoft",
       "Epicor (all versions)",
       "Infor (all versions)",
+      "Baan / IFS / MAS 90",
+      "+ many more",
     ],
   },
   {
@@ -68,7 +74,10 @@ const sourceSystems: Group[] = [
       "Custom / in-house systems",
       "Access databases",
       "SQL / database exports",
+      "Emails / PDFs / paper docs",
+      "Legacy mainframes",
       "+ any other system",
+      "+ many more",
     ],
   },
 ];
@@ -77,42 +86,42 @@ const integrations: Group[] = [
   {
     category: "CRM & Sales",
     Icon: Users,
-    items: ["Salesforce", "HubSpot", "Pipedrive", "Zoho CRM"],
+    items: ["Salesforce", "HubSpot", "Pipedrive", "Zoho CRM", "Dynamics CRM", "Copper", "Close", "+ many more"],
   },
   {
     category: "Ecommerce",
     Icon: ShoppingCart,
-    items: ["Shopify", "Amazon", "WooCommerce", "BigCommerce", "Magento"],
+    items: ["Shopify", "Amazon", "WooCommerce", "BigCommerce", "Magento", "Etsy", "eBay", "Walmart", "+ many more"],
   },
   {
     category: "Payments",
     Icon: CreditCard,
-    items: ["Stripe", "PayPal", "Square", "Adyen", "Braintree"],
+    items: ["Stripe", "PayPal", "Square", "Adyen", "Braintree", "Authorize.Net", "Worldpay", "GoCardless", "+ many more"],
   },
   {
     category: "Productivity",
     Icon: Briefcase,
-    items: ["SharePoint", "Google Workspace", "Notion", "Asana"],
+    items: ["SharePoint", "Google Workspace", "Notion", "Asana", "Monday", "ClickUp", "Airtable", "Jira", "+ many more"],
   },
   {
     category: "Communication",
     Icon: MessageSquare,
-    items: ["Slack", "Teams", "Zoom", "Intercom"],
+    items: ["Slack", "Teams", "Zoom", "Intercom", "Discord", "Twilio", "RingCentral", "+ many more"],
   },
   {
     category: "Email & Marketing",
     Icon: Mail,
-    items: ["Mailchimp", "Klaviyo", "SendGrid", "Marketo"],
+    items: ["Mailchimp", "Klaviyo", "SendGrid", "Marketo", "ActiveCampaign", "Iterable", "Constant Contact", "+ many more"],
   },
   {
     category: "Cloud & Storage",
     Icon: Cloud,
-    items: ["AWS S3", "Dropbox", "Box", "Google Drive"],
+    items: ["AWS S3", "Dropbox", "Box", "Google Drive", "Azure Blob", "OneDrive", "Wasabi", "Backblaze", "+ many more"],
   },
   {
     category: "Analytics & BI",
     Icon: BarChart3,
-    items: ["Looker", "Tableau", "Power BI", "Fivetran"],
+    items: ["Looker", "Tableau", "Power BI", "Fivetran", "Snowflake", "BigQuery", "Metabase", "Segment", "+ many more"],
   },
 ];
 
