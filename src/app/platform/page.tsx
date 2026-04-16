@@ -186,7 +186,7 @@ const stepItem: Variants = {
 function Hero() {
   return (
     <section className="pt-32 pb-24">
-      <div className="max-w-[1480px] mx-auto px-8">
+      <div className="max-w-[1340px] mx-auto px-8">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -265,7 +265,7 @@ function ErpLogo({
 }
 
 const heroCardClass =
-  "bg-white rounded-xl border border-black/[0.06] shadow-[0_2px_6px_rgba(15,14,13,0.05)] p-5 w-full min-h-[380px] text-[13px] flex flex-col";
+  "bg-white rounded-xl border border-black/[0.06] shadow-[0_1px_3px_rgba(15,14,13,0.04)] p-4 w-full min-h-[280px] text-[12px] flex flex-col";
 
 function HeroStepPreview({ index }: { index: number }) {
   switch (index) {
