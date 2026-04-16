@@ -22,10 +22,10 @@ import {
 import { Slide } from "./Slide";
 
 const targetSystems = [
-  { name: "NetSuite", logo: "/logos/netsuite.svg", height: "h-[120px]" },
-  { name: "SAP", logo: "/logos/sap.svg", height: "h-[84px]" },
-  { name: "Dynamics 365", logo: "/logos/dynamics365.svg", height: "h-[90px]" },
-  { name: "Sage", logo: "/logos/sage.svg", height: "h-[80px]" },
+  { name: "NetSuite", logo: "/logos/netsuite.svg", height: "h-[96px]" },
+  { name: "SAP", logo: "/logos/sap.svg", height: "h-[66px]" },
+  { name: "Dynamics 365", logo: "/logos/dynamics365.svg", height: "h-[72px]" },
+  { name: "Sage", logo: "/logos/sage.svg", height: "h-[62px]" },
 ];
 
 type Group = {
@@ -124,22 +124,22 @@ export function SupportedSystems() {
     <Slide
       ref={ref}
       bg="bg-[#f8f8f8]"
-      className="flex flex-col px-[120px] py-[70px]"
+      className="flex flex-col px-[120px] py-[50px]"
     >
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6 }}
-        className="mb-8"
+        className="mb-5"
       >
-        <p className="text-[16px] font-mono uppercase tracking-[0.2em] text-black/30 mb-3">
+        <p className="text-[16px] font-mono uppercase tracking-[0.2em] text-black/30 mb-2">
           System Agnostic
         </p>
-        <h2 className="text-[56px] font-semibold tracking-[-0.03em] text-black mb-3 leading-[1.05]">
+        <h2 className="text-[52px] font-semibold tracking-[-0.03em] text-black mb-2 leading-[1.05]">
           AI Supported Implementations
         </h2>
-        <p className="text-[20px] text-black/50 max-w-[1200px] leading-relaxed">
+        <p className="text-[18px] text-black/50 max-w-[1200px] leading-relaxed">
           <span className="text-black font-medium">Any source system</span> → NetSuite, SAP, Dynamics 365, or Sage.
           Source handles the big four ERP targets out of the box, plus 100s of attached integrations.
         </p>
@@ -150,9 +150,9 @@ export function SupportedSystems() {
         initial={{ opacity: 0, y: 20 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="mb-6"
+        className="mb-4"
       >
-        <div className="flex items-center gap-3 mb-4">
+        <div className="flex items-center gap-3 mb-3">
           <p className="text-[13px] font-mono uppercase tracking-[0.15em] text-black/40 font-bold">
             Target Systems
           </p>
@@ -161,14 +161,14 @@ export function SupportedSystems() {
             The Big Four
           </p>
         </div>
-        <div className="grid grid-cols-4 gap-5">
+        <div className="grid grid-cols-4 gap-4">
           {targetSystems.map((sys, i) => (
             <motion.div
               key={sys.name}
               initial={{ opacity: 0, y: 15 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.3 + i * 0.08 }}
-              className="bg-white border border-black/10 flex items-center justify-center h-[180px] px-8"
+              className="bg-white border border-black/10 flex items-center justify-center h-[140px] px-6"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -186,46 +186,46 @@ export function SupportedSystems() {
         initial={{ opacity: 0, y: 20 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ delay: 0.5 }}
-        className="bg-white border border-black/10 p-8"
+        className="bg-white border border-black/10 p-6"
       >
         {/* Source Systems section */}
-        <div className="flex items-center gap-3 mb-5">
-          <p className="text-[14px] font-mono uppercase tracking-[0.15em] text-black/60 font-bold">
+        <div className="flex items-center gap-3 mb-3">
+          <p className="text-[13px] font-mono uppercase tracking-[0.15em] text-black/60 font-bold">
             Source Systems
           </p>
           <div className="flex-1 h-px bg-black/10" />
           <div className="flex items-center gap-2">
-            <span className="text-[14px] font-semibold tracking-[-0.01em] text-black/70">
+            <span className="text-[13px] font-semibold tracking-[-0.01em] text-black/70">
               Anything
             </span>
-            <ArrowRight size={16} strokeWidth={1.75} className="text-black/30" />
-            <span className="text-[14px] font-semibold tracking-[-0.01em] text-black/70">
+            <ArrowRight size={14} strokeWidth={1.75} className="text-black/30" />
+            <span className="text-[13px] font-semibold tracking-[-0.01em] text-black/70">
               the Big Four
             </span>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-5 mb-8">
+        <div className="grid grid-cols-3 gap-4 mb-4">
           {sourceSystems.map((group, ci) => (
             <motion.div
               key={group.category}
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 1 } : {}}
               transition={{ delay: 0.6 + ci * 0.08 }}
-              className="bg-black/[0.02] border border-black/8 p-5"
+              className="bg-black/[0.02] border border-black/8 p-4"
             >
-              <div className="flex items-center gap-3 mb-4 pb-3 border-b border-black/10">
-                <div className="w-10 h-10 bg-white border border-black/10 flex items-center justify-center shrink-0">
-                  <group.Icon size={20} strokeWidth={1.75} className="text-black/75" />
+              <div className="flex items-center gap-2.5 mb-3 pb-2.5 border-b border-black/10">
+                <div className="w-9 h-9 bg-white border border-black/10 flex items-center justify-center shrink-0">
+                  <group.Icon size={18} strokeWidth={1.75} className="text-black/75" />
                 </div>
-                <p className="text-[16px] font-semibold tracking-[-0.01em] text-black">
+                <p className="text-[15px] font-semibold tracking-[-0.01em] text-black">
                   {group.category}
                 </p>
               </div>
-              <ul className="space-y-2">
+              <ul className="space-y-1">
                 {group.items.map((item) => (
                   <li
                     key={item}
-                    className="text-[15px] text-black/70 leading-snug flex items-start gap-2"
+                    className="text-[14px] text-black/70 leading-tight flex items-start gap-2"
                   >
                     <span className="text-black/30 mt-[1px]">·</span>
                     <span>{item}</span>
@@ -237,27 +237,27 @@ export function SupportedSystems() {
         </div>
 
         {/* Divider */}
-        <div className="relative my-6">
+        <div className="relative my-3">
           <div className="h-px bg-black/10" />
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-4 flex items-center gap-2">
-            <Boxes size={16} strokeWidth={1.75} className="text-black/40" />
-            <span className="text-[12px] font-mono uppercase tracking-[0.15em] text-black/40 font-bold">
+            <Boxes size={14} strokeWidth={1.75} className="text-black/40" />
+            <span className="text-[11px] font-mono uppercase tracking-[0.15em] text-black/40 font-bold">
               Plus 100s of Integrations
             </span>
           </div>
         </div>
 
         {/* Integrations section */}
-        <div className="flex items-center gap-3 mb-5 mt-8">
-          <p className="text-[14px] font-mono uppercase tracking-[0.15em] text-black/60 font-bold">
+        <div className="flex items-center gap-3 mb-3 mt-5">
+          <p className="text-[13px] font-mono uppercase tracking-[0.15em] text-black/60 font-bold">
             Attached Integrations
           </p>
           <div className="flex-1 h-px bg-black/10" />
-          <p className="text-[13px] font-mono text-black/35">
+          <p className="text-[12px] font-mono text-black/35">
             Any API, any data source, any direction
           </p>
         </div>
-        <div className="grid grid-cols-4 gap-x-6 gap-y-5">
+        <div className="grid grid-cols-4 gap-x-5 gap-y-3">
           {integrations.map((group, ci) => (
             <motion.div
               key={group.category}
@@ -265,17 +265,17 @@ export function SupportedSystems() {
               animate={inView ? { opacity: 1 } : {}}
               transition={{ delay: 0.85 + ci * 0.04 }}
             >
-              <div className="flex items-center gap-2 mb-2.5">
-                <group.Icon size={16} strokeWidth={1.75} className="text-black/50" />
-                <p className="text-[12px] font-mono uppercase tracking-[0.12em] text-black/55 font-bold">
+              <div className="flex items-center gap-2 mb-1.5">
+                <group.Icon size={14} strokeWidth={1.75} className="text-black/50" />
+                <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-black/55 font-bold">
                   {group.category}
                 </p>
               </div>
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-1">
                 {group.items.map((item) => (
                   <span
                     key={item}
-                    className="text-[13px] font-mono text-black/75 bg-black/[0.04] border border-black/10 px-2.5 py-1"
+                    className="text-[12px] font-mono text-black/75 bg-black/[0.04] border border-black/10 px-2 py-0.5"
                   >
                     {item}
                   </span>
