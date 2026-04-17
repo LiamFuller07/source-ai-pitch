@@ -11,6 +11,7 @@ import { WhiteLabel } from "@/components/WhiteLabel";
 import { WhyPartner } from "@/components/WhyPartner";
 import { HowWePartner } from "@/components/HowWePartner";
 import { Pricing } from "@/components/Pricing";
+import { Scale } from "@/components/Scale";
 import { Partners } from "@/components/Partners";
 import { CaseStudy } from "@/components/CaseStudy";
 import { Team } from "@/components/Team";
@@ -34,6 +35,7 @@ export default function Home() {
         <WhyPartner />
         {/* <HowWePartner /> — hidden for now */}
         <Pricing />
+        <Scale />
         <Team />
         <Cta />
         <Demo />
