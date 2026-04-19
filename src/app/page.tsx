@@ -17,7 +17,6 @@ import { Partners } from "@/components/Partners";
 import { CaseStudy } from "@/components/CaseStudy";
 import { Team } from "@/components/Team";
 import { Cta } from "@/components/Cta";
-import { Demo } from "@/components/Demo";
 import { Nav } from "@/components/Nav";
 import { PresentationProvider } from "@/components/PresentationController";
 
@@ -40,7 +39,6 @@ export default function Home() {
         <Scale />
         <Team />
         <Cta />
-        <Demo />
       </main>
     </PresentationProvider>
   );
