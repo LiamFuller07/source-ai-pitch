@@ -243,7 +243,7 @@ export function Pricing() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.2 + i * 0.15 }}
-                className="bg-white border border-black/10 rounded-md p-8 flex flex-col min-h-[440px]"
+                className="bg-white border border-black/15 p-8 flex flex-col min-h-[440px]"
               >
                 <div className="flex items-center justify-between mb-6">
                   <div className="w-14 h-14 bg-black rounded-md flex items-center justify-center">
