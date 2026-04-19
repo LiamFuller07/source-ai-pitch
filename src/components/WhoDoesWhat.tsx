@@ -16,7 +16,6 @@ import {
   AlertCircle,
   Settings2,
   ArrowRight,
-  Sparkles,
   type LucideIcon,
 } from "lucide-react";
 import { Slide } from "./Slide";
@@ -91,22 +90,7 @@ function StatusPill({
   );
 }
 
-function AiPill() {
-  return (
-    <span className="inline-flex items-center gap-1 text-[10px] font-mono font-bold tracking-[0.14em] px-2 py-[3px] rounded-full bg-emerald-500 text-white shadow-[0_1px_3px_rgba(16,185,129,0.35)]">
-      <Sparkles size={9} strokeWidth={2.5} />
-      AI
-    </span>
-  );
-}
-
-// AI cards (Discovery / Scan / Deliver) get a thin emerald top stripe so the
-// three AI-executed stages visually cluster together.
-const AI_CARD_WRAPPER =
-  "relative bg-white border border-black/10 rounded-md px-5 py-4 min-h-[260px] " +
-  "before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 " +
-  "before:h-[3px] before:bg-emerald-500 before:rounded-t-md";
-const PLAIN_CARD_WRAPPER =
+const CARD_WRAPPER =
   "bg-white border border-black/10 rounded-md px-5 py-4 min-h-[260px]";
 
 // ─── Stage cards ─────────────────────────────────────────────────────────────
@@ -118,7 +102,7 @@ function ScopeCard() {
     { icon: Users, label: "Training", meta: "12 users" },
   ];
   return (
-    <div className={PLAIN_CARD_WRAPPER}>
+    <div className={CARD_WRAPPER}>
       <div className="flex items-center justify-between mb-3 pb-3 border-b border-black/[0.06]">
         <div className="flex items-center gap-2">
           <FileText size={14} className="text-black/55" strokeWidth={1.75} />
@@ -168,15 +152,14 @@ function DiscoveryCard() {
   ];
   const tags = ["Multi-entity", "Inventory", "Tax", "4-way match"];
   return (
-    <div className={AI_CARD_WRAPPER}>
+    <div className={CARD_WRAPPER}>
       <div className="flex items-center justify-between mb-3 pb-3 border-b border-black/[0.06]">
         <div className="flex items-center gap-2 min-w-0">
           <Mic size={14} className="text-black/55 shrink-0" strokeWidth={1.75} />
           <span className="text-[13px] font-semibold text-black truncate">Transcripts</span>
-          <AiPill />
         </div>
         <span className="text-[10px] font-mono tracking-[0.12em] text-black/35 shrink-0">
-          3 calls
+          AI · 3 calls
         </span>
       </div>
 
@@ -231,12 +214,11 @@ function ScanCard() {
     { label: "Integrations", value: "4" },
   ];
   return (
-    <div className={AI_CARD_WRAPPER}>
+    <div className={CARD_WRAPPER}>
       <div className="flex items-center justify-between mb-3 pb-3 border-b border-black/[0.06]">
         <div className="flex items-center gap-2 min-w-0">
           <Search size={14} className="text-black/55 shrink-0" strokeWidth={1.75} />
-          <span className="text-[13px] font-semibold text-black truncate">QuickBooks scan</span>
-          <AiPill />
+          <span className="text-[13px] font-semibold text-black truncate">AI scan · QuickBooks</span>
         </div>
         <StatusPill tone="success">SCANNED</StatusPill>
       </div>
@@ -266,12 +248,11 @@ function DeliverCard() {
     { id: "AI-03", task: "Reconciling", pct: 46 },
   ];
   return (
-    <div className={AI_CARD_WRAPPER}>
+    <div className={CARD_WRAPPER}>
       <div className="flex items-center justify-between mb-3 pb-3 border-b border-black/[0.06]">
         <div className="flex items-center gap-2 min-w-0">
           <Rocket size={14} className="text-black/55 shrink-0" strokeWidth={1.75} />
-          <span className="text-[13px] font-semibold text-black truncate">Migration</span>
-          <AiPill />
+          <span className="text-[13px] font-semibold text-black truncate">AI migration</span>
         </div>
         <StatusPill tone="success">RUNNING</StatusPill>
       </div>
@@ -315,7 +296,7 @@ function ConfirmCard() {
     { label: "Parallel run passed", meta: "0 variance vs. source" },
   ];
   return (
-    <div className={PLAIN_CARD_WRAPPER}>
+    <div className={CARD_WRAPPER}>
       <div className="flex items-center justify-between mb-3 pb-3 border-b border-black/[0.06]">
         <div className="flex items-center gap-2">
           <Avatar name="Jane" />
@@ -420,7 +401,7 @@ export function WhoDoesWhat() {
               }
               transition={{ duration: 0.35, ease: "easeOut" }}
               onClick={() => setActiveStep(globalIndex)}
-              className={`flex-1 min-w-0 px-6 py-7 cursor-pointer transition-colors duration-200 relative rounded-md border overflow-hidden ${
+              className={`flex-1 min-w-0 px-6 py-7 cursor-pointer transition-colors duration-200 relative rounded-md border ${
                 isActive
                   ? "bg-black border-black text-white"
                   : isVisible
@@ -428,36 +409,19 @@ export function WhoDoesWhat() {
                   : "bg-transparent border-transparent"
               }`}
             >
-              {/* AI top stripe — only on AI-owned steps that have appeared */}
-              {isAI && isVisible && (
-                <span
-                  className={`absolute top-0 left-0 right-0 h-[3px] ${
-                    isActive ? "bg-emerald-400" : "bg-emerald-500"
-                  }`}
-                />
-              )}
-              {/* Role badge */}
+              {/* Role badge — plain mono uppercase, no colour */}
               {!step.emoji && (
-                isAI ? (
-                  <span
-                    className={`absolute top-3 right-4 inline-flex items-center gap-1 text-[10px] font-mono font-bold tracking-[0.12em] px-1.5 py-[2px] rounded-full ${
-                      isActive
-                        ? "bg-emerald-400/25 text-emerald-200"
-                        : "bg-emerald-500 text-white shadow-[0_1px_3px_rgba(16,185,129,0.35)]"
-                    }`}
-                  >
-                    <Sparkles size={9} strokeWidth={2.5} />
-                    AI
-                  </span>
-                ) : (
-                  <span
-                    className={`absolute top-3 right-4 text-[10.5px] font-mono font-bold tracking-[0.10em] uppercase ${
-                      isActive ? "text-white/50" : "text-black/40"
-                    }`}
-                  >
-                    {step.owner === "customer" ? "Customer" : "Consultant"}
-                  </span>
-                )
+                <span
+                  className={`absolute top-3 right-4 text-[10px] font-mono font-bold tracking-[0.14em] uppercase ${
+                    isActive ? "text-white/55" : "text-black/35"
+                  }`}
+                >
+                  {isAI
+                    ? "AI"
+                    : step.owner === "customer"
+                    ? "Customer"
+                    : "Consultant"}
+                </span>
               )}
               {/* Icon + label + subtitle */}
               <div className="flex items-start gap-3.5">
