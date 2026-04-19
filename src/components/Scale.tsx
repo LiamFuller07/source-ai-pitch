@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
   Activity,
   TrendingUp,
@@ -10,6 +10,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { Slide } from "./Slide";
+import { usePresentationStep } from "./PresentationController";
 
 // ─── Visualizations ──────────────────────────────────────────────────────────
 
@@ -276,6 +277,14 @@ const tabs: Tab[] = [
 export function Scale() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
+  const { setMaxSteps, resetSteps, isStepVisible } = usePresentationStep();
+
+  useEffect(() => {
+    if (inView) {
+      setMaxSteps(tabs.length);
+      resetSteps();
+    }
+  }, [inView, setMaxSteps, resetSteps]);
 
   return (
     <Slide
@@ -304,14 +313,18 @@ export function Scale() {
         </p>
       </motion.div>
 
-      {/* Three tabs */}
+      {/* Three tabs — each revealed by click / arrow key */}
       <div className="grid grid-cols-3 gap-6">
         {tabs.map((tab, i) => (
           <motion.div
             key={tab.title}
             initial={{ opacity: 0, y: 22 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.25 + i * 0.12, ease: "easeOut" }}
+            animate={
+              isStepVisible(i + 1)
+                ? { opacity: 1, y: 0 }
+                : { opacity: 0, y: 22 }
+            }
+            transition={{ duration: 0.5, ease: "easeOut" }}
             className="bg-white border border-black/10 rounded-md p-10 flex flex-col min-h-[520px]"
           >
             {/* Icon + eyebrow */}
@@ -334,7 +347,7 @@ export function Scale() {
 
             {/* Visualization */}
             <div className="mb-auto">
-              <tab.Viz animate={inView} />
+              <tab.Viz animate={isStepVisible(i + 1)} />
             </div>
 
             {/* Stat footer */}
