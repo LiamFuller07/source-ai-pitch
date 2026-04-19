@@ -18,32 +18,19 @@ const dots: { x: number; y: number; r: number }[] = [
 
 const source = { x: 0.86, y: 0.86 };
 
-const contrasts: { dimension: string; tool: string; source: string }[] = [
-  {
-    dimension: "Scope",
-    tool: "Speeds up one task",
-    source: "Owns the full engagement",
-  },
-  {
-    dimension: "Autonomy",
-    tool: "Assists a consultant",
-    source: "Does the consultant's work",
-  },
-  {
-    dimension: "Judgment",
-    tool: "Breaks on edge cases",
-    source: "Makes decisions and flags the rest",
-  },
-  {
-    dimension: "Margin",
-    tool: "No impact — you still bill hours",
-    source: "Direct AI lift on every engagement",
-  },
-  {
-    dimension: "Timelines",
-    tool: "Leaves them untouched",
-    source: "Collapses weeks into days",
-  },
+const toolsPros = [
+  "Speed up known, repetitive tasks",
+  "Pre-built connectors for one vendor pair",
+  "Narrow automations and RPA",
+  "Data validation scripts",
+];
+
+const toolsCons = [
+  "Don't drive the engagement",
+  "Don't own the client outcome",
+  "Break on edge cases and judgment",
+  "No direct impact on margin",
+  "No direct impact on timelines",
 ];
 
 function QuadrantChart({ animate }: { animate: boolean }) {
@@ -244,57 +231,48 @@ export function Landscape() {
             </div>
           </motion.div>
 
-          {/* Head-to-head: Tools vs Source */}
+          {/* Tools: pros & cons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.35 }}
-            className="flex flex-col"
+            className="bg-white border border-black/10 rounded-md p-10 flex flex-col"
           >
-            {/* Column headers */}
-            <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 mb-3 px-2">
+            <div className="mb-8">
               <span className="text-[13px] font-mono uppercase tracking-[0.18em] text-black/40 font-bold">
                 Tools
               </span>
-              <span className="text-[11px] font-mono uppercase tracking-[0.16em] text-black/25">
-                vs
-              </span>
-              <span className="text-[13px] font-mono uppercase tracking-[0.18em] text-black font-bold text-right">
-                Source
-              </span>
+              <p className="text-[22px] font-semibold tracking-[-0.02em] text-black mt-1">
+                What they do — and where they stop.
+              </p>
             </div>
 
-            {/* Contrast rows */}
-            <div className="border border-black/10 rounded-md overflow-hidden bg-white">
-              {contrasts.map((c, i) => (
-                <div
-                  key={c.dimension}
-                  className={`grid grid-cols-[1fr_auto_1fr] items-stretch ${
-                    i > 0 ? "border-t border-black/[0.08]" : ""
-                  }`}
-                >
-                  {/* Tools side */}
-                  <div className="bg-black/[0.025] px-5 py-4 flex items-start gap-2.5">
-                    <X size={16} strokeWidth={2.5} className="mt-[3px] shrink-0 text-rose-500/80" />
-                    <span className="text-[14px] text-black/55 leading-[1.4]">
-                      {c.tool}
-                    </span>
-                  </div>
-                  {/* Dimension label */}
-                  <div className="px-3 flex items-center justify-center bg-white border-x border-black/[0.08]">
-                    <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-black/35 font-semibold whitespace-nowrap">
-                      {c.dimension}
-                    </span>
-                  </div>
-                  {/* Source side */}
-                  <div className="bg-black text-white px-5 py-4 flex items-start gap-2.5 justify-end">
-                    <span className="text-[14px] leading-[1.4] text-right">
-                      {c.source}
-                    </span>
-                    <Check size={16} strokeWidth={2.5} className="mt-[3px] shrink-0 text-emerald-400" />
-                  </div>
-                </div>
-              ))}
+            <div className="mb-8">
+              <p className="text-[11px] font-mono uppercase tracking-[0.18em] text-black/55 font-bold mb-4">
+                Pros
+              </p>
+              <ul className="space-y-3">
+                {toolsPros.map((t) => (
+                  <li key={t} className="flex items-start gap-3 text-[16px] text-black/75 leading-[1.4]">
+                    <Check size={18} strokeWidth={2.5} className="mt-[3px] shrink-0 text-emerald-600" />
+                    <span>{t}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="pt-6 border-t border-black/[0.08]">
+              <p className="text-[11px] font-mono uppercase tracking-[0.18em] text-black/55 font-bold mb-4">
+                Cons
+              </p>
+              <ul className="space-y-3">
+                {toolsCons.map((t) => (
+                  <li key={t} className="flex items-start gap-3 text-[16px] text-black/75 leading-[1.4]">
+                    <X size={18} strokeWidth={2.5} className="mt-[3px] shrink-0 text-rose-500" />
+                    <span>{t}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </motion.div>
         </div>
