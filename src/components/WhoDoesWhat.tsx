@@ -93,12 +93,21 @@ function StatusPill({
 
 function AiPill() {
   return (
-    <span className="inline-flex items-center gap-1 text-[9px] font-mono font-bold tracking-[0.14em] px-1.5 py-[2px] rounded-full bg-black text-white">
-      <Sparkles size={8} strokeWidth={2.5} />
+    <span className="inline-flex items-center gap-1 text-[10px] font-mono font-bold tracking-[0.14em] px-2 py-[3px] rounded-full bg-emerald-500 text-white shadow-[0_1px_3px_rgba(16,185,129,0.35)]">
+      <Sparkles size={9} strokeWidth={2.5} />
       AI
     </span>
   );
 }
+
+// AI cards (Discovery / Scan / Deliver) get a thin emerald top stripe so the
+// three AI-executed stages visually cluster together.
+const AI_CARD_WRAPPER =
+  "relative bg-white border border-black/10 rounded-md px-5 py-4 min-h-[260px] " +
+  "before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 " +
+  "before:h-[3px] before:bg-emerald-500 before:rounded-t-md";
+const PLAIN_CARD_WRAPPER =
+  "bg-white border border-black/10 rounded-md px-5 py-4 min-h-[260px]";
 
 // ─── Stage cards ─────────────────────────────────────────────────────────────
 
@@ -109,7 +118,7 @@ function ScopeCard() {
     { icon: Users, label: "Training", meta: "12 users" },
   ];
   return (
-    <div className="bg-white border border-black/10 rounded-md px-5 py-4 min-h-[260px]">
+    <div className={PLAIN_CARD_WRAPPER}>
       <div className="flex items-center justify-between mb-3 pb-3 border-b border-black/[0.06]">
         <div className="flex items-center gap-2">
           <FileText size={14} className="text-black/55" strokeWidth={1.75} />
@@ -159,7 +168,7 @@ function DiscoveryCard() {
   ];
   const tags = ["Multi-entity", "Inventory", "Tax", "4-way match"];
   return (
-    <div className="bg-white border border-black/10 rounded-md px-5 py-4 min-h-[260px]">
+    <div className={AI_CARD_WRAPPER}>
       <div className="flex items-center justify-between mb-3 pb-3 border-b border-black/[0.06]">
         <div className="flex items-center gap-2 min-w-0">
           <Mic size={14} className="text-black/55 shrink-0" strokeWidth={1.75} />
@@ -222,7 +231,7 @@ function ScanCard() {
     { label: "Integrations", value: "4" },
   ];
   return (
-    <div className="bg-white border border-black/10 rounded-md px-5 py-4 min-h-[260px]">
+    <div className={AI_CARD_WRAPPER}>
       <div className="flex items-center justify-between mb-3 pb-3 border-b border-black/[0.06]">
         <div className="flex items-center gap-2 min-w-0">
           <Search size={14} className="text-black/55 shrink-0" strokeWidth={1.75} />
@@ -257,7 +266,7 @@ function DeliverCard() {
     { id: "AI-03", task: "Reconciling", pct: 46 },
   ];
   return (
-    <div className="bg-white border border-black/10 rounded-md px-5 py-4 min-h-[260px]">
+    <div className={AI_CARD_WRAPPER}>
       <div className="flex items-center justify-between mb-3 pb-3 border-b border-black/[0.06]">
         <div className="flex items-center gap-2 min-w-0">
           <Rocket size={14} className="text-black/55 shrink-0" strokeWidth={1.75} />
@@ -306,7 +315,7 @@ function ConfirmCard() {
     { label: "Parallel run passed", meta: "0 variance vs. source" },
   ];
   return (
-    <div className="bg-white border border-black/10 rounded-md px-5 py-4 min-h-[260px]">
+    <div className={PLAIN_CARD_WRAPPER}>
       <div className="flex items-center justify-between mb-3 pb-3 border-b border-black/[0.06]">
         <div className="flex items-center gap-2">
           <Avatar name="Jane" />
@@ -411,7 +420,7 @@ export function WhoDoesWhat() {
               }
               transition={{ duration: 0.35, ease: "easeOut" }}
               onClick={() => setActiveStep(globalIndex)}
-              className={`flex-1 min-w-0 px-6 py-7 cursor-pointer transition-colors duration-200 relative rounded-md border ${
+              className={`flex-1 min-w-0 px-6 py-7 cursor-pointer transition-colors duration-200 relative rounded-md border overflow-hidden ${
                 isActive
                   ? "bg-black border-black text-white"
                   : isVisible
@@ -419,15 +428,36 @@ export function WhoDoesWhat() {
                   : "bg-transparent border-transparent"
               }`}
             >
+              {/* AI top stripe — only on AI-owned steps that have appeared */}
+              {isAI && isVisible && (
+                <span
+                  className={`absolute top-0 left-0 right-0 h-[3px] ${
+                    isActive ? "bg-emerald-400" : "bg-emerald-500"
+                  }`}
+                />
+              )}
               {/* Role badge */}
               {!step.emoji && (
-                <span className={`absolute top-3 right-4 text-[10.5px] font-mono font-bold tracking-[0.10em] ${
-                  isActive
-                    ? "text-white/50"
-                    : isAI ? "text-black/40" : "text-black/30"
-                }`}>
-                  {isAI ? "AI" : "Consultant"}
-                </span>
+                isAI ? (
+                  <span
+                    className={`absolute top-3 right-4 inline-flex items-center gap-1 text-[10px] font-mono font-bold tracking-[0.12em] px-1.5 py-[2px] rounded-full ${
+                      isActive
+                        ? "bg-emerald-400/25 text-emerald-200"
+                        : "bg-emerald-500 text-white shadow-[0_1px_3px_rgba(16,185,129,0.35)]"
+                    }`}
+                  >
+                    <Sparkles size={9} strokeWidth={2.5} />
+                    AI
+                  </span>
+                ) : (
+                  <span
+                    className={`absolute top-3 right-4 text-[10.5px] font-mono font-bold tracking-[0.10em] uppercase ${
+                      isActive ? "text-white/50" : "text-black/40"
+                    }`}
+                  >
+                    {step.owner === "customer" ? "Customer" : "Consultant"}
+                  </span>
+                )
               )}
               {/* Icon + label + subtitle */}
               <div className="flex items-start gap-3.5">
