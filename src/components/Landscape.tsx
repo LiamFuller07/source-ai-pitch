@@ -18,18 +18,32 @@ const dots: { x: number; y: number; r: number }[] = [
 
 const source = { x: 0.86, y: 0.86 };
 
-const toolsDo = [
-  "Speed up known tasks",
-  "Pre-built connectors",
-  "Narrow automations",
-  "Data validation scripts",
-];
-
-const toolsCant = [
-  "Drive the engagement",
-  "Own the client outcome",
-  "Handle judgment calls",
-  "Move timelines or margin",
+const contrasts: { dimension: string; tool: string; source: string }[] = [
+  {
+    dimension: "Scope",
+    tool: "Speeds up one task",
+    source: "Owns the full engagement",
+  },
+  {
+    dimension: "Autonomy",
+    tool: "Assists a consultant",
+    source: "Does the consultant's work",
+  },
+  {
+    dimension: "Judgment",
+    tool: "Breaks on edge cases",
+    source: "Makes decisions and flags the rest",
+  },
+  {
+    dimension: "Margin",
+    tool: "No impact — you still bill hours",
+    source: "Direct AI lift on every engagement",
+  },
+  {
+    dimension: "Timelines",
+    tool: "Leaves them untouched",
+    source: "Collapses weeks into days",
+  },
 ];
 
 function QuadrantChart({ animate }: { animate: boolean }) {
@@ -230,47 +244,57 @@ export function Landscape() {
             </div>
           </motion.div>
 
-          {/* Pros / cons side-by-side */}
+          {/* Head-to-head: Tools vs Source */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.35 }}
-            className="bg-white border border-black/10 rounded-md p-10 flex flex-col"
+            className="flex flex-col"
           >
-            <div className="flex items-center justify-between mb-7">
-              <span className="text-[13px] font-mono uppercase tracking-[0.15em] text-black/45 font-bold">
-                Every other provider = a tool
+            {/* Column headers */}
+            <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 mb-3 px-2">
+              <span className="text-[13px] font-mono uppercase tracking-[0.18em] text-black/40 font-bold">
+                Tools
+              </span>
+              <span className="text-[11px] font-mono uppercase tracking-[0.16em] text-black/25">
+                vs
+              </span>
+              <span className="text-[13px] font-mono uppercase tracking-[0.18em] text-black font-bold text-right">
+                Source
               </span>
             </div>
 
-            <div className="grid grid-cols-2 gap-6 flex-1">
-              <div>
-                <p className="text-[12px] font-mono uppercase tracking-[0.14em] text-black/55 font-semibold mb-4 pb-3 border-b border-black/[0.08]">
-                  What tools do
-                </p>
-                <ul className="space-y-3.5">
-                  {toolsDo.map((t) => (
-                    <li key={t} className="flex items-start gap-2.5 text-[15px] text-black/75 leading-[1.35]">
-                      <Check size={16} strokeWidth={2.25} className="mt-[3px] shrink-0 text-black/70" />
-                      <span>{t}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="border-l border-black/[0.08] pl-6">
-                <p className="text-[12px] font-mono uppercase tracking-[0.14em] text-black/55 font-semibold mb-4 pb-3 border-b border-black/[0.08]">
-                  What tools can't do
-                </p>
-                <ul className="space-y-3.5">
-                  {toolsCant.map((t) => (
-                    <li key={t} className="flex items-start gap-2.5 text-[15px] text-black/60 leading-[1.35]">
-                      <X size={16} strokeWidth={2.25} className="mt-[3px] shrink-0 text-black/40" />
-                      <span>{t}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+            {/* Contrast rows */}
+            <div className="border border-black/10 rounded-md overflow-hidden bg-white">
+              {contrasts.map((c, i) => (
+                <div
+                  key={c.dimension}
+                  className={`grid grid-cols-[1fr_auto_1fr] items-stretch ${
+                    i > 0 ? "border-t border-black/[0.08]" : ""
+                  }`}
+                >
+                  {/* Tools side */}
+                  <div className="bg-black/[0.025] px-5 py-4 flex items-start gap-2.5">
+                    <X size={16} strokeWidth={2.5} className="mt-[3px] shrink-0 text-rose-500/80" />
+                    <span className="text-[14px] text-black/55 leading-[1.4]">
+                      {c.tool}
+                    </span>
+                  </div>
+                  {/* Dimension label */}
+                  <div className="px-3 flex items-center justify-center bg-white border-x border-black/[0.08]">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-black/35 font-semibold whitespace-nowrap">
+                      {c.dimension}
+                    </span>
+                  </div>
+                  {/* Source side */}
+                  <div className="bg-black text-white px-5 py-4 flex items-start gap-2.5 justify-end">
+                    <span className="text-[14px] leading-[1.4] text-right">
+                      {c.source}
+                    </span>
+                    <Check size={16} strokeWidth={2.5} className="mt-[3px] shrink-0 text-emerald-400" />
+                  </div>
+                </div>
+              ))}
             </div>
           </motion.div>
         </div>
