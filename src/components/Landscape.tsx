@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Check, X, TrendingUp, Clock } from "lucide-react";
+import { Check, X, TrendingUp, Clock, Lock, Workflow, Brain } from "lucide-react";
 import { Slide } from "./Slide";
 
 // Tools cluster in the "productivity" band — bottom half of the chart.
@@ -31,6 +31,14 @@ const toolsCons = [
   "Break on edge cases and judgment",
   "No direct impact on margin",
   "No direct impact on timelines",
+];
+
+const sourceProps: { Icon: typeof Workflow; label: string; value: string }[] = [
+  { Icon: Workflow, label: "Scope", value: "Owns the full engagement — end to end" },
+  { Icon: Brain, label: "Autonomy", value: "Does the consultant's work, flags the rest" },
+  { Icon: TrendingUp, label: "Margin", value: "Direct AI lift on every engagement" },
+  { Icon: Clock, label: "Timelines", value: "Weeks → days, fixed from day one" },
+  { Icon: Lock, label: "Price", value: "Fixed fee, locked in 24h" },
 ];
 
 function QuadrantChart({ animate }: { animate: boolean }) {
@@ -277,39 +285,41 @@ export function Landscape() {
           </motion.div>
         </div>
 
-        {/* Closing black bar — Source's direct impact */}
+        {/* Source counter-card — not a tool */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.55 }}
-          className="mt-8 bg-black text-white px-10 py-7 grid grid-cols-[1.4fr_auto_1fr_1fr] items-center gap-10"
+          className="mt-8 bg-black text-white rounded-md overflow-hidden"
         >
-          <p className="text-[22px] font-semibold tracking-[-0.02em] leading-tight">
-            Source doesn't assist the work.<br />
-            <span className="text-white/55 font-normal">It does the work.</span>
-          </p>
-          <div className="w-px h-14 bg-white/15" />
-          <div className="flex items-start gap-3">
-            <TrendingUp size={18} strokeWidth={1.75} className="text-white/70 mt-[2px] shrink-0" />
+          <div className="px-10 py-7 flex items-end justify-between border-b border-white/[0.08]">
             <div>
-              <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-white/45 font-semibold mb-1">
-                Margin
-              </p>
-              <p className="text-[15px] text-white leading-tight">
-                Direct AI impact
+              <span className="text-[13px] font-mono uppercase tracking-[0.18em] text-white/40 font-bold">
+                Source
+              </span>
+              <p className="text-[28px] font-semibold tracking-[-0.02em] mt-2 leading-tight">
+                Not a tool. Source does the work.
               </p>
             </div>
+            <span className="text-[12px] font-mono uppercase tracking-[0.14em] text-white/35 text-right shrink-0 ml-8">
+              Partner-class AI agent
+            </span>
           </div>
-          <div className="flex items-start gap-3">
-            <Clock size={18} strokeWidth={1.75} className="text-white/70 mt-[2px] shrink-0" />
-            <div>
-              <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-white/45 font-semibold mb-1">
-                Timelines
-              </p>
-              <p className="text-[15px] text-white leading-tight">
-                Direct AI impact
-              </p>
-            </div>
+
+          <div className="grid grid-cols-5 divide-x divide-white/[0.08]">
+            {sourceProps.map(({ Icon, label, value }) => (
+              <div key={label} className="px-6 py-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <Icon size={15} strokeWidth={1.75} className="text-white/55" />
+                  <span className="text-[10px] font-mono uppercase tracking-[0.16em] text-white/45 font-bold">
+                    {label}
+                  </span>
+                </div>
+                <p className="text-[14px] text-white leading-[1.4]">
+                  {value}
+                </p>
+              </div>
+            ))}
           </div>
         </motion.div>
       </div>
