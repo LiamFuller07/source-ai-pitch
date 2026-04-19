@@ -3,7 +3,20 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { Fragment, useRef } from "react";
-import { FileText, Scan, DollarSign, ArrowRight, Sparkles, TrendingUp, Check } from "lucide-react";
+import {
+  FileText,
+  Scan,
+  DollarSign,
+  ArrowRight,
+  Sparkles,
+  TrendingUp,
+  Check,
+  Mic,
+  ClipboardList,
+  Mail,
+  NotebookPen,
+  type LucideIcon,
+} from "lucide-react";
 import { Slide } from "./Slide";
 
 type StepViz = "sow" | "quote" | "margin";
@@ -18,15 +31,15 @@ const steps: {
   {
     Icon: FileText,
     num: "01",
-    title: "You send the SOW",
-    body: "Drop in the client's scope, requirements, or existing SOW — however detailed or rough.",
+    title: "You send requirements",
+    body: "Whatever you have — SOW, requirements doc, call transcript, email thread, or notes. Source AI parses it all.",
     viz: "sow",
   },
   {
     Icon: Scan,
     num: "02",
     title: "Get AI price",
-    body: "Source AI reads the SOW, scans the client's live systems, and returns a fixed, locked-in price within 24 hours — no scoping calls, no T&M guesswork.",
+    body: "Source AI reads what you sent, scans the client's live systems, and returns a fixed, locked-in price within 24 hours — no scoping calls, no T&M guesswork.",
     viz: "quote",
   },
   {
@@ -41,89 +54,60 @@ const steps: {
 // ─── Step visualizations ─────────────────────────────────────────────────────
 
 function StepSowViz() {
-  const scopeItems: string[] = [
-    "Migrate 94,127 transactions · QuickBooks → NetSuite OneWorld",
-    "Rebuild Chart of Accounts · 247 GL · 6 subsidiaries",
-    "Re-point 4 integrations · Shopify, Stripe, Avalara, HubSpot",
-  ];
-  const fees: { label: string; value: string }[] = [
-    { label: "Fixed fee", value: "$32,500" },
-    { label: "Payment terms", value: "50 / 50" },
+  const inputs: { Icon: LucideIcon; label: string; meta: string; uploaded: boolean }[] = [
+    { Icon: FileText, label: "client-sow.pdf", meta: "12 pages", uploaded: true },
+    { Icon: Mic, label: "discovery-call.m4a", meta: "42m", uploaded: true },
+    { Icon: ClipboardList, label: "Requirements doc", meta: ".docx", uploaded: false },
+    { Icon: Mail, label: "Email thread", meta: ".eml", uploaded: false },
+    { Icon: NotebookPen, label: "Scoping notes", meta: ".txt", uploaded: false },
   ];
   return (
-    <div
-      className="relative bg-white border border-black/10 rounded-md overflow-hidden shadow-[0_1px_2px_rgba(0,0,0,0.03),0_10px_22px_-14px_rgba(0,0,0,0.15)] min-h-[200px] flex flex-col"
-    >
-      {/* Paper top strip */}
-      <div className="h-[2px] bg-black/80" />
-
-      {/* Document header */}
-      <div className="px-4 pt-2.5 pb-2 border-b border-black/[0.08]">
-        <div className="flex items-center justify-between leading-none">
-          <span className="text-[8px] font-mono uppercase tracking-[0.2em] text-black/35">
-            Statement of Work
-          </span>
-          <span className="text-[8px] font-mono tracking-[0.08em] text-black/30 tabular-nums">
-            v2 · 14 Apr 2026
-          </span>
+    <div className="bg-black/[0.02] border border-black/[0.08] rounded-md p-4 min-h-[200px] flex flex-col">
+      <div className="flex items-center justify-between mb-3 pb-2.5 border-b border-black/[0.06]">
+        <div className="flex items-center gap-2">
+          <FileText size={13} className="text-black/55" strokeWidth={1.75} />
+          <span className="text-[12px] font-semibold text-black">Accepted inputs</span>
         </div>
-        <p className="text-[12px] font-semibold text-black leading-tight tracking-[-0.01em] mt-1.5">
-          Acme Corp · QB → NetSuite
-        </p>
+        <span className="text-[10px] font-mono tracking-[0.08em] text-black/45">
+          Any format
+        </span>
       </div>
 
-      {/* Body sections */}
-      <div className="px-4 py-2.5 flex-1 flex flex-col gap-2">
-        {/* Scope */}
-        <div>
-          <p className="text-[8px] font-semibold uppercase tracking-[0.1em] text-black/55 mb-1">
-            Scope
-          </p>
-          <ul className="space-y-[2px]">
-            {scopeItems.map((t, i) => (
-              <li
-                key={i}
-                className="text-[8px] leading-[1.4] text-black/65 pl-2 relative before:content-['·'] before:absolute before:left-0 before:text-black/30"
-              >
-                {t}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Fees */}
-        <div className="mt-auto">
-          <p className="text-[8px] font-semibold uppercase tracking-[0.1em] text-black/55 mb-1">
-            Fees &amp; terms
-          </p>
-          <div className="border border-black/[0.08] rounded-[3px] overflow-hidden">
-            {fees.map((f, i) => (
-              <div
-                key={f.label}
-                className={`flex items-center justify-between px-2 py-1 ${
-                  i === 0 ? "border-b border-black/[0.06] bg-black/[0.015]" : ""
-                }`}
-              >
-                <span className="text-[8px] text-black/55">{f.label}</span>
-                <span className="text-[9px] font-mono font-semibold text-black/85 tabular-nums">
-                  {f.value}
+      <ul className="space-y-1.5 flex-1">
+        {inputs.map((it) => (
+          <li
+            key={it.label}
+            className="flex items-center justify-between text-[11.5px] gap-2"
+          >
+            <span className="flex items-center gap-2 min-w-0 text-black/65">
+              <it.Icon
+                size={11}
+                strokeWidth={1.75}
+                className={`shrink-0 ${it.uploaded ? "text-black/70" : "text-black/30"}`}
+              />
+              <span className="truncate">{it.label}</span>
+            </span>
+            <span className="flex items-center gap-1.5 shrink-0">
+              <span className="text-[10px] font-mono text-black/35 tabular-nums">
+                {it.meta}
+              </span>
+              {it.uploaded ? (
+                <span className="inline-flex items-center gap-0.5 text-[9px] font-mono font-bold tracking-[0.1em] text-black/70">
+                  <Check size={9} strokeWidth={2.75} />
                 </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+              ) : (
+                <span className="text-[9px] font-mono tracking-[0.1em] text-black/30">
+                  ·
+                </span>
+              )}
+            </span>
+          </li>
+        ))}
+      </ul>
 
-      {/* Footer bar */}
-      <div className="px-4 py-1.5 border-t border-black/[0.08] bg-black/[0.02] flex items-center justify-between">
-        <span className="text-[8px] font-mono tracking-[0.06em] text-black/40 truncate">
-          client-sow.pdf
-        </span>
-        <span className="inline-flex items-center gap-1 text-[8px] font-mono font-bold tracking-[0.1em] text-black/70 shrink-0">
-          <Check size={8} strokeWidth={2.75} className="text-black/70" />
-          UPLOADED
-        </span>
-      </div>
+      <p className="mt-3 pt-2.5 border-t border-black/[0.06] text-[10px] font-mono uppercase tracking-[0.12em] text-black/45 text-center">
+        Source AI parses any input
+      </p>
     </div>
   );
 }
@@ -242,10 +226,10 @@ export function Pricing() {
             Pricing
           </p>
           <h2 className="text-[56px] font-semibold tracking-[-0.03em] text-black mb-3">
-            Send SOW. Get Price. Charge Client.
+            Send Requirements. Get Price. Charge Client.
           </h2>
           <p className="text-[20px] text-black/45 leading-relaxed max-w-[900px]">
-            No quoting calls, no scoping workshops, no T&amp;M surprises. Three steps from SOW to invoice.
+            No quoting calls, no scoping workshops, no T&amp;M surprises. Three steps from requirements to invoice.
           </p>
         </motion.div>
 
