@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Check, X, TrendingUp, Clock, Lock, Workflow, Brain } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { Slide } from "./Slide";
 
 // Tools cluster in the "productivity" band — bottom half of the chart.
@@ -33,12 +33,19 @@ const toolsCons = [
   "No direct impact on timelines",
 ];
 
-const sourceProps: { Icon: typeof Workflow; label: string; value: string }[] = [
-  { Icon: Workflow, label: "Scope", value: "Owns the full engagement — end to end" },
-  { Icon: Brain, label: "Autonomy", value: "Does the consultant's work, flags the rest" },
-  { Icon: TrendingUp, label: "Margin", value: "Direct AI lift on every engagement" },
-  { Icon: Clock, label: "Timelines", value: "Weeks → days, fixed from day one" },
-  { Icon: Lock, label: "Price", value: "Fixed fee, locked in 24h" },
+const sourcePros = [
+  "Owns the full engagement, end to end",
+  "Does the consultant's work — not just assists",
+  "Direct AI lift on margin every engagement",
+  "Collapses timelines from weeks to days",
+  "Fixed fee, locked in 24h",
+];
+
+const sourceCons = [
+  "Not a shelf-bought SaaS tool",
+  "Scoped per engagement, not self-serve",
+  "Requires partner-level buy-in, not a vendor checklist",
+  "ERP / migration domain first (other workflows later)",
 ];
 
 function QuadrantChart({ animate }: { animate: boolean }) {
@@ -285,41 +292,71 @@ export function Landscape() {
           </motion.div>
         </div>
 
-        {/* Source counter-card — not a tool */}
+        {/* Source pros/cons — mirrors the Tools card, as a partner */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.55 }}
-          className="mt-8 bg-black text-white rounded-md overflow-hidden"
+          className="mt-8 bg-black text-white rounded-md p-10"
         >
-          <div className="px-10 py-7 flex items-end justify-between border-b border-white/[0.08]">
+          <div className="mb-8 flex items-end justify-between">
             <div>
-              <span className="text-[13px] font-mono uppercase tracking-[0.18em] text-white/40 font-bold">
+              <span className="text-[13px] font-mono uppercase tracking-[0.18em] text-white/45 font-bold">
                 Source
               </span>
-              <p className="text-[28px] font-semibold tracking-[-0.02em] mt-2 leading-tight">
-                Not a tool. Source does the work.
+              <p className="text-[22px] font-semibold tracking-[-0.02em] mt-1 text-white">
+                Partner-class agent — not a tool.
               </p>
             </div>
-            <span className="text-[12px] font-mono uppercase tracking-[0.14em] text-white/35 text-right shrink-0 ml-8">
-              Partner-class AI agent
+            <span className="text-[11px] font-mono uppercase tracking-[0.14em] text-white/35 shrink-0 ml-8">
+              What changes when you bring on a partner
             </span>
           </div>
 
-          <div className="grid grid-cols-5 divide-x divide-white/[0.08]">
-            {sourceProps.map(({ Icon, label, value }) => (
-              <div key={label} className="px-6 py-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <Icon size={15} strokeWidth={1.75} className="text-white/55" />
-                  <span className="text-[10px] font-mono uppercase tracking-[0.16em] text-white/45 font-bold">
-                    {label}
-                  </span>
-                </div>
-                <p className="text-[14px] text-white leading-[1.4]">
-                  {value}
-                </p>
-              </div>
-            ))}
+          <div className="grid grid-cols-2 gap-12">
+            {/* Pros */}
+            <div>
+              <p className="text-[11px] font-mono uppercase tracking-[0.18em] text-white/55 font-bold mb-4">
+                Pros
+              </p>
+              <ul className="space-y-3">
+                {sourcePros.map((t) => (
+                  <li
+                    key={t}
+                    className="flex items-start gap-3 text-[16px] text-white leading-[1.4]"
+                  >
+                    <Check
+                      size={18}
+                      strokeWidth={2.5}
+                      className="mt-[3px] shrink-0 text-emerald-400"
+                    />
+                    <span>{t}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Cons / trade-offs */}
+            <div className="border-l border-white/[0.10] pl-12">
+              <p className="text-[11px] font-mono uppercase tracking-[0.18em] text-white/55 font-bold mb-4">
+                Trade-offs
+              </p>
+              <ul className="space-y-3">
+                {sourceCons.map((t) => (
+                  <li
+                    key={t}
+                    className="flex items-start gap-3 text-[16px] text-white/70 leading-[1.4]"
+                  >
+                    <X
+                      size={18}
+                      strokeWidth={2.5}
+                      className="mt-[3px] shrink-0 text-white/35"
+                    />
+                    <span>{t}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </motion.div>
       </div>
