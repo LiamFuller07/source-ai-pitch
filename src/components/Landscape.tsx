@@ -5,19 +5,27 @@ import { useRef } from "react";
 import { Check, X } from "lucide-react";
 import { Slide } from "./Slide";
 
-const sourcePros = [
-  "Owns the full engagement, end to end",
-  "Does the consultant's work — not just assists",
-  "Direct AI lift on margin every engagement",
-  "Collapses timelines from weeks to days",
-  "Fixed fee, locked in 24h",
-];
-
-const sourceCons = [
-  "Not a shelf-bought SaaS tool",
-  "Scoped per engagement, not self-serve",
-  "Requires partner-level buy-in, not a vendor checklist",
-  "ERP / migration domain first (other workflows later)",
+const rows: { tool: string; source: string }[] = [
+  {
+    tool: "Assists on narrow tasks",
+    source: "Owns the full engagement, end to end",
+  },
+  {
+    tool: "Breaks on edge cases and judgment",
+    source: "Does the consultant's work — not just assists",
+  },
+  {
+    tool: "No direct impact on margin",
+    source: "Direct AI lift on margin every engagement",
+  },
+  {
+    tool: "Leaves timelines untouched",
+    source: "Collapses timelines from weeks to days",
+  },
+  {
+    tool: "Billed hourly / T&M — scope creep risk",
+    source: "Fixed fee, locked in 24h",
+  },
 ];
 
 export function Landscape() {
@@ -37,75 +45,63 @@ export function Landscape() {
             Landscape
           </p>
           <h2 className="text-[56px] font-semibold tracking-[-0.03em] text-black">
-            Everything else is a productivity tool.
+            Source is an AI partner, not a tool.
           </h2>
         </motion.div>
 
-        {/* Source pros / trade-offs */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="bg-black text-white rounded-md p-10"
         >
-          <div className="mb-8 flex items-end justify-between">
-            <div>
+          {/* Column headers */}
+          <div className="grid grid-cols-2 gap-12 mb-6 pb-5 border-b border-white/[0.10]">
+            <div className="flex items-baseline justify-between">
               <span className="text-[13px] font-mono uppercase tracking-[0.18em] text-white/45 font-bold">
-                Source
+                Tool
               </span>
-              <p className="text-[28px] font-semibold tracking-[-0.02em] mt-1 text-white">
-                Partner-class agent — not a tool.
-              </p>
+              <span className="text-[11px] font-mono uppercase tracking-[0.14em] text-white/30">
+                Productivity add-on
+              </span>
             </div>
-            <span className="text-[11px] font-mono uppercase tracking-[0.14em] text-white/35 shrink-0 ml-8">
-              What changes when you bring on a partner
-            </span>
+            <div className="flex items-baseline justify-between pl-12">
+              <span className="text-[13px] font-mono uppercase tracking-[0.18em] text-emerald-400 font-bold">
+                Source — AI partner
+              </span>
+              <span className="text-[11px] font-mono uppercase tracking-[0.14em] text-white/30">
+                Owns the engagement
+              </span>
+            </div>
           </div>
 
+          {/* Comparison rows */}
           <div className="grid grid-cols-2 gap-12">
-            {/* Pros */}
-            <div>
-              <p className="text-[11px] font-mono uppercase tracking-[0.18em] text-white/55 font-bold mb-4">
-                Pros
-              </p>
-              <ul className="space-y-3">
-                {sourcePros.map((t) => (
-                  <li
-                    key={t}
-                    className="flex items-start gap-3 text-[17px] text-white leading-[1.4]"
-                  >
-                    <Check
-                      size={18}
-                      strokeWidth={2.5}
-                      className="mt-[4px] shrink-0 text-emerald-400"
-                    />
-                    <span>{t}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {/* Tool column */}
+            <ul className="space-y-4">
+              {rows.map((r) => (
+                <li
+                  key={r.tool}
+                  className="flex items-start gap-3 text-[17px] text-white/55 leading-[1.4]"
+                >
+                  <X size={18} strokeWidth={2.5} className="mt-[4px] shrink-0 text-white/30" />
+                  <span>{r.tool}</span>
+                </li>
+              ))}
+            </ul>
 
-            {/* Trade-offs */}
-            <div className="border-l border-white/[0.10] pl-12">
-              <p className="text-[11px] font-mono uppercase tracking-[0.18em] text-white/55 font-bold mb-4">
-                Trade-offs
-              </p>
-              <ul className="space-y-3">
-                {sourceCons.map((t) => (
-                  <li
-                    key={t}
-                    className="flex items-start gap-3 text-[17px] text-white/70 leading-[1.4]"
-                  >
-                    <X
-                      size={18}
-                      strokeWidth={2.5}
-                      className="mt-[4px] shrink-0 text-white/35"
-                    />
-                    <span>{t}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {/* Source column */}
+            <ul className="space-y-4 border-l border-white/[0.10] pl-12">
+              {rows.map((r) => (
+                <li
+                  key={r.source}
+                  className="flex items-start gap-3 text-[17px] text-white leading-[1.4] font-medium"
+                >
+                  <Check size={18} strokeWidth={2.5} className="mt-[4px] shrink-0 text-emerald-400" />
+                  <span>{r.source}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </motion.div>
       </div>
