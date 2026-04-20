@@ -2,15 +2,31 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Check, X, Wrench, Handshake, type LucideIcon } from "lucide-react";
+import {
+  Wrench,
+  Handshake,
+  Puzzle,
+  AlertTriangle,
+  Minus,
+  Hourglass,
+  Receipt,
+  Workflow,
+  UserCheck,
+  Percent,
+  Zap,
+  Lock,
+  type LucideIcon,
+} from "lucide-react";
 import { Slide } from "./Slide";
+
+type Bullet = { Icon: LucideIcon; text: string };
 
 type Side = {
   Icon: LucideIcon;
   eyebrow: string;
   title: string;
   body: string;
-  bullets: string[];
+  bullets: Bullet[];
   tone: "light" | "dark";
 };
 
@@ -20,11 +36,11 @@ const tool: Side = {
   title: "A tool.",
   body: "Sits beside a consultant and helps them type faster. The consultant still owns every deliverable — and still bills by the hour.",
   bullets: [
-    "Assists on narrow tasks",
-    "Breaks on edge cases and judgment",
-    "No direct impact on margin",
-    "Leaves timelines untouched",
-    "Billed hourly / T&M — scope creep risk",
+    { Icon: Puzzle, text: "Assists on narrow tasks" },
+    { Icon: AlertTriangle, text: "Breaks on edge cases and judgment calls" },
+    { Icon: Minus, text: "Doesn't move the margin needle" },
+    { Icon: Hourglass, text: "Leaves week-long timelines intact" },
+    { Icon: Receipt, text: "Billed hourly — scope creep eats the P&L" },
   ],
   tone: "light",
 };
@@ -33,13 +49,13 @@ const partner: Side = {
   Icon: Handshake,
   eyebrow: "Partner-class agent",
   title: "An AI partner.",
-  body: "Owns the engagement end to end — from requirements to cutover — and ships under your firm's name. Billed as delivery, not hours.",
+  body: "Owns the engagement end to end — under consultant review, shipped under your firm's name. Billed as delivery, not hours.",
   bullets: [
-    "Owns the full engagement, end to end",
-    "Does the consultant's work — not just assists",
-    "Direct AI lift on margin every engagement",
-    "Collapses timelines from weeks to days",
-    "Fixed fee, locked in 24h",
+    { Icon: Workflow, text: "Owns the full engagement, end to end" },
+    { Icon: UserCheck, text: "Consultant-reviewed — ships under your firm's name" },
+    { Icon: Percent, text: "50%+ margin on every engagement" },
+    { Icon: Zap, text: "Weeks of work, compressed into days" },
+    { Icon: Lock, text: "Fixed fee, locked in 24h" },
   ],
   tone: "dark",
 };
@@ -72,7 +88,7 @@ export function Landscape() {
         <p className="text-[20px] text-black/45 leading-relaxed max-w-[1100px]">
           Every other AI in the category is a productivity feature bolted on to
           the consultant&apos;s workflow. Source is the consultant — owning the
-          engagement, delivering the work, and billed as delivery.
+          engagement, reviewed by your team, and billed as delivery.
         </p>
       </motion.div>
 
@@ -86,28 +102,24 @@ export function Landscape() {
               initial={{ opacity: 0, y: 22 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.55, delay: 0.25 + i * 0.12, ease: "easeOut" }}
-              className={`rounded-md p-10 flex flex-col min-h-[560px] border ${
+              className={`rounded-md p-10 flex flex-col min-h-[580px] border ${
                 isDark
                   ? "bg-black text-white border-black"
                   : "bg-white text-black border-black/10"
               }`}
             >
-              {/* Icon + eyebrow (the "tab" header) */}
+              {/* Icon + eyebrow */}
               <div className="flex items-center justify-between mb-7">
                 <div
                   className={`w-14 h-14 rounded-md flex items-center justify-center ${
                     isDark ? "bg-white/10" : "bg-black"
                   }`}
                 >
-                  <side.Icon
-                    size={24}
-                    strokeWidth={1.75}
-                    className="text-white"
-                  />
+                  <side.Icon size={24} strokeWidth={1.75} className="text-white" />
                 </div>
                 <span
                   className={`text-[11px] font-mono uppercase tracking-[0.12em] font-bold ${
-                    isDark ? "text-emerald-400" : "text-black/35"
+                    isDark ? "text-white/55" : "text-black/35"
                   }`}
                 >
                   {side.eyebrow}
@@ -130,31 +142,36 @@ export function Landscape() {
                 {side.body}
               </p>
 
-              {/* Bullets */}
-              <ul className="space-y-3.5 mt-auto">
-                {side.bullets.map((b) => (
-                  <li
-                    key={b}
-                    className={`flex items-start gap-3 text-[17px] leading-[1.4] ${
-                      isDark ? "text-white font-medium" : "text-black/55"
-                    }`}
-                  >
-                    {isDark ? (
-                      <Check
-                        size={18}
-                        strokeWidth={2.5}
-                        className="mt-[4px] shrink-0 text-emerald-400"
-                      />
-                    ) : (
-                      <X
-                        size={18}
-                        strokeWidth={2.5}
-                        className="mt-[4px] shrink-0 text-black/30"
-                      />
-                    )}
-                    <span>{b}</span>
-                  </li>
-                ))}
+              {/* Bullets with per-row icons */}
+              <ul className="space-y-3 mt-auto">
+                {side.bullets.map(({ Icon, text }) => {
+                  const isMarginBullet = text.startsWith("50%+ margin");
+                  return (
+                    <li
+                      key={text}
+                      className={`flex items-center gap-3.5 text-[17px] leading-[1.35] ${
+                        isDark ? "text-white font-medium" : "text-black/55"
+                      }`}
+                    >
+                      <span
+                        className={`w-9 h-9 rounded-md flex items-center justify-center shrink-0 border ${
+                          isDark
+                            ? "bg-white/[0.06] border-white/[0.10]"
+                            : "bg-black/[0.03] border-black/[0.08]"
+                        }`}
+                      >
+                        <Icon
+                          size={17}
+                          strokeWidth={1.75}
+                          className={isDark ? "text-white/75" : "text-black/35"}
+                        />
+                      </span>
+                      <span className={isDark && isMarginBullet ? "font-semibold" : ""}>
+                        {text}
+                      </span>
+                    </li>
+                  );
+                })}
               </ul>
             </motion.div>
           );
