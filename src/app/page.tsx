@@ -35,8 +35,8 @@ export default function Home() {
         <WhyPartner />
         {/* <HowWePartner /> — hidden for now */}
         <Pricing />
-        <Landscape />
         <Scale />
+        <Landscape />
         <Team />
         <Cta />
       </main>
