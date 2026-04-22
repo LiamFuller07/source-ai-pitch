@@ -34,7 +34,7 @@ export default function Home() {
         <SupportedSystems />
         <WhyPartner />
         {/* <HowWePartner /> — hidden for now */}
-        <Pricing />
+        {/* <Pricing /> — hidden for now, can be restored */}
         <Scale />
         <Landscape />
         <Team />
